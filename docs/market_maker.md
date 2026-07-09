@@ -139,6 +139,8 @@ inventory_pnl_increment = inventory_before_reference_move * reference_mid_change
 
 The two inventory PnL calculations must reconcile within rounding error.
 
+The reconciliation identities above must be asserted in code for every regime run with a small floating point tolerance. A failed reconciliation must stop the run and print the regime, strategy, and mismatched fields. The same commit that adds simulator accounting must also add deterministic tests that cover a passing reconciliation and a deliberately broken reconciliation.
+
 Adverse selection is reported as a markout diagnostic, not added a second time to net PnL. The default markout horizon is 50 events after the fill. For maker fills:
 
 ```text
