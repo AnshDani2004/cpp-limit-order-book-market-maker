@@ -6,6 +6,32 @@
 #include <cmath>
 #include <string>
 
+namespace {
+
+lob::PnlAccounting make_multi_fill_accounting_run() {
+    lob::PnlAccounting accounting("low volatility", "accounting smoke", 100.0);
+
+    accounting.record_fill(lob::FillEvent{lob::FillSide::Buy, lob::LiquidityRole::Maker, 99.0, 10, 1});
+    accounting.record_reference_mid(101.5);
+    accounting.record_fill(lob::FillEvent{lob::FillSide::Sell, lob::LiquidityRole::Taker, 102.0, 4, 2});
+    accounting.record_reference_mid(100.5);
+    accounting.record_fill(lob::FillEvent{lob::FillSide::Buy, lob::LiquidityRole::Maker, 100.0, 3, 3});
+    accounting.record_reference_mid(103.0);
+
+    return accounting;
+}
+
+lob::PnlReconciliationFields fields_from_snapshot(const lob::PnlSnapshot& state) {
+    return lob::PnlReconciliationFields{state.net_pnl_after_fees,
+                                        state.gross_pnl_before_fees,
+                                        state.spread_capture,
+                                        state.inventory_pnl_balancing,
+                                        state.fee_pnl,
+                                        state.inventory_pnl_from_marks};
+}
+
+}  // namespace
+
 TEST_CASE("default regimes match the Stage 3 measurement plan") {
     const auto regimes = lob::default_regimes(200000);
 
@@ -43,29 +69,31 @@ TEST_CASE("reference path generation is deterministic for a fixed regime seed") 
 }
 
 TEST_CASE("PnL accounting reconciles spread capture inventory marks and fees") {
-    lob::PnlAccounting accounting("low volatility", "accounting smoke", 100.0);
-
-    accounting.record_fill(lob::FillEvent{lob::FillSide::Buy, lob::LiquidityRole::Maker, 99.0, 10, 1});
-    accounting.record_reference_mid(101.0);
-    accounting.record_fill(lob::FillEvent{lob::FillSide::Sell, lob::LiquidityRole::Maker, 102.0, 10, 2});
+    const auto accounting = make_multi_fill_accounting_run();
 
     const auto state = accounting.snapshot();
 
-    CHECK(state.cash == Catch::Approx(30.4));
-    CHECK(state.inventory == 0);
-    CHECK(state.fee_pnl == Catch::Approx(0.4));
-    CHECK(state.spread_capture == Catch::Approx(20.0));
-    CHECK(state.inventory_pnl_from_marks == Catch::Approx(10.0));
-    CHECK(state.inventory_pnl_balancing == Catch::Approx(10.0));
-    CHECK(state.gross_pnl_before_fees == Catch::Approx(30.0));
-    CHECK(state.net_pnl_after_fees == Catch::Approx(30.4));
+    CHECK(state.cash == Catch::Approx(-882.06));
+    CHECK(state.inventory == 9);
+    CHECK(state.reference_mid == Catch::Approx(103.0));
+    CHECK(state.fee_pnl == Catch::Approx(-0.06));
+    CHECK(state.spread_capture == Catch::Approx(13.5));
+    CHECK(state.inventory_pnl_from_marks == Catch::Approx(31.5));
+    CHECK(state.inventory_pnl_balancing == Catch::Approx(31.5));
+    CHECK(state.gross_pnl_before_fees == Catch::Approx(45.0));
+    CHECK(state.net_pnl_after_fees == Catch::Approx(44.94));
     CHECK(accounting.reconciles(1e-9));
     CHECK_NOTHROW(accounting.assert_reconciles(1e-9));
 }
 
 TEST_CASE("PnL reconciliation fails loudly for deliberately broken fields") {
-    const lob::PnlReconciliationFields broken{10.0, 9.0, 4.0, 4.0, 1.0, 4.0};
+    const auto accounting = make_multi_fill_accounting_run();
+    const auto state = accounting.snapshot();
+    const auto valid = fields_from_snapshot(state);
+    auto broken = valid;
+    broken.inventory_pnl += 7.25;
 
+    CHECK(lob::pnl_reconciles(valid, 1e-9));
     CHECK_FALSE(lob::pnl_reconciles(broken, 1e-9));
 
     try {
@@ -75,6 +103,8 @@ TEST_CASE("PnL reconciliation fails loudly for deliberately broken fields") {
         const std::string message = error.what();
         CHECK(message.find("regime=high volatility") != std::string::npos);
         CHECK(message.find("strategy=broken reconciliation") != std::string::npos);
-        CHECK(message.find("inventory_mark_error") != std::string::npos);
+        CHECK(message.find("gross_identity_error=-7.25") != std::string::npos);
+        CHECK(message.find("net_identity_error=-7.25") != std::string::npos);
+        CHECK(message.find("inventory_pnl_mark_error=7.25") != std::string::npos);
     }
 }
