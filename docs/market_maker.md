@@ -78,6 +78,8 @@ The naive strategy quotes symmetrically around the current reference mid with a 
 
 The first naive baseline uses a 5 tick half spread, a 10 tick full quoted spread, quote size 10 per side, and refresh cadence 10 events.
 
+The naive strategy computes symmetric bid and ask proposals around the rounded reference mid. The actual posted quotes can become asymmetric after passive clipping against the current book. This is expected because stale external orders can remain inside the proposed naive quote. The low volatility seed `3001` run ended with reference mid `100461.948015` after starting at `100000`; in that upward path, only `10577` of `20000` quote refreshes posted symmetrically, the bid was clipped `8580` times, and the ask was clipped `843` times. The same low volatility setup with seed `13001` ended at `99806.0828087`; in that downward path, the ask was clipped `6631` times and the bid was clipped `81` times. The naive fill skew is therefore a path dependent effect of passive clipping and stale external depth, not an asymmetric side draw in the generator.
+
 The inventory aware strategy quotes around the Avellaneda and Stoikov reservation price and uses the optimal spread formula above. It must state risk aversion, fill decay, volatility estimate, time horizon, quote size, and refresh cadence before reporting any result.
 
 For the first implementation, the strategy receives the regime volatility from the table above as an ex ante model input. It does not estimate volatility from a rolling window. This is an intentional simplifying assumption and must be named beside the results.
@@ -146,6 +148,8 @@ inventory_pnl_increment = inventory_before_reference_move * reference_mid_change
 The two inventory PnL calculations must reconcile within rounding error.
 
 The reconciliation identities above must be asserted in code for every regime run with a small floating point tolerance. A failed reconciliation must stop the run and print the regime, strategy, and mismatched fields. The same commit that adds simulator accounting must also add deterministic tests that cover a passing reconciliation and a deliberately broken reconciliation.
+
+The simulator uses compensated summation for cash, fee PnL, spread capture, and event level inventory marking. The run level reconciliation tolerance is `0.00001` ticks. This tolerance is based on measured runs, not on increasing the value until a failing run passed. In the low volatility seed `3001` sweep, the inventory PnL mark error was `-1.14450813271e-07` at 20000 events, `-2.33645550907e-07` at 50000 events, `-2.85916030407e-07` at 100000 events, and `-3.83704900742e-07` at 200000 events. The error did not grow linearly with event count, and the error divided by the square root of event count stayed near `1e-9`. A separate low volatility run with seed `13001` had mark error `-1.33505091071e-06` at 200000 events. The `0.00001` tick tolerance leaves headroom for seed variation while remaining far below one tick.
 
 Adverse selection is reported as a markout diagnostic, not added a second time to net PnL. The default markout horizon is 50 events after the fill. For maker fills:
 

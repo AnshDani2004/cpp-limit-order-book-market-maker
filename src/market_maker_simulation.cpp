@@ -18,7 +18,7 @@ namespace {
 constexpr const char* kNaiveStrategyName = "naive symmetric";
 constexpr const char* kMarketMakerOwner = "market_maker";
 constexpr OrderId kMarketMakerOrderIdStart = 1'000'000'000'000ULL;
-constexpr double kRunReconciliationTolerance = 1e-2;
+constexpr double kRunReconciliationTolerance = 1e-5;
 
 enum class ExternalAction {
     Limit,
@@ -78,6 +78,30 @@ struct ActiveExternalIndex {
         std::uniform_int_distribution<std::size_t> distribution(0, ids.size() - 1);
         return ids[distribution(rng)];
     }
+};
+
+struct ExternalFlowDiagnostics {
+    std::size_t limit_buy_orders{};
+    std::size_t limit_sell_orders{};
+    std::size_t market_buy_orders{};
+    std::size_t market_sell_orders{};
+    std::size_t price_modify_buy_orders{};
+    std::size_t price_modify_sell_orders{};
+    Quantity limit_buy_quantity{};
+    Quantity limit_sell_quantity{};
+    Quantity market_buy_quantity{};
+    Quantity market_sell_quantity{};
+    Quantity price_modify_buy_quantity{};
+    Quantity price_modify_sell_quantity{};
+    double limit_buy_offset_sum{};
+    double limit_sell_offset_sum{};
+    double price_modify_buy_offset_sum{};
+    double price_modify_sell_offset_sum{};
+};
+
+struct GeneratedExternalFlow {
+    std::vector<ExternalEvent> events{};
+    ExternalFlowDiagnostics diagnostics{};
 };
 
 struct QuoteIds {
@@ -159,17 +183,18 @@ public:
     ExternalFlowGenerator(const RegimeConfig& regime, const std::vector<double>& reference_path)
         : regime_(regime), reference_path_(reference_path), rng_(regime.seed ^ 0x9e3779b97f4a7c15ULL) {}
 
-    std::vector<ExternalEvent> generate() {
-        std::vector<ExternalEvent> events;
-        events.reserve(regime_.run_length);
+    GeneratedExternalFlow generate() {
+        GeneratedExternalFlow flow;
+        flow.events.reserve(regime_.run_length);
 
         for (std::size_t index = 0; index < regime_.run_length; ++index) {
             auto event = make_event(index);
             apply_generated_event(event);
-            events.push_back(std::move(event));
+            flow.events.push_back(std::move(event));
         }
 
-        return events;
+        flow.diagnostics = diagnostics_;
+        return flow;
     }
 
 private:
@@ -195,7 +220,7 @@ private:
         event.timestamp = next_timestamp_++;
 
         const auto side = random_side();
-        const auto price = passive_external_price(side, event_index);
+        const auto [price, offset] = passive_external_price(side, event_index);
         const auto quantity = random_quantity();
         const auto order_id = next_order_id_++;
         event.order = Order::limit(order_id,
@@ -205,6 +230,15 @@ private:
                                    quantity,
                                    event.timestamp);
         event.order_id = event.order.id;
+        if (side == Side::Buy) {
+            ++diagnostics_.limit_buy_orders;
+            diagnostics_.limit_buy_quantity += quantity;
+            diagnostics_.limit_buy_offset_sum += static_cast<double>(offset);
+        } else {
+            ++diagnostics_.limit_sell_orders;
+            diagnostics_.limit_sell_quantity += quantity;
+            diagnostics_.limit_sell_offset_sum += static_cast<double>(offset);
+        }
         return event;
     }
 
@@ -214,8 +248,16 @@ private:
         event.timestamp = next_timestamp_++;
 
         const auto side = random_side();
-        event.order = Order::market(next_order_id_++, "external_taker", side, random_quantity(), event.timestamp);
+        const auto quantity = random_quantity();
+        event.order = Order::market(next_order_id_++, "external_taker", side, quantity, event.timestamp);
         event.order_id = event.order.id;
+        if (side == Side::Buy) {
+            ++diagnostics_.market_buy_orders;
+            diagnostics_.market_buy_quantity += quantity;
+        } else {
+            ++diagnostics_.market_sell_orders;
+            diagnostics_.market_sell_quantity += quantity;
+        }
         return event;
     }
 
@@ -246,8 +288,18 @@ private:
             return event;
         }
 
-        event.new_price = passive_external_price(snapshot->side, event_index);
+        const auto [price, offset] = passive_external_price(snapshot->side, event_index);
+        event.new_price = price;
         event.new_quantity = random_quantity();
+        if (snapshot->side == Side::Buy) {
+            ++diagnostics_.price_modify_buy_orders;
+            diagnostics_.price_modify_buy_quantity += event.new_quantity;
+            diagnostics_.price_modify_buy_offset_sum += static_cast<double>(offset);
+        } else {
+            ++diagnostics_.price_modify_sell_orders;
+            diagnostics_.price_modify_sell_quantity += event.new_quantity;
+            diagnostics_.price_modify_sell_offset_sum += static_cast<double>(offset);
+        }
         return event;
     }
 
@@ -269,11 +321,11 @@ private:
         return distribution(rng_);
     }
 
-    Price passive_external_price(Side side, std::size_t event_index) {
+    std::pair<Price, Price> passive_external_price(Side side, std::size_t event_index) {
         std::uniform_int_distribution<Price> offset_distribution(8, 80);
         const auto reference = rounded_reference(reference_path_[event_index]);
         const auto offset = offset_distribution(rng_);
-        return side == Side::Buy ? reference - offset : reference + offset;
+        return {side == Side::Buy ? reference - offset : reference + offset, offset};
     }
 
     const RegimeConfig& regime_;
@@ -281,6 +333,7 @@ private:
     std::mt19937_64 rng_;
     MatchingEngine generation_engine_{};
     ActiveExternalIndex active_{};
+    ExternalFlowDiagnostics diagnostics_{};
     OrderId next_order_id_{1};
     Timestamp next_timestamp_{1};
 };
@@ -311,6 +364,13 @@ void record_market_maker_trades(PnlAccounting& accounting,
         accounting.record_fill(FillEvent{side, role, static_cast<double>(trade.price), trade.quantity, event_index});
 
         summary.market_maker_filled_quantity += trade.quantity;
+        if (side == FillSide::Buy) {
+            ++summary.market_maker_buy_fills;
+            summary.market_maker_buy_quantity += trade.quantity;
+        } else {
+            ++summary.market_maker_sell_fills;
+            summary.market_maker_sell_quantity += trade.quantity;
+        }
         if (role == LiquidityRole::Maker) {
             ++summary.maker_fills;
 
@@ -365,6 +425,33 @@ Price clipped_ask_price(const MatchingEngine& engine, Price proposed_ask) {
     return proposed_ask;
 }
 
+void record_quote_diagnostics(MarketMakerSummary& summary,
+                              Price reference,
+                              Price proposed_bid,
+                              Price proposed_ask,
+                              Price bid,
+                              Price ask) {
+    ++summary.quote_refreshes;
+    if (bid != proposed_bid) {
+        ++summary.bid_clip_events;
+    }
+    if (ask != proposed_ask) {
+        ++summary.ask_clip_events;
+    }
+
+    const auto bid_distance = static_cast<double>(reference - bid);
+    const auto ask_distance = static_cast<double>(ask - reference);
+    const auto abs_asymmetry = std::fabs(ask_distance - bid_distance);
+
+    if (bid_distance == ask_distance) {
+        ++summary.symmetric_quote_refreshes;
+    }
+    summary.average_bid_distance += bid_distance;
+    summary.average_ask_distance += ask_distance;
+    summary.average_abs_quote_asymmetry += abs_asymmetry;
+    summary.max_abs_quote_asymmetry = std::max(summary.max_abs_quote_asymmetry, abs_asymmetry);
+}
+
 void submit_quote(MatchingEngine& engine,
                   PnlAccounting& accounting,
                   MarketMakerSummary& summary,
@@ -409,14 +496,17 @@ void refresh_naive_quotes(MatchingEngine& engine,
     cancel_quote(engine, quotes.ask, next_market_maker_timestamp++);
 
     const auto reference = rounded_reference(reference_path[event_index]);
-    auto bid = clipped_bid_price(engine, reference - strategy.half_spread_ticks);
-    auto ask = clipped_ask_price(engine, reference + strategy.half_spread_ticks);
+    const auto proposed_bid = reference - strategy.half_spread_ticks;
+    const auto proposed_ask = reference + strategy.half_spread_ticks;
+    auto bid = clipped_bid_price(engine, proposed_bid);
+    auto ask = clipped_ask_price(engine, proposed_ask);
     if (bid >= ask) {
         bid = ask - 1;
     }
     if (bid <= 0 || ask <= 0) {
         throw std::runtime_error("market maker quote price must be positive");
     }
+    record_quote_diagnostics(summary, reference, proposed_bid, proposed_ask, bid, ask);
 
     submit_quote(engine,
                  accounting,
@@ -471,7 +561,8 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
     }
 
     const auto reference_path = generate_reference_path(config.regime);
-    auto external_events = ExternalFlowGenerator(config.regime, reference_path).generate();
+    auto external_flow = ExternalFlowGenerator(config.regime, reference_path).generate();
+    const auto& external_events = external_flow.events;
 
     MatchingEngine engine;
     PnlAccounting accounting(config.regime.name, kNaiveStrategyName, reference_path.front());
@@ -484,6 +575,40 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
     result.summary.regime_name = config.regime.name;
     result.summary.seed = config.regime.seed;
     result.summary.events = config.regime.run_length;
+    result.summary.initial_reference_mid = reference_path.front();
+    result.summary.final_reference_mid = reference_path.back();
+    result.summary.external_limit_buy_orders = external_flow.diagnostics.limit_buy_orders;
+    result.summary.external_limit_sell_orders = external_flow.diagnostics.limit_sell_orders;
+    result.summary.external_market_buy_orders = external_flow.diagnostics.market_buy_orders;
+    result.summary.external_market_sell_orders = external_flow.diagnostics.market_sell_orders;
+    result.summary.external_price_modify_buy_orders = external_flow.diagnostics.price_modify_buy_orders;
+    result.summary.external_price_modify_sell_orders = external_flow.diagnostics.price_modify_sell_orders;
+    result.summary.external_limit_buy_quantity = external_flow.diagnostics.limit_buy_quantity;
+    result.summary.external_limit_sell_quantity = external_flow.diagnostics.limit_sell_quantity;
+    result.summary.external_market_buy_quantity = external_flow.diagnostics.market_buy_quantity;
+    result.summary.external_market_sell_quantity = external_flow.diagnostics.market_sell_quantity;
+    result.summary.external_price_modify_buy_quantity = external_flow.diagnostics.price_modify_buy_quantity;
+    result.summary.external_price_modify_sell_quantity = external_flow.diagnostics.price_modify_sell_quantity;
+    result.summary.average_external_limit_buy_offset =
+        result.summary.external_limit_buy_orders == 0
+            ? 0.0
+            : external_flow.diagnostics.limit_buy_offset_sum /
+                  static_cast<double>(result.summary.external_limit_buy_orders);
+    result.summary.average_external_limit_sell_offset =
+        result.summary.external_limit_sell_orders == 0
+            ? 0.0
+            : external_flow.diagnostics.limit_sell_offset_sum /
+                  static_cast<double>(result.summary.external_limit_sell_orders);
+    result.summary.average_external_price_modify_buy_offset =
+        result.summary.external_price_modify_buy_orders == 0
+            ? 0.0
+            : external_flow.diagnostics.price_modify_buy_offset_sum /
+                  static_cast<double>(result.summary.external_price_modify_buy_orders);
+    result.summary.average_external_price_modify_sell_offset =
+        result.summary.external_price_modify_sell_orders == 0
+            ? 0.0
+            : external_flow.diagnostics.price_modify_sell_offset_sum /
+                  static_cast<double>(result.summary.external_price_modify_sell_orders);
 
     double peak_equity = 0.0;
     RunningMoments inventory_moments;
@@ -538,10 +663,25 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
                                          static_cast<double>(result.summary.market_maker_posted_quantity);
     result.summary.gross_spread_capture = final_state.spread_capture;
     result.summary.inventory_pnl = final_state.inventory_pnl_balancing;
+    result.summary.inventory_pnl_from_marks = final_state.inventory_pnl_from_marks;
+    result.summary.inventory_pnl_mark_error =
+        final_state.inventory_pnl_balancing - final_state.inventory_pnl_from_marks;
+    result.summary.gross_identity_error =
+        final_state.gross_pnl_before_fees -
+        (final_state.spread_capture + final_state.inventory_pnl_balancing);
+    result.summary.net_identity_error =
+        final_state.net_pnl_after_fees -
+        (final_state.spread_capture + final_state.inventory_pnl_balancing + final_state.fee_pnl);
     result.summary.fee_pnl = final_state.fee_pnl;
     result.summary.net_pnl_after_fees = final_state.net_pnl_after_fees;
     result.summary.inventory_variance = inventory_moments.variance();
     result.summary.final_inventory = final_state.inventory;
+    if (result.summary.quote_refreshes > 0) {
+        const auto refreshes = static_cast<double>(result.summary.quote_refreshes);
+        result.summary.average_bid_distance /= refreshes;
+        result.summary.average_ask_distance /= refreshes;
+        result.summary.average_abs_quote_asymmetry /= refreshes;
+    }
     result.summary.reconciliation_passed = accounting.reconciles(kRunReconciliationTolerance);
     accounting.assert_reconciles(kRunReconciliationTolerance);
 

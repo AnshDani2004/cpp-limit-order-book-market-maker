@@ -1,5 +1,6 @@
 field,value
 strategy,naive symmetric
+regime,all
 events,200000
 markout_horizon,50
 curve_sample_stride,100
@@ -7,7 +8,7 @@ naive_half_spread_ticks,5
 naive_full_spread_ticks,10
 quote_size,10
 refresh_cadence,10
-reconciliation_tolerance_ticks,0.01
+reconciliation_tolerance_ticks,0.00001
 external_limit_order_share,0.55
 external_market_order_share,0.25
 external_cancel_share,0.10

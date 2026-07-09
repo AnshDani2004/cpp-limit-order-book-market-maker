@@ -22,6 +22,8 @@ def parse_args():
     parser.add_argument("--events", type=int, default=200_000)
     parser.add_argument("--markout-horizon", type=int, default=50)
     parser.add_argument("--curve-sample-stride", type=int, default=100)
+    parser.add_argument("--regime", default="all", choices=["all", "low-volatility", "high-volatility", "trending"])
+    parser.add_argument("--seed", type=int)
     parser.add_argument("--build-dir", default="build/stage3_market_maker")
     parser.add_argument("--output-dir", default="benchmarks/results/stage3_naive_latest")
     parser.add_argument("--skip-build", action="store_true")
@@ -151,22 +153,24 @@ def main():
         configure_and_build(root, build_dir)
 
     executable = executable_path(root, build_dir)
-    run(
-        [
-            str(executable),
-            "--strategy",
-            args.strategy,
-            "--events",
-            str(args.events),
-            "--markout-horizon",
-            str(args.markout_horizon),
-            "--curve-sample-stride",
-            str(args.curve_sample_stride),
-            "--output-dir",
-            str(output_dir),
-        ],
-        root,
-    )
+    command = [
+        str(executable),
+        "--strategy",
+        args.strategy,
+        "--events",
+        str(args.events),
+        "--markout-horizon",
+        str(args.markout_horizon),
+        "--curve-sample-stride",
+        str(args.curve_sample_stride),
+        "--regime",
+        args.regime,
+        "--output-dir",
+        str(output_dir),
+    ]
+    if args.seed is not None:
+        command.extend(["--seed", str(args.seed)])
+    run(command, root)
 
     curve = read_curve(output_dir / "equity_curve.csv")
     write_line_plot(output_dir / "naive_inventory.svg", curve, "inventory", "Naive Inventory By Regime", "Inventory")
