@@ -4,7 +4,7 @@
 
 This repository is being built as a systems focused market microstructure project. Stage 1 implements a deterministic matching engine for one instrument with price time priority, partial fills across levels, cancellation, replacement, self trade prevention, and CSV replay.
 
-Stage 2 adds a reproducible benchmark harness for deterministic synthetic order flow. On the hardware listed below, the engine processed 1,000,000 synthetic order events at 3,834,790 events per second. This is a measured result, not a target.
+Stage 2 adds a reproducible benchmark harness for deterministic synthetic order flow. On the hardware listed below, the engine processed 1,000,000 synthetic order events at 3,723,012 events per second. This is a measured result, not a target.
 
 Profit and loss claims are not made yet. Those belong to Stage 3 after the market maker strategy code exists and can be reproduced.
 
@@ -28,11 +28,11 @@ If CMake is already on `PATH`, omit the `CMAKE=...` prefix.
 Measured output:
 
 ```text
-processed 1,000,000 synthetic order events at 3,834,790 events per second
+processed 1,000,000 synthetic order events at 3,723,012 events per second
 p50 latency 125 ns
-p95 latency 666 ns
+p95 latency 667 ns
 p99 latency 1208 ns
-max latency 2474709 ns
+max latency 2222959 ns
 rejects 0
 ```
 

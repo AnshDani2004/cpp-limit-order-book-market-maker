@@ -47,12 +47,13 @@ Warmup events are applied before measurement. For measured events, the benchmark
 ## Result
 
 ```text
-processed 1,000,000 synthetic order events at 3,834,790 events per second
-total measured time 0.2607705 seconds
+processed 1,000,000 synthetic order events at 3,723,012 events per second
+total measured time 0.26859975 seconds
 p50 latency 125 ns
-p95 latency 666 ns
+p95 latency 667 ns
 p99 latency 1208 ns
-max latency 2474709 ns
+max latency 2222959 ns
+max event index 512822
 trades 350,663
 rejects 0
 ```
@@ -60,6 +61,10 @@ rejects 0
 ![Latency CDF](../benchmarks/results/stage2_local/latency_cdf.svg)
 
 Raw result files are in [benchmarks/results/stage2_local](../benchmarks/results/stage2_local).
+
+## Tail Latency Check
+
+The max sample was event 512822, a buy limit order at price 99942 with quantity 36. The diagnostic replay shows that it rested in an existing level with depth 2, created no price level, recreated no price level, produced no trades, and did not perform an out of order insertion. The nearby samples were 292, 125, 83, 125, 125, 1416, 334, 541, 167, and 250 ns, so this run points to host scheduling or timer interruption rather than map allocation or an in level scan. The diagnostic record is in [tail_event.csv](../benchmarks/results/stage2_local/tail_event.csv).
 
 ## Hardware
 
