@@ -16,9 +16,15 @@ namespace lob {
 namespace {
 
 constexpr const char* kNaiveStrategyName = "naive symmetric";
+constexpr const char* kAvellanedaStoikovStrategyName = "avellaneda stoikov";
 constexpr const char* kMarketMakerOwner = "market_maker";
 constexpr OrderId kMarketMakerOrderIdStart = 1'000'000'000'000ULL;
 constexpr double kRunReconciliationTolerance = 1e-5;
+
+enum class StrategyKind {
+    NaiveSymmetric,
+    AvellanedaStoikov
+};
 
 enum class ExternalAction {
     Limit,
@@ -107,6 +113,14 @@ struct GeneratedExternalFlow {
 struct QuoteIds {
     std::optional<OrderId> bid{};
     std::optional<OrderId> ask{};
+};
+
+struct QuotePrices {
+    Price reference{};
+    Price proposed_bid{};
+    Price proposed_ask{};
+    Price bid{};
+    Price ask{};
 };
 
 class RunningMoments {
@@ -482,58 +496,6 @@ void submit_quote(MatchingEngine& engine,
     }
 }
 
-void refresh_naive_quotes(MatchingEngine& engine,
-                          PnlAccounting& accounting,
-                          MarketMakerSummary& summary,
-                          QuoteIds& quotes,
-                          const NaiveSymmetricConfig& strategy,
-                          const std::vector<double>& reference_path,
-                          std::size_t event_index,
-                          std::size_t markout_horizon,
-                          OrderId& next_market_maker_order_id,
-                          Timestamp& next_market_maker_timestamp) {
-    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++);
-    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++);
-
-    const auto reference = rounded_reference(reference_path[event_index]);
-    const auto proposed_bid = reference - strategy.half_spread_ticks;
-    const auto proposed_ask = reference + strategy.half_spread_ticks;
-    auto bid = clipped_bid_price(engine, proposed_bid);
-    auto ask = clipped_ask_price(engine, proposed_ask);
-    if (bid >= ask) {
-        bid = ask - 1;
-    }
-    if (bid <= 0 || ask <= 0) {
-        throw std::runtime_error("market maker quote price must be positive");
-    }
-    record_quote_diagnostics(summary, reference, proposed_bid, proposed_ask, bid, ask);
-
-    submit_quote(engine,
-                 accounting,
-                 summary,
-                 quotes,
-                 reference_path,
-                 event_index,
-                 markout_horizon,
-                 next_market_maker_order_id++,
-                 Side::Buy,
-                 bid,
-                 strategy.quote_size,
-                 next_market_maker_timestamp++);
-    submit_quote(engine,
-                 accounting,
-                 summary,
-                 quotes,
-                 reference_path,
-                 event_index,
-                 markout_horizon,
-                 next_market_maker_order_id++,
-                 Side::Sell,
-                 ask,
-                 strategy.quote_size,
-                 next_market_maker_timestamp++);
-}
-
 double drawdown_after_equity(double equity, double& peak_equity, double current_max_drawdown) {
     peak_equity = std::max(peak_equity, equity);
     return std::max(current_max_drawdown, peak_equity - equity);
@@ -544,20 +506,176 @@ bool should_store_curve_point(std::size_t event_index, std::size_t run_length, s
     return event_index == 0 || event_index + 1 == run_length || event_index % effective_stride == 0;
 }
 
-}  // namespace
+const char* strategy_name(StrategyKind kind) {
+    switch (kind) {
+        case StrategyKind::NaiveSymmetric:
+            return kNaiveStrategyName;
+        case StrategyKind::AvellanedaStoikov:
+            return kAvellanedaStoikovStrategyName;
+    }
+    return "unknown";
+}
 
-MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config) {
+void validate_common_config(const MarketMakerSimulationConfig& config) {
     if (config.regime.run_length == 0) {
         throw std::invalid_argument("run length must be positive");
     }
-    if (config.naive.half_spread_ticks <= 0) {
+    if (config.curve_sample_stride == 0) {
+        throw std::invalid_argument("curve sample stride must be positive");
+    }
+}
+
+void validate_naive_config(const NaiveSymmetricConfig& strategy) {
+    if (strategy.half_spread_ticks <= 0) {
         throw std::invalid_argument("naive half spread must be positive");
     }
-    if (config.naive.quote_size <= 0) {
+    if (strategy.quote_size <= 0) {
         throw std::invalid_argument("naive quote size must be positive");
     }
-    if (config.naive.refresh_cadence == 0) {
+    if (strategy.refresh_cadence == 0) {
         throw std::invalid_argument("naive refresh cadence must be positive");
+    }
+}
+
+void validate_avellaneda_stoikov_config(const AvellanedaStoikovConfig& strategy) {
+    if (strategy.risk_aversion <= 0.0) {
+        throw std::invalid_argument("risk aversion must be positive");
+    }
+    if (strategy.fill_decay <= 0.0) {
+        throw std::invalid_argument("fill decay must be positive");
+    }
+    if (strategy.quote_size <= 0) {
+        throw std::invalid_argument("avellaneda stoikov quote size must be positive");
+    }
+    if (strategy.refresh_cadence == 0) {
+        throw std::invalid_argument("avellaneda stoikov refresh cadence must be positive");
+    }
+}
+
+std::size_t refresh_cadence(const MarketMakerSimulationConfig& config, StrategyKind kind) {
+    return kind == StrategyKind::NaiveSymmetric ? config.naive.refresh_cadence
+                                                : config.avellaneda_stoikov.refresh_cadence;
+}
+
+QuotePrices make_naive_quote_prices(const MatchingEngine& engine,
+                                    const NaiveSymmetricConfig& strategy,
+                                    double reference_mid) {
+    QuotePrices prices;
+    prices.reference = rounded_reference(reference_mid);
+    prices.proposed_bid = prices.reference - strategy.half_spread_ticks;
+    prices.proposed_ask = prices.reference + strategy.half_spread_ticks;
+    prices.bid = clipped_bid_price(engine, prices.proposed_bid);
+    prices.ask = clipped_ask_price(engine, prices.proposed_ask);
+    if (prices.bid >= prices.ask) {
+        prices.bid = prices.ask - 1;
+    }
+    return prices;
+}
+
+QuotePrices make_avellaneda_stoikov_quote_prices(const MatchingEngine& engine,
+                                                 const AvellanedaStoikovConfig& strategy,
+                                                 const RegimeConfig& regime,
+                                                 double reference_mid,
+                                                 Quantity inventory,
+                                                 std::size_t event_index) {
+    const auto time_remaining =
+        static_cast<double>(regime.run_length - event_index) / static_cast<double>(regime.run_length);
+    const auto variance = regime.volatility_per_event * regime.volatility_per_event;
+    const auto reservation_price =
+        reference_mid - static_cast<double>(inventory) * strategy.risk_aversion * variance * time_remaining;
+    const auto optimal_spread =
+        strategy.risk_aversion * variance * time_remaining +
+        (2.0 / strategy.risk_aversion) * std::log(1.0 + strategy.risk_aversion / strategy.fill_decay);
+    const auto half_spread = std::max(0.5, optimal_spread / 2.0);
+
+    QuotePrices prices;
+    prices.reference = rounded_reference(reference_mid);
+    prices.proposed_bid = static_cast<Price>(std::floor(reservation_price - half_spread));
+    prices.proposed_ask = static_cast<Price>(std::ceil(reservation_price + half_spread));
+    if (prices.proposed_bid >= prices.proposed_ask) {
+        prices.proposed_ask = prices.proposed_bid + 1;
+    }
+    prices.bid = clipped_bid_price(engine, prices.proposed_bid);
+    prices.ask = clipped_ask_price(engine, prices.proposed_ask);
+    if (prices.bid >= prices.ask) {
+        prices.bid = prices.ask - 1;
+    }
+    return prices;
+}
+
+QuotePrices make_quote_prices(const MatchingEngine& engine,
+                              const MarketMakerSimulationConfig& config,
+                              StrategyKind kind,
+                              double reference_mid,
+                              Quantity inventory,
+                              std::size_t event_index) {
+    if (kind == StrategyKind::NaiveSymmetric) {
+        return make_naive_quote_prices(engine, config.naive, reference_mid);
+    }
+    return make_avellaneda_stoikov_quote_prices(engine,
+                                                config.avellaneda_stoikov,
+                                                config.regime,
+                                                reference_mid,
+                                                inventory,
+                                                event_index);
+}
+
+Quantity quote_size(const MarketMakerSimulationConfig& config, StrategyKind kind) {
+    return kind == StrategyKind::NaiveSymmetric ? config.naive.quote_size : config.avellaneda_stoikov.quote_size;
+}
+
+void refresh_quotes(MatchingEngine& engine,
+                    PnlAccounting& accounting,
+                    MarketMakerSummary& summary,
+                    QuoteIds& quotes,
+                    const MarketMakerSimulationConfig& config,
+                    StrategyKind kind,
+                    const std::vector<double>& reference_path,
+                    std::size_t event_index,
+                    OrderId& next_market_maker_order_id,
+                    Timestamp& next_market_maker_timestamp) {
+    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++);
+    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++);
+
+    const auto inventory = accounting.snapshot().inventory;
+    const auto prices = make_quote_prices(engine, config, kind, reference_path[event_index], inventory, event_index);
+    if (prices.bid <= 0 || prices.ask <= 0) {
+        throw std::runtime_error("market maker quote price must be positive");
+    }
+    record_quote_diagnostics(summary, prices.reference, prices.proposed_bid, prices.proposed_ask, prices.bid, prices.ask);
+
+    submit_quote(engine,
+                 accounting,
+                 summary,
+                 quotes,
+                 reference_path,
+                 event_index,
+                 config.markout_horizon,
+                 next_market_maker_order_id++,
+                 Side::Buy,
+                 prices.bid,
+                 quote_size(config, kind),
+                 next_market_maker_timestamp++);
+    submit_quote(engine,
+                 accounting,
+                 summary,
+                 quotes,
+                 reference_path,
+                 event_index,
+                 config.markout_horizon,
+                 next_market_maker_order_id++,
+                 Side::Sell,
+                 prices.ask,
+                 quote_size(config, kind),
+                 next_market_maker_timestamp++);
+}
+
+MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, StrategyKind kind) {
+    validate_common_config(config);
+    if (kind == StrategyKind::NaiveSymmetric) {
+        validate_naive_config(config.naive);
+    } else {
+        validate_avellaneda_stoikov_config(config.avellaneda_stoikov);
     }
 
     const auto reference_path = generate_reference_path(config.regime);
@@ -565,13 +683,13 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
     const auto& external_events = external_flow.events;
 
     MatchingEngine engine;
-    PnlAccounting accounting(config.regime.name, kNaiveStrategyName, reference_path.front());
+    PnlAccounting accounting(config.regime.name, strategy_name(kind), reference_path.front());
     QuoteIds quotes;
     OrderId next_market_maker_order_id = kMarketMakerOrderIdStart;
     Timestamp next_market_maker_timestamp = 1'000'000'000;
 
     MarketMakerRunResult result;
-    result.summary.strategy_name = kNaiveStrategyName;
+    result.summary.strategy_name = strategy_name(kind);
     result.summary.regime_name = config.regime.name;
     result.summary.seed = config.regime.seed;
     result.summary.events = config.regime.run_length;
@@ -614,17 +732,17 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
     RunningMoments inventory_moments;
 
     for (std::size_t event_index = 0; event_index < external_events.size(); ++event_index) {
-        if (event_index % config.naive.refresh_cadence == 0) {
-            refresh_naive_quotes(engine,
-                                 accounting,
-                                 result.summary,
-                                 quotes,
-                                 config.naive,
-                                 reference_path,
-                                 event_index,
-                                 config.markout_horizon,
-                                 next_market_maker_order_id,
-                                 next_market_maker_timestamp);
+        if (event_index % refresh_cadence(config, kind) == 0) {
+            refresh_quotes(engine,
+                           accounting,
+                           result.summary,
+                           quotes,
+                           config,
+                           kind,
+                           reference_path,
+                           event_index,
+                           next_market_maker_order_id,
+                           next_market_maker_timestamp);
         }
 
         const auto external_result = apply_external_event(engine, external_events[event_index]);
@@ -646,7 +764,7 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
         inventory_moments.add(static_cast<double>(state.inventory));
 
         if (should_store_curve_point(event_index, config.regime.run_length, config.curve_sample_stride)) {
-            result.curve.push_back(MarketMakerCurvePoint{kNaiveStrategyName,
+            result.curve.push_back(MarketMakerCurvePoint{strategy_name(kind),
                                                          config.regime.name,
                                                          event_index,
                                                          state.reference_mid,
@@ -686,6 +804,16 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
     accounting.assert_reconciles(kRunReconciliationTolerance);
 
     return result;
+}
+
+}  // namespace
+
+MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config) {
+    return run_strategy(config, StrategyKind::NaiveSymmetric);
+}
+
+MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config) {
+    return run_strategy(config, StrategyKind::AvellanedaStoikov);
 }
 
 }  // namespace lob

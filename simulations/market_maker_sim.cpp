@@ -14,6 +14,7 @@
 namespace {
 
 struct Args {
+    std::string strategy{"naive"};
     std::size_t events{200'000};
     std::size_t markout_horizon{50};
     std::size_t curve_sample_stride{100};
@@ -44,9 +45,9 @@ Args parse_args(int argc, char** argv) {
         };
 
         if (argument == "--strategy") {
-            const auto strategy = require_value();
-            if (strategy != "naive") {
-                throw std::runtime_error("only --strategy naive is implemented in this checkpoint");
+            args.strategy = require_value();
+            if (args.strategy != "naive" && args.strategy != "avellaneda-stoikov") {
+                throw std::runtime_error("unknown strategy: " + args.strategy);
             }
         } else if (argument == "--events") {
             args.events = static_cast<std::size_t>(parse_u64(require_value()));
@@ -109,7 +110,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     }
 
     output << "field,value\n";
-    output << "strategy,naive symmetric\n";
+    output << "strategy," << (args.strategy == "naive" ? "naive symmetric" : "avellaneda stoikov") << '\n';
     output << "regime," << args.regime << '\n';
     if (args.seed_override.has_value()) {
         output << "seed_override," << *args.seed_override << '\n';
@@ -117,10 +118,17 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     output << "events," << args.events << '\n';
     output << "markout_horizon," << args.markout_horizon << '\n';
     output << "curve_sample_stride," << args.curve_sample_stride << '\n';
-    output << "naive_half_spread_ticks,5\n";
-    output << "naive_full_spread_ticks,10\n";
     output << "quote_size,10\n";
     output << "refresh_cadence,10\n";
+    if (args.strategy == "naive") {
+        output << "naive_half_spread_ticks,5\n";
+        output << "naive_full_spread_ticks,10\n";
+    } else {
+        output << "risk_aversion,0.002\n";
+        output << "fill_decay,0.25\n";
+        output << "volatility_source,regime volatility per event\n";
+        output << "time_horizon,full regime run\n";
+    }
     output << "reconciliation_tolerance_ticks,0.00001\n";
     output << "external_limit_order_share,0.55\n";
     output << "external_market_order_share,0.25\n";
@@ -247,7 +255,11 @@ int main(int argc, char** argv) {
             config.regime = regime;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
-            results.push_back(lob::run_naive_symmetric_strategy(config));
+            if (args.strategy == "naive") {
+                results.push_back(lob::run_naive_symmetric_strategy(config));
+            } else {
+                results.push_back(lob::run_avellaneda_stoikov_strategy(config));
+            }
         }
 
         write_run_config(args.output_dir / "run_config.csv", args);

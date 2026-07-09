@@ -16,9 +16,17 @@ struct NaiveSymmetricConfig {
     std::size_t refresh_cadence{10};
 };
 
+struct AvellanedaStoikovConfig {
+    double risk_aversion{0.002};
+    double fill_decay{0.25};
+    Quantity quote_size{10};
+    std::size_t refresh_cadence{10};
+};
+
 struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
     NaiveSymmetricConfig naive{};
+    AvellanedaStoikovConfig avellaneda_stoikov{};
     std::size_t markout_horizon{50};
     std::size_t curve_sample_stride{100};
 };
@@ -95,5 +103,6 @@ struct MarketMakerRunResult {
 };
 
 MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config);
+MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config);
 
 }  // namespace lob

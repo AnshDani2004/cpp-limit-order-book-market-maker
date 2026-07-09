@@ -18,7 +18,7 @@ COLORS = {
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--strategy", default="naive", choices=["naive"])
+    parser.add_argument("--strategy", default="naive", choices=["naive", "avellaneda-stoikov"])
     parser.add_argument("--events", type=int, default=200_000)
     parser.add_argument("--markout-horizon", type=int, default=50)
     parser.add_argument("--curve-sample-stride", type=int, default=100)
@@ -28,6 +28,18 @@ def parse_args():
     parser.add_argument("--output-dir", default="benchmarks/results/stage3_naive_latest")
     parser.add_argument("--skip-build", action="store_true")
     return parser.parse_args()
+
+
+def strategy_label(strategy):
+    if strategy == "naive":
+        return "Naive"
+    return "Avellaneda Stoikov"
+
+
+def strategy_file_prefix(strategy):
+    if strategy == "naive":
+        return "naive"
+    return "avellaneda_stoikov"
 
 
 def run(command, cwd):
@@ -173,18 +185,20 @@ def main():
     run(command, root)
 
     curve = read_curve(output_dir / "equity_curve.csv")
-    write_line_plot(output_dir / "naive_inventory.svg", curve, "inventory", "Naive Inventory By Regime", "Inventory")
+    label = strategy_label(args.strategy)
+    prefix = strategy_file_prefix(args.strategy)
+    write_line_plot(output_dir / f"{prefix}_inventory.svg", curve, "inventory", f"{label} Inventory By Regime", "Inventory")
     write_line_plot(
-        output_dir / "naive_pnl.svg",
+        output_dir / f"{prefix}_pnl.svg",
         curve,
         "net_pnl_after_fees",
-        "Naive Cumulative PnL After Fees By Regime",
+        f"{label} Cumulative PnL After Fees By Regime",
         "Net PnL after fees",
     )
 
     print((output_dir / "summary.csv").resolve())
-    print((output_dir / "naive_inventory.svg").resolve())
-    print((output_dir / "naive_pnl.svg").resolve())
+    print((output_dir / f"{prefix}_inventory.svg").resolve())
+    print((output_dir / f"{prefix}_pnl.svg").resolve())
 
 
 if __name__ == "__main__":
