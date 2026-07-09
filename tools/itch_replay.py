@@ -388,7 +388,6 @@ def translate_messages(messages, symbol):
                     source_order_ref=message.order_ref,
                 ),
             )
-            close_lifetime(result, active_order, message.timestamp, "replace")
             active.pop(message.order_ref, None)
             active[message.new_order_ref] = ActiveOrder(
                 source_order_ref=message.new_order_ref,
@@ -396,7 +395,7 @@ def translate_messages(messages, symbol):
                 side=active_order.side,
                 remaining=message.shares,
                 price=message.price,
-                first_timestamp=message.timestamp,
+                first_timestamp=active_order.first_timestamp,
             )
             continue
 
@@ -407,7 +406,7 @@ def translate_messages(messages, symbol):
 
 def write_order_events(path, events):
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["timestamp", "action", "order_id", "side", "order_type", "price", "quantity", "owner_id"])
         for event in events:
             writer.writerow(
@@ -426,7 +425,7 @@ def write_order_events(path, events):
 
 def write_translation_detail(path, events):
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "timestamp",
@@ -464,7 +463,7 @@ def write_event_mix(path, result):
     total = sum(result.engine_counts.values())
     assumptions = {"limit": 55.0, "market": 25.0, "cancel": 10.0, "modify": 10.0}
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["event_type", "observed_count", "observed_percent", "stage3_synthetic_percent"])
         for event_type in ["limit", "market", "cancel", "modify"]:
             count = result.engine_counts[event_type]
@@ -474,7 +473,7 @@ def write_event_mix(path, result):
 def write_source_message_mix(path, result):
     total = sum(result.source_counts.values())
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["source_message_type", "selected_symbol_count", "selected_symbol_percent"])
         for message_type in ["A", "F", "E", "C", "X", "D", "U"]:
             count = result.source_counts.get(message_type, 0)
@@ -492,7 +491,7 @@ def write_size_distribution(path, values):
     ]
     total = len(values)
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["bucket", "count", "percent"])
         for name, low, high in buckets:
             count = sum(1 for value in values if low <= value <= high)
@@ -517,7 +516,7 @@ def write_lifetime_distribution(path, lifetimes):
     for lifetime in lifetimes:
         add_count(reasons, lifetime.reason)
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["metric", "value"])
         writer.writerow(["closed_order_count", len(durations)])
         writer.writerow(["p50_lifetime_ns", f"{quantile(durations, 0.50):.12g}"])
@@ -530,7 +529,7 @@ def write_lifetime_distribution(path, lifetimes):
 def write_cancel_to_fill(path, result):
     ratio = 0.0 if result.executed_quantity == 0 else result.removed_quantity / result.executed_quantity
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["metric", "value"])
         writer.writerow(["executed_quantity", result.executed_quantity])
         writer.writerow(["removed_quantity", result.removed_quantity])
@@ -551,7 +550,7 @@ def write_message_support(path, result):
         "B": ("no", "ignored", "broken trade correction is not replayed"),
     }
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["message_type", "seen_count", "supported", "translated_event_type", "reason"])
         for message_type in sorted(result.message_counts):
             supported, translated, reason = support.get(
@@ -571,7 +570,7 @@ def read_trade_count(path):
 def write_summary(path, args, compressed_size, decompressed_size, result, trade_count):
     total_events = sum(result.engine_counts.values())
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["field", "value"])
         writer.writerow(["data_option", "nasdaq_totalview_itch_public_sample"])
         writer.writerow(["source_url", args.url])

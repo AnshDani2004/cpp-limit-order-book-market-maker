@@ -32,7 +32,7 @@ Administrative messages are ignored because they do not change the displayed boo
 
 The most important translation limitation is execution handling. ITCH execution messages identify the resting order that was executed, while the existing CSV schema has no direct action for reducing a named resting order because of an external execution. The translator therefore emits an opposite side market order with the executed quantity. In this QQQ run, `57` translated market orders produced `57` replay trades.
 
-ITCH replace messages assign a new order reference number. The matching engine modify operation keeps the same order ID. The translator keeps the engine order ID stable and maps later ITCH messages for the new reference back to that engine order ID. This preserves the economic effect of changing displayed price and quantity while staying inside the existing engine schema.
+ITCH replace messages assign a new order reference number. The matching engine modify operation keeps the same order ID. The translator keeps the engine order ID stable and maps later ITCH messages for the new reference back to that engine order ID. Lifetime tracking follows that stable engine order ID across replace messages, so the reported lifetime is the full translated order lifetime rather than the shorter reference number segment lifetime.
 
 ITCH prices are kept as integer price units with four implied decimal places. This matches the engine design choice that decimal parsing happens outside the matching engine.
 
@@ -95,16 +95,15 @@ The Stage 3 generator used a uniform size distribution from `1` to `100`. That i
 executed quantity 11941
 removed quantity 7968210
 removed to executed quantity ratio 667.29838372
-closed order count 6395
-p50 lifetime ns 2596571344
-p95 lifetime ns 91876631835
+closed order count 5875
+p50 lifetime ns 2906518162
+p95 lifetime ns 106025741539
 max lifetime ns 3152000868845
 delete closures 5864
 execution closures 11
-replace closures 520
 ```
 
-Removed quantity includes partial cancels, deletes, and the remaining displayed quantity removed by replace messages. The high removed to executed quantity ratio is another sign that this bounded prefix is dominated by order placement and removal rather than visible executions.
+Removed quantity includes partial cancels, deletes, and the remaining displayed quantity removed by replace messages. Replace messages do not close lifetime records because the translated engine order ID remains alive across the replace. Orders still open at the end of the captured window are excluded from the percentile calculation as right censored observations. Including their partial observed lifetimes as complete lifetimes would bias the percentiles short. The high removed to executed quantity ratio is another sign that this bounded prefix is dominated by order placement and removal rather than visible executions.
 
 ## Findings
 

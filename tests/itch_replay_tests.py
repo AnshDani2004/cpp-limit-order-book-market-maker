@@ -109,7 +109,9 @@ class ItchReplayTests(unittest.TestCase):
         self.assertEqual({"limit": 1, "market": 1, "cancel": 1, "modify": 2}, result.engine_counts)
         self.assertEqual(40, result.executed_quantity)
         self.assertEqual(140, result.removed_quantity)
-        self.assertEqual(2, len(result.lifetimes))
+        self.assertEqual(1, len(result.lifetimes))
+        self.assertEqual("delete", result.lifetimes[0].reason)
+        self.assertEqual(40, result.lifetimes[0].nanoseconds)
 
     def test_translation_filters_other_symbols(self):
         messages = [
