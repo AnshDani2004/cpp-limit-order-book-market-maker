@@ -6,7 +6,7 @@ This repository is being built as a systems focused market microstructure projec
 
 Stage 2 adds a reproducible benchmark harness for deterministic synthetic order flow. On the hardware listed below, the engine processed 1,000,000 synthetic order events at 3,723,012 events per second. This is a measured result, not a target.
 
-Profit and loss claims are not made yet. Those belong to Stage 3 after the market maker strategy code exists and can be reproduced.
+Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. The results are regime dependent: inventory aware quoting materially reduced inventory risk in the high volatility run, helped only modestly in the low volatility run, and did not reduce inventory in the trending run because the full-run time horizon decayed before the late inventory buildup. See [docs/stage3_results.md](docs/stage3_results.md).
 
 ## What Stage 1 Proves
 
@@ -61,6 +61,26 @@ modify 100,280 events, 10.0280 percent
 
 See [docs/performance.md](docs/performance.md) for the benchmark method, memory notes, and limitations.
 
+## Stage 3 Market Maker Result
+
+Measured command:
+
+```bash
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 simulations/run_market_maker.py --strategy naive --events 200000 --markout-horizon 50 --curve-sample-stride 100 --output-dir benchmarks/results/stage3_naive_checkpoint --build-dir build/stage3_market_maker
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 simulations/run_market_maker.py --strategy avellaneda-stoikov --events 200000 --markout-horizon 50 --curve-sample-stride 100 --output-dir benchmarks/results/stage3_avellaneda_stoikov_checkpoint --build-dir build/stage3_market_maker
+python3 simulations/compare_market_makers.py --naive-dir benchmarks/results/stage3_naive_checkpoint --as-dir benchmarks/results/stage3_avellaneda_stoikov_checkpoint --output-dir benchmarks/results/stage3_comparison
+```
+
+Key inventory results:
+
+```text
+low volatility: final inventory 60352 naive, 53714 Avellaneda Stoikov
+high volatility: final inventory 10270 naive, 1178 Avellaneda Stoikov
+trending: final inventory 22260 naive, 27169 Avellaneda Stoikov
+```
+
+The full attribution table is checked in at `benchmarks/results/stage3_comparison/metrics_table.csv`. Net PnL is not reported as a standalone success metric because this toy environment permits large unhedged inventory exposure.
+
 ## Build And Test
 
 ```bash
@@ -104,4 +124,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1 and Stage 2 are complete once local tests pass and CI is green on `main`. Stage 3 market making results are intentionally absent until they are implemented and measured.
+Stage 1, Stage 2, and the first Stage 3 comparison are complete once local tests pass and CI is green on `main`.

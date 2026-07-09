@@ -131,7 +131,10 @@ TEST_CASE("naive symmetric strategy is deterministic for a fixed seed") {
         CHECK(first.curve[index].strategy_name == second.curve[index].strategy_name);
         CHECK(first.curve[index].regime_name == second.curve[index].regime_name);
         CHECK(first.curve[index].event_index == second.curve[index].event_index);
+        CHECK(first.curve[index].time_remaining == Catch::Approx(second.curve[index].time_remaining));
         CHECK(first.curve[index].reference_mid == Catch::Approx(second.curve[index].reference_mid));
+        CHECK(first.curve[index].reservation_price == Catch::Approx(second.curve[index].reservation_price));
+        CHECK(first.curve[index].reservation_skew == Catch::Approx(second.curve[index].reservation_skew));
         CHECK(first.curve[index].cash == Catch::Approx(second.curve[index].cash));
         CHECK(first.curve[index].inventory == second.curve[index].inventory);
         CHECK(first.curve[index].net_pnl_after_fees == Catch::Approx(second.curve[index].net_pnl_after_fees));
@@ -152,7 +155,10 @@ TEST_CASE("avellaneda stoikov strategy is deterministic for a fixed seed") {
         CHECK(first.curve[index].strategy_name == second.curve[index].strategy_name);
         CHECK(first.curve[index].regime_name == second.curve[index].regime_name);
         CHECK(first.curve[index].event_index == second.curve[index].event_index);
+        CHECK(first.curve[index].time_remaining == Catch::Approx(second.curve[index].time_remaining));
         CHECK(first.curve[index].reference_mid == Catch::Approx(second.curve[index].reference_mid));
+        CHECK(first.curve[index].reservation_price == Catch::Approx(second.curve[index].reservation_price));
+        CHECK(first.curve[index].reservation_skew == Catch::Approx(second.curve[index].reservation_skew));
         CHECK(first.curve[index].cash == Catch::Approx(second.curve[index].cash));
         CHECK(first.curve[index].inventory == second.curve[index].inventory);
         CHECK(first.curve[index].net_pnl_after_fees == Catch::Approx(second.curve[index].net_pnl_after_fees));

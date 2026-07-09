@@ -91,7 +91,10 @@ struct MarketMakerCurvePoint {
     std::string strategy_name{};
     std::string regime_name{};
     std::size_t event_index{};
+    double time_remaining{};
     double reference_mid{};
+    double reservation_price{};
+    double reservation_skew{};
     double cash{};
     Quantity inventory{};
     double net_pnl_after_fees{};

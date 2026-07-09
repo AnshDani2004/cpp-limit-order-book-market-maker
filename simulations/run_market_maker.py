@@ -68,6 +68,11 @@ def read_curve(path):
                     "strategy": row["strategy"],
                     "regime": row["regime"],
                     "event_index": int(row["event_index"]),
+                    "time_remaining": float(row["time_remaining"]),
+                    "reference_mid": float(row["reference_mid"]),
+                    "reservation_price": float(row["reservation_price"]),
+                    "reservation_skew": float(row["reservation_skew"]),
+                    "cash": float(row["cash"]),
                     "inventory": float(row["inventory"]),
                     "net_pnl_after_fees": float(row["net_pnl_after_fees"]),
                 }
@@ -151,6 +156,102 @@ def write_line_plot(path, rows, metric, title, y_label):
     path.write_text("\n".join(lines) + "\n")
 
 
+def write_trending_skew_csv(path, rows):
+    trending = [row for row in rows if row["regime"] == "trending"]
+    if not trending:
+        return
+
+    with path.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(
+            [
+                "event_index",
+                "time_remaining",
+                "reference_mid",
+                "inventory",
+                "reservation_price",
+                "reservation_skew",
+                "net_pnl_after_fees",
+            ]
+        )
+        for row in trending:
+            writer.writerow(
+                [
+                    row["event_index"],
+                    row["time_remaining"],
+                    row["reference_mid"],
+                    row["inventory"],
+                    row["reservation_price"],
+                    row["reservation_skew"],
+                    row["net_pnl_after_fees"],
+                ]
+            )
+
+
+def write_trending_skew_plot(path, rows):
+    trending = [row for row in rows if row["regime"] == "trending"]
+    if not trending:
+        return
+
+    width = 940
+    height = 720
+    left = 85
+    right = 40
+    top = 46
+    bottom = 58
+    gap = 34
+    panel_height = (height - top - bottom - 2 * gap) / 3.0
+    plot_width = width - left - right
+    max_event = max(row["event_index"] for row in trending)
+
+    panels = [
+        ("inventory", "Inventory", "#2563eb"),
+        ("reservation_skew", "Reservation skew ticks", "#dc2626"),
+        ("reference_mid", "Reference mid", "#059669"),
+    ]
+
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<rect width="100%" height="100%" fill="#ffffff"/>',
+        f'<text x="{width / 2}" y="26" text-anchor="middle" font-family="Arial" font-size="18" fill="#111827">Avellaneda Stoikov Trending Inventory And Reservation Skew</text>',
+    ]
+
+    for panel_index, (metric, label, color) in enumerate(panels):
+        panel_top = top + panel_index * (panel_height + gap)
+        values = [row[metric] for row in trending]
+        low = min(values)
+        high = max(values)
+        padding = max(1.0, (high - low) * 0.08)
+        low -= padding
+        high += padding
+
+        lines.append(f'<line x1="{left}" y1="{panel_top + panel_height:.2f}" x2="{left + plot_width}" y2="{panel_top + panel_height:.2f}" stroke="#111827" stroke-width="1"/>')
+        lines.append(f'<line x1="{left}" y1="{panel_top:.2f}" x2="{left}" y2="{panel_top + panel_height:.2f}" stroke="#111827" stroke-width="1"/>')
+        lines.append(f'<text x="{left - 12}" y="{panel_top + 14:.2f}" text-anchor="end" font-family="Arial" font-size="12" fill="#111827">{svg_escape(label)}</text>')
+
+        for fraction in [0.0, 0.5, 1.0]:
+            y = panel_top + (1.0 - fraction) * panel_height
+            value = low + (high - low) * fraction
+            lines.append(f'<line x1="{left}" y1="{y:.2f}" x2="{left + plot_width}" y2="{y:.2f}" stroke="#e5e7eb" stroke-width="1"/>')
+            lines.append(f'<text x="{left - 12}" y="{y + 4:.2f}" text-anchor="end" font-family="Arial" font-size="11" fill="#374151">{value:.0f}</text>')
+
+        points = []
+        for row in trending:
+            x = scale(row["event_index"], 0, max_event, left, left + plot_width)
+            y = scale(row[metric], low, high, panel_top + panel_height, panel_top)
+            points.append(f"{x:.2f},{y:.2f}")
+        lines.append(f'<polyline fill="none" stroke="{color}" stroke-width="2" points="{svg_escape(" ".join(points))}"/>')
+
+    x_axis_y = height - 24
+    for fraction in [0.0, 0.25, 0.5, 0.75, 1.0]:
+        x = left + fraction * plot_width
+        event_value = max_event * fraction
+        lines.append(f'<text x="{x:.2f}" y="{x_axis_y}" text-anchor="middle" font-family="Arial" font-size="12" fill="#374151">{event_value:.0f}</text>')
+    lines.append(f'<text x="{left + plot_width / 2}" y="{height - 4}" text-anchor="middle" font-family="Arial" font-size="14" fill="#111827">Event index</text>')
+    lines.append("</svg>")
+    path.write_text("\n".join(lines) + "\n")
+
+
 def main():
     args = parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -195,6 +296,9 @@ def main():
         f"{label} Cumulative PnL After Fees By Regime",
         "Net PnL after fees",
     )
+    if args.strategy == "avellaneda-stoikov":
+        write_trending_skew_csv(output_dir / "avellaneda_stoikov_trending_skew.csv", curve)
+        write_trending_skew_plot(output_dir / "avellaneda_stoikov_trending_skew.svg", curve)
 
     print((output_dir / "summary.csv").resolve())
     print((output_dir / f"{prefix}_inventory.svg").resolve())

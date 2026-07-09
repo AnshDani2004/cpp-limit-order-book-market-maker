@@ -624,6 +624,22 @@ Quantity quote_size(const MarketMakerSimulationConfig& config, StrategyKind kind
     return kind == StrategyKind::NaiveSymmetric ? config.naive.quote_size : config.avellaneda_stoikov.quote_size;
 }
 
+double time_remaining_after_event(const RegimeConfig& regime, std::size_t event_index) {
+    const auto next_index = std::min(event_index + 1, regime.run_length);
+    return static_cast<double>(regime.run_length - next_index) / static_cast<double>(regime.run_length);
+}
+
+double reservation_skew(const MarketMakerSimulationConfig& config,
+                        StrategyKind kind,
+                        Quantity inventory,
+                        double time_remaining) {
+    if (kind == StrategyKind::NaiveSymmetric) {
+        return 0.0;
+    }
+    const auto variance = config.regime.volatility_per_event * config.regime.volatility_per_event;
+    return static_cast<double>(inventory) * config.avellaneda_stoikov.risk_aversion * variance * time_remaining;
+}
+
 void refresh_quotes(MatchingEngine& engine,
                     PnlAccounting& accounting,
                     MarketMakerSummary& summary,
@@ -764,10 +780,15 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
         inventory_moments.add(static_cast<double>(state.inventory));
 
         if (should_store_curve_point(event_index, config.regime.run_length, config.curve_sample_stride)) {
+            const auto time_remaining = time_remaining_after_event(config.regime, event_index);
+            const auto skew = reservation_skew(config, kind, state.inventory, time_remaining);
             result.curve.push_back(MarketMakerCurvePoint{strategy_name(kind),
                                                          config.regime.name,
                                                          event_index,
+                                                         time_remaining,
                                                          state.reference_mid,
+                                                         state.reference_mid - skew,
+                                                         skew,
                                                          state.cash,
                                                          state.inventory,
                                                          state.net_pnl_after_fees});

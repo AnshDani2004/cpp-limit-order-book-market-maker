@@ -228,13 +228,17 @@ void write_curve(const std::filesystem::path& path, const std::vector<lob::Marke
     }
 
     output << std::setprecision(12);
-    output << "strategy,regime,event_index,reference_mid,cash,inventory,net_pnl_after_fees\n";
+    output << "strategy,regime,event_index,time_remaining,reference_mid,reservation_price,"
+           << "reservation_skew,cash,inventory,net_pnl_after_fees\n";
     for (const auto& result : results) {
         for (const auto& point : result.curve) {
             output << point.strategy_name << ','
                    << point.regime_name << ','
                    << point.event_index << ','
+                   << point.time_remaining << ','
                    << point.reference_mid << ','
+                   << point.reservation_price << ','
+                   << point.reservation_skew << ','
                    << point.cash << ','
                    << point.inventory << ','
                    << point.net_pnl_after_fees << '\n';
