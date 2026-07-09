@@ -30,7 +30,7 @@ std::string reconciliation_message(const std::string& regime_name,
             << " tolerance=" << tolerance
             << " gross_identity_error=" << gross_identity_error
             << " net_identity_error=" << net_identity_error
-            << " inventory_mark_error=" << inventory_mark_error;
+            << " inventory_pnl_mark_error=" << inventory_mark_error;
     return message.str();
 }
 
