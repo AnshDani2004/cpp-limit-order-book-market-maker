@@ -96,12 +96,54 @@ TEST_CASE("naive symmetric strategy reconciles in every Stage 3 regime") {
     }
 }
 
+TEST_CASE("avellaneda stoikov strategy reconciles in every Stage 3 regime") {
+    const auto regimes = lob::default_regimes(2000);
+
+    for (const auto& regime : regimes) {
+        const auto result = lob::run_avellaneda_stoikov_strategy(make_config(regime));
+
+        CHECK(result.summary.strategy_name == "avellaneda stoikov");
+        CHECK(result.summary.regime_name == regime.name);
+        CHECK(result.summary.reconciliation_passed);
+        CHECK(result.summary.market_maker_posted_quantity > 0);
+        CHECK(result.summary.market_maker_filled_quantity > 0);
+        CHECK(result.summary.market_maker_buy_quantity + result.summary.market_maker_sell_quantity ==
+              result.summary.market_maker_filled_quantity);
+        CHECK(result.summary.fill_rate > 0.0);
+        CHECK(result.summary.maker_fills > 0);
+        CHECK(result.summary.taker_fills == 0);
+        CHECK(result.summary.quote_refreshes > 0);
+        CHECK_FALSE(result.curve.empty());
+    }
+}
+
 TEST_CASE("naive symmetric strategy is deterministic for a fixed seed") {
     auto regime = lob::default_regimes(1500).front();
     auto config = make_config(regime);
 
     const auto first = lob::run_naive_symmetric_strategy(config);
     const auto second = lob::run_naive_symmetric_strategy(config);
+
+    check_matching_summary(first.summary, second.summary);
+    REQUIRE(first.curve.size() == second.curve.size());
+
+    for (std::size_t index = 0; index < first.curve.size(); ++index) {
+        CHECK(first.curve[index].strategy_name == second.curve[index].strategy_name);
+        CHECK(first.curve[index].regime_name == second.curve[index].regime_name);
+        CHECK(first.curve[index].event_index == second.curve[index].event_index);
+        CHECK(first.curve[index].reference_mid == Catch::Approx(second.curve[index].reference_mid));
+        CHECK(first.curve[index].cash == Catch::Approx(second.curve[index].cash));
+        CHECK(first.curve[index].inventory == second.curve[index].inventory);
+        CHECK(first.curve[index].net_pnl_after_fees == Catch::Approx(second.curve[index].net_pnl_after_fees));
+    }
+}
+
+TEST_CASE("avellaneda stoikov strategy is deterministic for a fixed seed") {
+    auto regime = lob::default_regimes(1500).front();
+    auto config = make_config(regime);
+
+    const auto first = lob::run_avellaneda_stoikov_strategy(config);
+    const auto second = lob::run_avellaneda_stoikov_strategy(config);
 
     check_matching_summary(first.summary, second.summary);
     REQUIRE(first.curve.size() == second.curve.size());

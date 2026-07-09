@@ -82,6 +82,8 @@ The naive strategy computes symmetric bid and ask proposals around the rounded r
 
 The inventory aware strategy quotes around the Avellaneda and Stoikov reservation price and uses the optimal spread formula above. It must state risk aversion, fill decay, volatility estimate, time horizon, quote size, and refresh cadence before reporting any result.
 
+The first Avellaneda Stoikov implementation uses risk aversion `0.002`, fill decay `0.25`, quote size 10 per side, and refresh cadence 10 events. It uses the regime volatility from the table above as its volatility input and the full regime run as the time horizon. These parameters are fixed before running the checkpoint results.
+
 For the first implementation, the strategy receives the regime volatility from the table above as an ex ante model input. It does not estimate volatility from a rolling window. This is an intentional simplifying assumption and must be named beside the results.
 
 The time horizon is the full regime run. With the default 200000 event run, `time_remaining` is computed before event `event_index` as:
