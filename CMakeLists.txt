@@ -11,6 +11,7 @@ option(LOB_ENABLE_WARNINGS "Enable compiler warnings" ON)
 
 add_library(lob_core
     src/csv_io.cpp
+    src/market_maker_simulation.cpp
     src/matching_engine.cpp
     src/order_book.cpp
     src/price_level.cpp
@@ -38,13 +39,18 @@ target_link_libraries(orderbook_replay PRIVATE lob_core)
 add_executable(orderbook_benchmark benchmarks/orderbook_benchmark.cpp)
 target_link_libraries(orderbook_benchmark PRIVATE lob_core)
 
+add_executable(market_maker_sim simulations/market_maker_sim.cpp)
+target_link_libraries(market_maker_sim PRIVATE lob_core)
+
 if(LOB_ENABLE_WARNINGS)
     if(MSVC)
         target_compile_options(orderbook_replay PRIVATE /W4 /permissive-)
         target_compile_options(orderbook_benchmark PRIVATE /W4 /permissive-)
+        target_compile_options(market_maker_sim PRIVATE /W4 /permissive-)
     else()
         target_compile_options(orderbook_replay PRIVATE -Wall -Wextra -Wpedantic)
         target_compile_options(orderbook_benchmark PRIVATE -Wall -Wextra -Wpedantic)
+        target_compile_options(market_maker_sim PRIVATE -Wall -Wextra -Wpedantic)
     endif()
 endif()
 
@@ -66,6 +72,7 @@ if(BUILD_TESTING)
 
     add_executable(lob_tests
         tests/csv_replay_tests.cpp
+        tests/market_maker_simulation_tests.cpp
         tests/matching_engine_tests.cpp
         tests/simulation_accounting_tests.cpp
     )
