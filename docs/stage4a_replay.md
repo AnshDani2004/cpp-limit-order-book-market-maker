@@ -111,4 +111,4 @@ The matching engine core did not need to change. The replay exposed one schema l
 
 The Stage 3 synthetic flow was useful as a deterministic stress stream, but it is not calibrated to this public ITCH sample. The biggest observed gaps are market order share, cancel share, and order size distribution.
 
-Stage 4B should not assume the Stage 3 fill decay value is realistic. If it uses this Stage 4A data, it should account for the bounded prefix and the low visible execution count. A larger full day or a broader symbol sample would be a stronger calibration input.
+Stage 4B should not assume the Stage 3 fill decay value is realistic. It also should not fit an arrival intensity curve on this bounded QQQ prefix alone because the sample has only `57` execution messages and `11` execution closures. The Stage 4B calibration data decision is fixed before fitting in [stage4b_calibration_gate.md](stage4b_calibration_gate.md).
