@@ -8,6 +8,10 @@ namespace lob {
 PriceLevel::PriceLevel(Price price) : price_(price) {}
 
 PriceLevel::iterator PriceLevel::add_order(Order order) {
+    if (orders_.empty() || !has_higher_priority(order, orders_.back())) {
+        return orders_.insert(orders_.end(), std::move(order));
+    }
+
     auto position = std::find_if(orders_.begin(), orders_.end(), [&](const Order& resting) {
         return has_higher_priority(order, resting);
     });

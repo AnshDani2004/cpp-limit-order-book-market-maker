@@ -30,6 +30,8 @@ Each `PriceLevel` stores orders in `std::list<Order>`. The list gives stable ite
 
 The order index is an `std::unordered_map<OrderId, OrderLocation>`. It maps each active order ID to its side, price, and list iterator.
 
+Adding an order to an empty level or to the back of an already ordered level is O(1). If an event arrives with an older timestamp, or with the same timestamp and a lower order ID than resting orders at that price, insertion scans the level to find the correct priority position. That case is O(k), where k is the number of resting orders at that price. Cancellation and quantity reduction still use the order ID index and do not scan the level.
+
 ## Matching Rules
 
 A buy order matches the lowest ask prices that are less than or equal to its limit price. A sell order matches the highest bid prices that are greater than or equal to its limit price. Market orders match available liquidity until their requested quantity is filled or the opposite side is empty.
