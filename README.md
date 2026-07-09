@@ -81,6 +81,18 @@ trending: final inventory 22260 naive, 27169 Avellaneda Stoikov
 
 The full attribution table is checked in at `benchmarks/results/stage3_comparison/metrics_table.csv`. Net PnL is not reported as a standalone success metric because this toy environment permits large unhedged inventory exposure.
 
+## Stage 4A ITCH Replay Result
+
+Measured command:
+
+```bash
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage4a_itch_replay
+```
+
+The replay translated `12423` QQQ messages from a bounded prefix of the public Nasdaq TotalView ITCH sample file `03272019.NASDAQ_ITCH50.gz` and replayed them through the existing matching engine. The observed event mix was `47.5730499879` percent limit, `0.458826370442` percent market, `47.2027690574` percent cancel, and `4.76535458424` percent modify.
+
+See [docs/stage4a_replay.md](docs/stage4a_replay.md) for the source, limitations, translation rules, and comparison against the Stage 3 synthetic assumptions.
+
 ## Build And Test
 
 ```bash
@@ -124,4 +136,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, and the first Stage 3 comparison are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, and Stage 4A are complete once local tests pass and CI is green on `main`.

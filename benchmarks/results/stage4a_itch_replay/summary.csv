@@ -1,0 +1,17 @@
+field,value
+data_option,nasdaq_totalview_itch_public_sample
+source_url,https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/03272019.NASDAQ_ITCH50.gz
+symbol,QQQ
+compressed_prefix_bytes,33554432
+decompressed_prefix_bytes,83901990
+messages_read,2879078
+supported_symbol_messages,12423
+ignored_messages,2866655
+translated_events,12423
+replay_trades,57
+limit_events,5910
+market_events,57
+cancel_events,5864
+modify_events,592
+executed_quantity,11941
+removed_quantity,7968210

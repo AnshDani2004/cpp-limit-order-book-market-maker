@@ -1,0 +1,13 @@
+message_type,seen_count,supported,translated_event_type,reason
+A,1059526,yes,limit,add order without attribution
+D,1052146,yes,cancel,delete remaining displayed order
+E,1075,yes,market,visible order execution
+F,25,yes,limit,add order with attribution
+H,8711,no,ignored,administrative or market status message
+L,193195,no,ignored,administrative or market status message
+P,116,no,ignored,non displayed trade does not update displayed book
+R,8712,no,ignored,administrative or market status message
+S,2,no,ignored,administrative or market status message
+U,136505,yes,modify,replace order
+X,410354,yes,modify,partial displayed size cancel
+Y,8711,no,ignored,administrative or market status message

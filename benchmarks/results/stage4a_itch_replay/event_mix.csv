@@ -1,0 +1,5 @@
+event_type,observed_count,observed_percent,stage3_synthetic_percent
+limit,5910,47.5730499879,55.0
+market,57,0.458826370442,25.0
+cancel,5864,47.2027690574,10.0
+modify,592,4.76535458424,10.0
