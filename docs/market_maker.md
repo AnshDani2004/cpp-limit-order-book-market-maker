@@ -18,7 +18,7 @@ The symmetric optimal spread target will use:
 optimal_spread = risk_aversion * volatility^2 * time_remaining + (2 / risk_aversion) * log(1 + risk_aversion / fill_decay)
 ```
 
-Bid and ask quotes will be centered around the reservation price, rounded to integer ticks, and clipped so bid is less than ask.
+Bid and ask quotes will be centered around the reservation price, rounded to integer ticks, and clipped so bid is less than ask. A bid that would be greater than or equal to the current best ask is clipped to best ask minus one tick. An ask that would be less than or equal to the current best bid is clipped to best bid plus one tick. If the opposing side is empty, that side has no book based clip.
 
 ## Common Simulation Rules
 
@@ -74,6 +74,16 @@ The naive strategy quotes symmetrically around the current reference mid with a 
 
 The inventory aware strategy quotes around the Avellaneda and Stoikov reservation price and uses the optimal spread formula above. It must state risk aversion, fill decay, volatility estimate, time horizon, quote size, and refresh cadence before reporting any result.
 
+For the first implementation, the strategy receives the regime volatility from the table above as an ex ante model input. It does not estimate volatility from a rolling window. This is an intentional simplifying assumption and must be named beside the results.
+
+The time horizon is the full regime run. With the default 200000 event run, `time_remaining` is computed before event `event_index` as:
+
+```text
+time_remaining = (run_length - event_index) / run_length
+```
+
+The value counts down once from 1 toward 0 during the run and does not reset on quote refresh. Any late run quote behavior caused by this countdown must be discussed if visible in the plots.
+
 Both strategies must use the same quote size and refresh cadence unless a difference is explicitly part of the experiment. The default quote size is 10 units per side. The default refresh cadence is every 10 events.
 
 ## PnL State
@@ -95,7 +105,7 @@ Fees are applied per fill:
 fee_pnl = -fee_per_unit * quantity
 ```
 
-With this sign convention, a maker rebate increases fee PnL and a taker fee decreases fee PnL.
+With this sign convention, a maker rebate increases fee PnL and a taker fee decreases fee PnL. Each fill first adjusts cash by the fill price times quantity, then adjusts cash by `fee_pnl`. The running `fee_pnl` total is tracked for attribution only and is not an independent source of truth.
 
 ## PnL Attribution
 
