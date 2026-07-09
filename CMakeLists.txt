@@ -14,6 +14,7 @@ add_library(lob_core
     src/matching_engine.cpp
     src/order_book.cpp
     src/price_level.cpp
+    src/simulation.cpp
 )
 
 target_include_directories(lob_core
@@ -66,6 +67,7 @@ if(BUILD_TESTING)
     add_executable(lob_tests
         tests/csv_replay_tests.cpp
         tests/matching_engine_tests.cpp
+        tests/simulation_accounting_tests.cpp
     )
 
     target_link_libraries(lob_tests PRIVATE lob_core Catch2::Catch2WithMain)
