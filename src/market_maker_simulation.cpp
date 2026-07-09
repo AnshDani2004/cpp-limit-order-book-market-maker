@@ -3,6 +3,7 @@
 #include "lob/matching_engine.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <optional>
 #include <random>
@@ -32,6 +33,14 @@ enum class ExternalAction {
     Cancel,
     Modify
 };
+
+enum class AdverseSelectionGroup {
+    InventoryReducing,
+    InventoryIncreasing,
+    Neutral
+};
+
+constexpr std::size_t kAdverseSelectionGroupCount = 3;
 
 struct ExternalEvent {
     ExternalAction action{ExternalAction::Limit};
@@ -121,6 +130,20 @@ struct QuotePrices {
     Price proposed_ask{};
     Price bid{};
     Price ask{};
+};
+
+struct AdverseSelectionAccumulator {
+    std::size_t maker_fills{};
+    Quantity maker_quantity{};
+    double signed_markout{};
+    double adverse_selection_cost{};
+
+    void add(Quantity quantity, double markout) {
+        ++maker_fills;
+        maker_quantity += quantity;
+        signed_markout += markout;
+        adverse_selection_cost += std::max(0.0, -markout);
+    }
 };
 
 class RunningMoments {
@@ -360,8 +383,67 @@ LiquidityRole market_maker_liquidity_role(const Trade& trade) {
     return is_market_maker_order(trade.maker_order_id) ? LiquidityRole::Maker : LiquidityRole::Taker;
 }
 
+double time_remaining_for_quote(const RegimeConfig& regime, std::size_t event_index) {
+    return static_cast<double>(regime.run_length - event_index) / static_cast<double>(regime.run_length);
+}
+
+double reservation_skew_for_inventory(const MarketMakerSimulationConfig& config,
+                                      StrategyKind kind,
+                                      Quantity inventory,
+                                      double time_remaining) {
+    if (kind == StrategyKind::NaiveSymmetric) {
+        return 0.0;
+    }
+    const auto variance = config.regime.volatility_per_event * config.regime.volatility_per_event;
+    return static_cast<double>(inventory) * config.avellaneda_stoikov.risk_aversion * variance * time_remaining;
+}
+
+AdverseSelectionGroup classify_adverse_selection_group(const MarketMakerSimulationConfig& config,
+                                                       StrategyKind kind,
+                                                       FillSide side,
+                                                       Quantity inventory_before_fill,
+                                                       std::size_t event_index) {
+    const auto time_remaining = time_remaining_for_quote(config.regime, event_index);
+    const auto skew = reservation_skew_for_inventory(config, kind, inventory_before_fill, time_remaining);
+    if (kind == StrategyKind::NaiveSymmetric || inventory_before_fill == 0 || std::fabs(skew) < 1e-12) {
+        return AdverseSelectionGroup::Neutral;
+    }
+
+    const auto reduces_inventory = (inventory_before_fill > 0 && side == FillSide::Sell) ||
+                                   (inventory_before_fill < 0 && side == FillSide::Buy);
+    return reduces_inventory ? AdverseSelectionGroup::InventoryReducing
+                             : AdverseSelectionGroup::InventoryIncreasing;
+}
+
+std::size_t adverse_selection_group_index(AdverseSelectionGroup group) {
+    switch (group) {
+        case AdverseSelectionGroup::InventoryReducing:
+            return 0;
+        case AdverseSelectionGroup::InventoryIncreasing:
+            return 1;
+        case AdverseSelectionGroup::Neutral:
+            return 2;
+    }
+    return 2;
+}
+
+const char* adverse_selection_group_name(AdverseSelectionGroup group) {
+    switch (group) {
+        case AdverseSelectionGroup::InventoryReducing:
+            return "inventory_reducing";
+        case AdverseSelectionGroup::InventoryIncreasing:
+            return "inventory_increasing";
+        case AdverseSelectionGroup::Neutral:
+            return "neutral";
+    }
+    return "neutral";
+}
+
 void record_market_maker_trades(PnlAccounting& accounting,
                                 MarketMakerSummary& summary,
+                                std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                                const MarketMakerSimulationConfig& config,
+                                StrategyKind kind,
                                 const std::vector<double>& reference_path,
                                 std::size_t event_index,
                                 std::size_t markout_horizon,
@@ -375,6 +457,7 @@ void record_market_maker_trades(PnlAccounting& accounting,
 
         const auto side = market_maker_fill_side(trade);
         const auto role = market_maker_liquidity_role(trade);
+        const auto inventory_before_fill = accounting.snapshot().inventory;
         accounting.record_fill(FillEvent{side, role, static_cast<double>(trade.price), trade.quantity, event_index});
 
         summary.market_maker_filled_quantity += trade.quantity;
@@ -394,7 +477,10 @@ void record_market_maker_trades(PnlAccounting& accounting,
             const auto markout = side == FillSide::Buy
                                      ? (future_mid - static_cast<double>(trade.price)) * quantity
                                      : (static_cast<double>(trade.price) - future_mid) * quantity;
-            summary.adverse_selection_cost += std::max(0.0, -markout);
+            const auto adverse_cost = std::max(0.0, -markout);
+            summary.adverse_selection_cost += adverse_cost;
+            const auto group = classify_adverse_selection_group(config, kind, side, inventory_before_fill, event_index);
+            adverse_groups[adverse_selection_group_index(group)].add(trade.quantity, markout);
         } else {
             ++summary.taker_fills;
         }
@@ -469,6 +555,9 @@ void record_quote_diagnostics(MarketMakerSummary& summary,
 void submit_quote(MatchingEngine& engine,
                   PnlAccounting& accounting,
                   MarketMakerSummary& summary,
+                  std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                  const MarketMakerSimulationConfig& config,
+                  StrategyKind kind,
                   QuoteIds& quotes,
                   const std::vector<double>& reference_path,
                   std::size_t event_index,
@@ -484,7 +573,15 @@ void submit_quote(MatchingEngine& engine,
         throw std::runtime_error("market maker quote rejected: " + result.reject_reason);
     }
 
-    record_market_maker_trades(accounting, summary, reference_path, event_index, markout_horizon, result);
+    record_market_maker_trades(accounting,
+                               summary,
+                               adverse_groups,
+                               config,
+                               kind,
+                               reference_path,
+                               event_index,
+                               markout_horizon,
+                               result);
 
     if (engine.book().contains(order_id)) {
         if (side == Side::Buy) {
@@ -643,6 +740,7 @@ double reservation_skew(const MarketMakerSimulationConfig& config,
 void refresh_quotes(MatchingEngine& engine,
                     PnlAccounting& accounting,
                     MarketMakerSummary& summary,
+                    std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
                     QuoteIds& quotes,
                     const MarketMakerSimulationConfig& config,
                     StrategyKind kind,
@@ -663,6 +761,9 @@ void refresh_quotes(MatchingEngine& engine,
     submit_quote(engine,
                  accounting,
                  summary,
+                 adverse_groups,
+                 config,
+                 kind,
                  quotes,
                  reference_path,
                  event_index,
@@ -675,6 +776,9 @@ void refresh_quotes(MatchingEngine& engine,
     submit_quote(engine,
                  accounting,
                  summary,
+                 adverse_groups,
+                 config,
+                 kind,
                  quotes,
                  reference_path,
                  event_index,
@@ -746,12 +850,14 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
 
     double peak_equity = 0.0;
     RunningMoments inventory_moments;
+    std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount> adverse_groups{};
 
     for (std::size_t event_index = 0; event_index < external_events.size(); ++event_index) {
         if (event_index % refresh_cadence(config, kind) == 0) {
             refresh_quotes(engine,
                            accounting,
                            result.summary,
+                           adverse_groups,
                            quotes,
                            config,
                            kind,
@@ -767,6 +873,9 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
         }
         record_market_maker_trades(accounting,
                                    result.summary,
+                                   adverse_groups,
+                                   config,
+                                   kind,
                                    reference_path,
                                    event_index,
                                    config.markout_horizon,
@@ -823,6 +932,31 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     }
     result.summary.reconciliation_passed = accounting.reconciles(kRunReconciliationTolerance);
     accounting.assert_reconciles(kRunReconciliationTolerance);
+
+    const std::array<AdverseSelectionGroup, kAdverseSelectionGroupCount> group_order{
+        AdverseSelectionGroup::InventoryReducing,
+        AdverseSelectionGroup::InventoryIncreasing,
+        AdverseSelectionGroup::Neutral,
+    };
+    result.adverse_selection_split.reserve(group_order.size());
+    for (const auto group : group_order) {
+        const auto& bucket = adverse_groups[adverse_selection_group_index(group)];
+        const auto quantity = static_cast<double>(bucket.maker_quantity);
+        result.adverse_selection_split.push_back(MarketMakerAdverseSelectionSplit{
+            strategy_name(kind),
+            config.regime.name,
+            adverse_selection_group_name(group),
+            bucket.maker_fills,
+            bucket.maker_quantity,
+            bucket.signed_markout,
+            bucket.maker_quantity == 0 ? 0.0 : bucket.signed_markout / quantity,
+            bucket.adverse_selection_cost,
+            bucket.maker_quantity == 0 ? 0.0 : bucket.adverse_selection_cost / quantity,
+            result.summary.adverse_selection_cost == 0.0
+                ? 0.0
+                : bucket.adverse_selection_cost / result.summary.adverse_selection_cost,
+            result.summary.adverse_selection_cost});
+    }
 
     return result;
 }

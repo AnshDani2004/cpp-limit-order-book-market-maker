@@ -1,0 +1,10 @@
+strategy,regime,group,maker_fills,maker_quantity,signed_markout,average_markout_per_unit,adverse_selection_cost,average_adverse_selection_cost_per_unit,adverse_selection_cost_share,total_adverse_selection_cost
+naive symmetric,low volatility,inventory_reducing,0,0,0,0,0,0,0,6638.69576414
+naive symmetric,low volatility,inventory_increasing,0,0,0,0,0,0,0,6638.69576414
+naive symmetric,low volatility,neutral,21122,197120,3211184.17572,16.2905041382,6638.69576414,0.0336784484788,1,6638.69576414
+naive symmetric,high volatility,inventory_reducing,0,0,0,0,0,0,0,238640.967874
+naive symmetric,high volatility,inventory_increasing,0,0,0,0,0,0,0,238640.967874
+naive symmetric,high volatility,neutral,18538,172886,4532867.06505,26.2188208707,238640.967874,1.3803371463,1,238640.967874
+naive symmetric,trending,inventory_reducing,0,0,0,0,0,0,0,69423.9757008
+naive symmetric,trending,inventory_increasing,0,0,0,0,0,0,0,69423.9757008
+naive symmetric,trending,neutral,19590,183430,4973248.08221,27.112512033,69423.9757008,0.378476670669,1,69423.9757008

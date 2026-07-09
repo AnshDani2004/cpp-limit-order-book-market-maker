@@ -246,6 +246,35 @@ void write_curve(const std::filesystem::path& path, const std::vector<lob::Marke
     }
 }
 
+void write_adverse_selection_split(const std::filesystem::path& path,
+                                   const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write adverse selection split");
+    }
+
+    output << std::setprecision(12);
+    output << "strategy,regime,group,maker_fills,maker_quantity,signed_markout,"
+           << "average_markout_per_unit,adverse_selection_cost,"
+           << "average_adverse_selection_cost_per_unit,adverse_selection_cost_share,"
+           << "total_adverse_selection_cost\n";
+    for (const auto& result : results) {
+        for (const auto& split : result.adverse_selection_split) {
+            output << split.strategy_name << ','
+                   << split.regime_name << ','
+                   << split.group_name << ','
+                   << split.maker_fills << ','
+                   << split.maker_quantity << ','
+                   << split.signed_markout << ','
+                   << split.average_markout_per_unit << ','
+                   << split.adverse_selection_cost << ','
+                   << split.average_adverse_selection_cost_per_unit << ','
+                   << split.adverse_selection_cost_share << ','
+                   << split.total_adverse_selection_cost << '\n';
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -269,6 +298,7 @@ int main(int argc, char** argv) {
         write_run_config(args.output_dir / "run_config.csv", args);
         write_summary(args.output_dir / "summary.csv", results);
         write_curve(args.output_dir / "equity_curve.csv", results);
+        write_adverse_selection_split(args.output_dir / "adverse_selection_split.csv", results);
 
         std::cout << (args.output_dir / "summary.csv") << '\n';
         for (const auto& result : results) {

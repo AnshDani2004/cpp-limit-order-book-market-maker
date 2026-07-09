@@ -195,6 +195,9 @@ def main():
     summaries = read_summary(naive_dir / "summary.csv") + read_summary(as_dir / "summary.csv")
     write_side_by_side(output_dir / "metrics_table.csv", summaries)
     write_regime_summary(output_dir / "summary_by_strategy.csv", summaries)
+    as_adverse_split = as_dir / "adverse_selection_split.csv"
+    if as_adverse_split.exists():
+        shutil.copyfile(as_adverse_split, output_dir / "avellaneda_stoikov_adverse_selection_split.csv")
 
     curves = read_curve(naive_dir / "equity_curve.csv") + read_curve(as_dir / "equity_curve.csv")
     for regime in ["low volatility", "high volatility", "trending"]:
@@ -218,6 +221,9 @@ def main():
 
     print((output_dir / "metrics_table.csv").resolve())
     print((output_dir / "summary_by_strategy.csv").resolve())
+    copied_split = output_dir / "avellaneda_stoikov_adverse_selection_split.csv"
+    if copied_split.exists():
+        print(copied_split.resolve())
 
 
 if __name__ == "__main__":

@@ -83,11 +83,39 @@ This confirms the full-run horizon concern. The largest sampled inventory appear
 | Trending | Maker fills | 19590 | 19886 | 296 |
 | Trending | Taker fills | 0 | 0 | 0 |
 
+## Avellaneda Stoikov Adverse Selection Split
+
+AS adverse selection cost is higher than naive in every regime. To check whether this is an inventory control tradeoff rather than an unexplained artifact, AS maker fills are split by inventory effect at the fill:
+
+```text
+inventory_reducing: buy when inventory is negative, or sell when inventory is positive
+inventory_increasing: buy when inventory is positive, or sell when inventory is negative
+neutral: zero inventory or effectively zero reservation skew
+```
+
+The split uses the same 50 event markout horizon as the aggregate metrics. `Avg markout/unit` is signed and quantity weighted. `Adverse cost` is the negative markout tail only, matching the aggregate `adverse_selection_cost` definition.
+
+| Regime | Group | Fills | Quantity | Avg markout/unit | Adverse cost | Share of AS adverse cost |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Low volatility | inventory_reducing | 7799 | 72962 | 3.62416807666 | 28497.5100367 | 94.6408813449% |
+| Low volatility | inventory_increasing | 13534 | 126132 | 22.9485701344 | 1613.69521808 | 5.3591186551% |
+| Low volatility | neutral | 5 | 44 | 5.11935811014 | 0 | 0% |
+| High volatility | inventory_reducing | 9211 | 85614 | 12.7003031189 | 461292.521762 | 88.8035265377% |
+| High volatility | inventory_increasing | 9326 | 86578 | 35.6248298329 | 58048.2375237 | 11.1748791888% |
+| High volatility | neutral | 5 | 50 | 1.09920956747 | 112.172086694 | 0.0215942734981% |
+| Trending | inventory_reducing | 8513 | 79520 | 14.4646712551 | 145926.202713 | 87.3406630454% |
+| Trending | inventory_increasing | 11359 | 106112 | 35.0129500014 | 21081.7906192 | 12.6180051056% |
+| Trending | neutral | 14 | 131 | 4.48534157291 | 69.0560338045 | 0.0413318490281% |
+
+The split reconciles to the aggregate AS adverse selection costs in the metrics table: `30111.2052548` low volatility, `519452.931372` high volatility, and `167077.049366` trending. The checked artifact is `benchmarks/results/stage3_comparison/avellaneda_stoikov_adverse_selection_split.csv`.
+
+This confirms the mechanism. AS pays most of its adverse selection cost on the side it is using to reduce inventory: `94.6%` in low volatility, `88.8%` in high volatility, and `87.3%` in trending. These fills still have positive signed average markout because many spread-capture fills remain profitable over the 50 event horizon, but the negative markout tail is concentrated in the inventory-reducing bucket. The strategy is trading inventory risk for adverse selection risk.
+
 ## Interpretation
 
 Low volatility is not a flagship win for the inventory aware strategy. AS reduced final inventory from `60352` to `53714`, an `11.0%` reduction, and reduced inventory variance by `14.9%`, but net PnL fell by `1106502.5614` ticks. The weak inventory response is consistent with the low volatility coefficient of `0.00032`; the model is intentionally receiving little volatility signal to react to.
 
-High volatility is the cleanest inventory control result. AS reduced final inventory from `10270` to `1178`, an `88.5%` reduction, and reduced inventory variance by `51.1%`. It also reduced maximum drawdown by `7754881.77314` ticks. AS captured less spread and had higher adverse selection cost, but the inventory PnL improvement was large enough to raise net PnL.
+High volatility is the cleanest inventory control result. AS reduced final inventory from `10270` to `1178`, an `88.5%` reduction, and reduced inventory variance by `51.1%`. It also reduced maximum drawdown by `7754881.77314` ticks. AS captured less spread and had higher adverse selection cost, and the fill split shows that adverse selection cost came mostly from inventory-reducing fills. The inventory PnL improvement was large enough to raise net PnL anyway.
 
 Trending is not an inventory control win. AS ended with higher final inventory (`27169` versus `22260`) and slightly higher inventory variance (`114699721.514` versus `112831901.12`). Its net PnL was higher because inventory PnL was better on this specific path, not because it carried less inventory. The skew diagnostic above shows why: the full-run horizon makes the reservation skew fade toward zero late in the run.
 

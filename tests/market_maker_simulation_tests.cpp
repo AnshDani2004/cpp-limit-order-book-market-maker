@@ -73,6 +73,25 @@ void check_matching_summary(const lob::MarketMakerSummary& left, const lob::Mark
     CHECK(left.reconciliation_passed == right.reconciliation_passed);
 }
 
+void check_matching_adverse_selection_split(const std::vector<lob::MarketMakerAdverseSelectionSplit>& left,
+                                            const std::vector<lob::MarketMakerAdverseSelectionSplit>& right) {
+    REQUIRE(left.size() == right.size());
+    for (std::size_t index = 0; index < left.size(); ++index) {
+        CHECK(left[index].strategy_name == right[index].strategy_name);
+        CHECK(left[index].regime_name == right[index].regime_name);
+        CHECK(left[index].group_name == right[index].group_name);
+        CHECK(left[index].maker_fills == right[index].maker_fills);
+        CHECK(left[index].maker_quantity == right[index].maker_quantity);
+        CHECK(left[index].signed_markout == Catch::Approx(right[index].signed_markout));
+        CHECK(left[index].average_markout_per_unit == Catch::Approx(right[index].average_markout_per_unit));
+        CHECK(left[index].adverse_selection_cost == Catch::Approx(right[index].adverse_selection_cost));
+        CHECK(left[index].average_adverse_selection_cost_per_unit ==
+              Catch::Approx(right[index].average_adverse_selection_cost_per_unit));
+        CHECK(left[index].adverse_selection_cost_share == Catch::Approx(right[index].adverse_selection_cost_share));
+        CHECK(left[index].total_adverse_selection_cost == Catch::Approx(right[index].total_adverse_selection_cost));
+    }
+}
+
 }  // namespace
 
 TEST_CASE("naive symmetric strategy reconciles in every Stage 3 regime") {
@@ -93,6 +112,7 @@ TEST_CASE("naive symmetric strategy reconciles in every Stage 3 regime") {
         CHECK(result.summary.taker_fills == 0);
         CHECK(result.summary.quote_refreshes > 0);
         CHECK_FALSE(result.curve.empty());
+        CHECK(result.adverse_selection_split.size() == 3);
     }
 }
 
@@ -114,7 +134,35 @@ TEST_CASE("avellaneda stoikov strategy reconciles in every Stage 3 regime") {
         CHECK(result.summary.taker_fills == 0);
         CHECK(result.summary.quote_refreshes > 0);
         CHECK_FALSE(result.curve.empty());
+        CHECK(result.adverse_selection_split.size() == 3);
     }
+}
+
+TEST_CASE("avellaneda stoikov adverse selection split reconciles to maker fill totals") {
+    auto regime = lob::default_regimes(2000).front();
+    auto config = make_config(regime);
+    const auto result = lob::run_avellaneda_stoikov_strategy(config);
+
+    REQUIRE(result.adverse_selection_split.size() == 3);
+
+    std::size_t maker_fills = 0;
+    lob::Quantity maker_quantity = 0;
+    double adverse_selection_cost = 0.0;
+    for (const auto& split : result.adverse_selection_split) {
+        maker_fills += split.maker_fills;
+        maker_quantity += split.maker_quantity;
+        adverse_selection_cost += split.adverse_selection_cost;
+        if (split.maker_quantity > 0) {
+            CHECK(split.average_markout_per_unit ==
+                  Catch::Approx(split.signed_markout / static_cast<double>(split.maker_quantity)));
+            CHECK(split.average_adverse_selection_cost_per_unit ==
+                  Catch::Approx(split.adverse_selection_cost / static_cast<double>(split.maker_quantity)));
+        }
+    }
+
+    CHECK(maker_fills == result.summary.maker_fills);
+    CHECK(maker_quantity == result.summary.market_maker_filled_quantity);
+    CHECK(adverse_selection_cost == Catch::Approx(result.summary.adverse_selection_cost));
 }
 
 TEST_CASE("naive symmetric strategy is deterministic for a fixed seed") {
@@ -125,6 +173,7 @@ TEST_CASE("naive symmetric strategy is deterministic for a fixed seed") {
     const auto second = lob::run_naive_symmetric_strategy(config);
 
     check_matching_summary(first.summary, second.summary);
+    check_matching_adverse_selection_split(first.adverse_selection_split, second.adverse_selection_split);
     REQUIRE(first.curve.size() == second.curve.size());
 
     for (std::size_t index = 0; index < first.curve.size(); ++index) {
@@ -149,6 +198,7 @@ TEST_CASE("avellaneda stoikov strategy is deterministic for a fixed seed") {
     const auto second = lob::run_avellaneda_stoikov_strategy(config);
 
     check_matching_summary(first.summary, second.summary);
+    check_matching_adverse_selection_split(first.adverse_selection_split, second.adverse_selection_split);
     REQUIRE(first.curve.size() == second.curve.size());
 
     for (std::size_t index = 0; index < first.curve.size(); ++index) {

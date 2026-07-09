@@ -100,9 +100,24 @@ struct MarketMakerCurvePoint {
     double net_pnl_after_fees{};
 };
 
+struct MarketMakerAdverseSelectionSplit {
+    std::string strategy_name{};
+    std::string regime_name{};
+    std::string group_name{};
+    std::size_t maker_fills{};
+    Quantity maker_quantity{};
+    double signed_markout{};
+    double average_markout_per_unit{};
+    double adverse_selection_cost{};
+    double average_adverse_selection_cost_per_unit{};
+    double adverse_selection_cost_share{};
+    double total_adverse_selection_cost{};
+};
+
 struct MarketMakerRunResult {
     MarketMakerSummary summary{};
     std::vector<MarketMakerCurvePoint> curve{};
+    std::vector<MarketMakerAdverseSelectionSplit> adverse_selection_split{};
 };
 
 MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config);
