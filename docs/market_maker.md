@@ -68,9 +68,15 @@ external modifies 10 percent
 
 External order sizes will use a bounded distribution with support from 1 to 100 units. The exact distribution must be stated in the implementation. Every random source must take an explicit seed.
 
+The first simulator implementation uses a uniform integer size distribution from 1 to 100 units for every external order. External passive limit prices use a uniform integer offset from 8 to 80 ticks away from the current reference mid. The order flow generator is seeded from the regime seed and produces the same external event stream for a fixed regime.
+
+The external flow is generated before strategy replay. During replay, a generated cancel or modify can be rejected if the target external order has already traded because of that strategy's quotes. These rejects are counted as `external_rejects` in the result table so the apples to apples command stream remains visible.
+
 ## Strategies To Compare
 
 The naive strategy quotes symmetrically around the current reference mid with a fixed spread. It does not use inventory in quote placement.
+
+The first naive baseline uses a 5 tick half spread, a 10 tick full quoted spread, quote size 10 per side, and refresh cadence 10 events.
 
 The inventory aware strategy quotes around the Avellaneda and Stoikov reservation price and uses the optimal spread formula above. It must state risk aversion, fill decay, volatility estimate, time horizon, quote size, and refresh cadence before reporting any result.
 

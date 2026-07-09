@@ -1,0 +1,4 @@
+strategy,regime,seed,events,fill_rate,gross_spread_capture,inventory_pnl,adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,inventory_variance,final_inventory,maker_fills,taker_fills,market_maker_filled_quantity,market_maker_posted_quantity,external_rejects,reconciliation_passed
+naive symmetric,low volatility,3001,200000,0.4928,3202319.00596,9346081.57386,6638.69576414,3942.4,12552342.9798,7624000.2462,611910819.983,60352,21122,0,197120,400000,44,true
+naive symmetric,high volatility,3002,200000,0.432215,4518812.65051,-2741095.43422,238640.967874,3457.72,1781174.93629,10006722.7146,38674268.7726,10270,18538,0,172886,400000,78,true
+naive symmetric,trending,3003,200000,0.458575,4957012.08171,-4241167.91126,69423.9757008,3668.6,719512.770454,5188268.62252,112831901.12,22260,19590,0,183430,400000,127,true
