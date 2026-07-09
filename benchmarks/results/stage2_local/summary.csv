@@ -2,12 +2,13 @@ metric,value
 seed,42
 warmup_events,20000
 measured_events,1000000
-events_per_second,3834789.59468
-total_seconds,0.2607705
+events_per_second,3723011.65582
+total_seconds,0.26859975
+max_event_index,512822
 p50_latency_ns,125
-p95_latency_ns,666
+p95_latency_ns,667
 p99_latency_ns,1208
-max_latency_ns,2474709
+max_latency_ns,2222959
 trades,350663
 rejects,0
 limit_events,599535

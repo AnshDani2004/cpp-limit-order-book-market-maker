@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <random>
 #include <stdexcept>
@@ -100,6 +101,41 @@ struct GeneratedFlow {
     EventCounts measured_counts{};
 };
 
+struct InsertProbe {
+    bool possible_insert{};
+    lob::Side side{lob::Side::Buy};
+    lob::Price price{};
+    bool target_level_existed_before{};
+    std::size_t target_level_depth_before{};
+    bool price_level_recreated{};
+    bool out_of_order_insert{};
+};
+
+struct TailEventDiagnostics {
+    std::size_t event_index{};
+    std::uint64_t latency_ns{};
+    BenchmarkAction action{BenchmarkAction::Limit};
+    lob::Timestamp timestamp{};
+    lob::OrderId order_id{};
+    std::string side{};
+    std::string order_type{};
+    std::string price{};
+    std::string new_price{};
+    lob::Quantity new_quantity{};
+    bool accepted{};
+    std::string reject_reason{};
+    std::size_t trades{};
+    bool rested_after_event{};
+    lob::Quantity remaining_after_event{};
+    bool possible_insert{};
+    std::string target_price{};
+    bool target_level_existed_before{};
+    std::size_t target_level_depth_before{};
+    bool price_level_created{};
+    bool price_level_recreated{};
+    bool out_of_order_insert{};
+};
+
 std::uint64_t parse_u64(const std::string& value) {
     std::size_t consumed = 0;
     const auto parsed = std::stoull(value, &consumed);
@@ -138,6 +174,117 @@ Config parse_args(int argc, char** argv) {
         throw std::runtime_error("events must be positive");
     }
     return config;
+}
+
+std::string action_name(BenchmarkAction action) {
+    switch (action) {
+        case BenchmarkAction::Limit:
+            return "limit";
+        case BenchmarkAction::Market:
+            return "market";
+        case BenchmarkAction::Cancel:
+            return "cancel";
+        case BenchmarkAction::Modify:
+            return "modify";
+    }
+    return "unknown";
+}
+
+std::string bool_value(bool value) {
+    return value ? "true" : "false";
+}
+
+std::string optional_price_text(std::optional<lob::Price> price) {
+    if (!price.has_value()) {
+        return "";
+    }
+    return std::to_string(*price);
+}
+
+const lob::PriceLevel* find_level(const lob::OrderBook& book, lob::Side side, lob::Price price) {
+    if (side == lob::Side::Buy) {
+        const auto position = book.bid_levels().find(price);
+        if (position == book.bid_levels().end()) {
+            return nullptr;
+        }
+        return std::addressof(position->second);
+    }
+
+    const auto position = book.ask_levels().find(price);
+    if (position == book.ask_levels().end()) {
+        return nullptr;
+    }
+    return std::addressof(position->second);
+}
+
+bool has_higher_priority(lob::Timestamp timestamp, lob::OrderId id, const lob::Order& resting) {
+    if (timestamp != resting.timestamp) {
+        return timestamp < resting.timestamp;
+    }
+    return id < resting.id;
+}
+
+bool would_insert_before_back(const lob::PriceLevel& level, lob::Timestamp timestamp, lob::OrderId id) {
+    const lob::Order* back = nullptr;
+    for (const auto& order : level) {
+        back = std::addressof(order);
+    }
+    return back != nullptr && has_higher_priority(timestamp, id, *back);
+}
+
+InsertProbe make_insert_probe(const lob::MatchingEngine& engine, const BenchmarkEvent& event) {
+    InsertProbe probe;
+    lob::Timestamp timestamp{};
+    lob::OrderId id{};
+
+    if (event.action == BenchmarkAction::Limit && event.order.type == lob::OrderType::Limit) {
+        probe.possible_insert = true;
+        probe.side = event.order.side;
+        probe.price = event.order.price.value();
+        timestamp = event.order.timestamp;
+        id = event.order.id;
+    } else if (event.action == BenchmarkAction::Modify) {
+        const auto snapshot = engine.book().snapshot_order(event.order_id);
+        if (!snapshot.has_value()) {
+            return probe;
+        }
+
+        const auto current_price = snapshot->price.value();
+        const auto target_price = event.new_price.value_or(current_price);
+        const auto price_changed = target_price != current_price;
+        const auto quantity_increased = event.new_quantity > snapshot->remaining_quantity;
+        if (!price_changed && !quantity_increased) {
+            return probe;
+        }
+
+        probe.possible_insert = true;
+        probe.side = snapshot->side;
+        probe.price = target_price;
+        timestamp = event.timestamp;
+        id = event.order_id;
+    } else {
+        return probe;
+    }
+
+    const auto* level = find_level(engine.book(), probe.side, probe.price);
+    probe.target_level_existed_before = level != nullptr;
+    if (level != nullptr) {
+        probe.target_level_depth_before = level->size();
+        probe.out_of_order_insert = would_insert_before_back(*level, timestamp, id);
+    }
+
+    if (event.action == BenchmarkAction::Modify) {
+        const auto snapshot = engine.book().snapshot_order(event.order_id);
+        if (snapshot.has_value()) {
+            const auto current_price = snapshot->price.value();
+            const auto target_price = event.new_price.value_or(current_price);
+            const auto same_price = target_price == current_price;
+            probe.price_level_recreated = same_price && probe.target_level_depth_before == 1 &&
+                                          event.new_quantity > snapshot->remaining_quantity;
+        }
+    }
+
+    return probe;
 }
 
 void sync_active_id(lob::MatchingEngine& engine, ActiveIndex& active, lob::OrderId id) {
@@ -347,6 +494,7 @@ struct ReplaySummary {
     std::size_t trades{};
     std::uint64_t total_ns{};
     double events_per_second{};
+    std::size_t max_event_index{};
     std::uint64_t p50_ns{};
     std::uint64_t p95_ns{};
     std::uint64_t p99_ns{};
@@ -375,7 +523,8 @@ ReplaySummary replay_flow(const GeneratedFlow& flow,
 
     ReplaySummary summary;
     const auto total_start = Clock::now();
-    for (const auto& event : flow.measured_events) {
+    for (std::size_t index = 0; index < flow.measured_events.size(); ++index) {
+        const auto& event = flow.measured_events[index];
         const auto start = Clock::now();
         const auto result = apply_event(engine, event);
         const auto stop = Clock::now();
@@ -384,8 +533,13 @@ ReplaySummary replay_flow(const GeneratedFlow& flow,
             ++summary.rejects;
         }
         summary.trades += result.trades.size();
-        latencies.push_back(static_cast<std::uint64_t>(
-            std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count()));
+        const auto latency = static_cast<std::uint64_t>(
+            std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count());
+        if (latency > summary.max_ns) {
+            summary.max_ns = latency;
+            summary.max_event_index = index;
+        }
+        latencies.push_back(latency);
     }
     const auto total_stop = Clock::now();
 
@@ -399,7 +553,6 @@ ReplaySummary replay_flow(const GeneratedFlow& flow,
     summary.p50_ns = percentile(sorted, 0.50);
     summary.p95_ns = percentile(sorted, 0.95);
     summary.p99_ns = percentile(sorted, 0.99);
-    summary.max_ns = sorted.back();
 
     std::ofstream latency_output(latency_path);
     if (!latency_output) {
@@ -411,6 +564,79 @@ ReplaySummary replay_flow(const GeneratedFlow& flow,
     }
 
     return summary;
+}
+
+TailEventDiagnostics diagnose_tail_event(const GeneratedFlow& flow,
+                                         std::size_t event_index,
+                                         std::uint64_t latency_ns) {
+    lob::MatchingEngine engine;
+
+    for (const auto& event : flow.warmup_events) {
+        const auto result = apply_event(engine, event);
+        if (!result.accepted) {
+            throw std::runtime_error("warmup diagnostic event was rejected");
+        }
+    }
+
+    for (std::size_t index = 0; index < event_index; ++index) {
+        const auto result = apply_event(engine, flow.measured_events[index]);
+        if (!result.accepted) {
+            throw std::runtime_error("diagnostic replay event was rejected");
+        }
+    }
+
+    const auto& event = flow.measured_events[event_index];
+    const auto probe = make_insert_probe(engine, event);
+    const auto result = apply_event(engine, event);
+
+    TailEventDiagnostics diagnostics;
+    diagnostics.event_index = event_index;
+    diagnostics.latency_ns = latency_ns;
+    diagnostics.action = event.action;
+    diagnostics.timestamp = event.timestamp;
+    diagnostics.accepted = result.accepted;
+    diagnostics.reject_reason = result.reject_reason;
+    diagnostics.trades = result.trades.size();
+    diagnostics.possible_insert = probe.possible_insert;
+    diagnostics.target_level_existed_before = probe.target_level_existed_before;
+    diagnostics.target_level_depth_before = probe.target_level_depth_before;
+    diagnostics.price_level_recreated = probe.price_level_recreated;
+
+    if (probe.possible_insert) {
+        diagnostics.target_price = std::to_string(probe.price);
+    }
+
+    if (event.action == BenchmarkAction::Limit || event.action == BenchmarkAction::Market) {
+        diagnostics.order_id = event.order.id;
+        diagnostics.side = lob::to_string(event.order.side);
+        diagnostics.order_type = lob::to_string(event.order.type);
+        diagnostics.price = optional_price_text(event.order.price);
+        diagnostics.new_quantity = event.order.quantity;
+    } else if (event.action == BenchmarkAction::Modify) {
+        diagnostics.order_id = event.order_id;
+        diagnostics.new_price = optional_price_text(event.new_price);
+        diagnostics.new_quantity = event.new_quantity;
+    } else {
+        diagnostics.order_id = event.order_id;
+    }
+
+    const auto snapshot = engine.book().snapshot_order(diagnostics.order_id);
+    diagnostics.rested_after_event = snapshot.has_value();
+    if (snapshot.has_value()) {
+        diagnostics.remaining_after_event = snapshot->remaining_quantity;
+        if (diagnostics.side.empty()) {
+            diagnostics.side = lob::to_string(snapshot->side);
+        }
+        if (diagnostics.price.empty() && snapshot->price.has_value()) {
+            diagnostics.price = std::to_string(*snapshot->price);
+        }
+    }
+
+    diagnostics.price_level_created = diagnostics.rested_after_event && probe.possible_insert &&
+                                      (!probe.target_level_existed_before || probe.price_level_recreated);
+    diagnostics.out_of_order_insert = diagnostics.rested_after_event && probe.possible_insert &&
+                                      probe.out_of_order_insert;
+    return diagnostics;
 }
 
 void write_summary(const std::filesystem::path& path,
@@ -429,6 +655,7 @@ void write_summary(const std::filesystem::path& path,
     output << "measured_events," << config.events << '\n';
     output << "events_per_second," << summary.events_per_second << '\n';
     output << "total_seconds," << static_cast<double>(summary.total_ns) / 1'000'000'000.0 << '\n';
+    output << "max_event_index," << summary.max_event_index << '\n';
     output << "p50_latency_ns," << summary.p50_ns << '\n';
     output << "p95_latency_ns," << summary.p95_ns << '\n';
     output << "p99_latency_ns," << summary.p99_ns << '\n';
@@ -442,6 +669,37 @@ void write_summary(const std::filesystem::path& path,
     output << "sizeof_order_bytes," << sizeof(lob::Order) << '\n';
     output << "sizeof_price_level_bytes," << sizeof(lob::PriceLevel) << '\n';
     output << "estimated_resting_order_bytes," << sizeof(lob::Order) + 2 * sizeof(void*) << '\n';
+}
+
+void write_tail_event(const std::filesystem::path& path, const TailEventDiagnostics& diagnostics) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write tail event csv");
+    }
+
+    output << "field,value\n";
+    output << "event_index," << diagnostics.event_index << '\n';
+    output << "latency_ns," << diagnostics.latency_ns << '\n';
+    output << "action," << action_name(diagnostics.action) << '\n';
+    output << "timestamp," << diagnostics.timestamp << '\n';
+    output << "order_id," << diagnostics.order_id << '\n';
+    output << "side," << diagnostics.side << '\n';
+    output << "order_type," << diagnostics.order_type << '\n';
+    output << "price," << diagnostics.price << '\n';
+    output << "new_price," << diagnostics.new_price << '\n';
+    output << "new_quantity," << diagnostics.new_quantity << '\n';
+    output << "accepted," << bool_value(diagnostics.accepted) << '\n';
+    output << "reject_reason," << diagnostics.reject_reason << '\n';
+    output << "trades," << diagnostics.trades << '\n';
+    output << "rested_after_event," << bool_value(diagnostics.rested_after_event) << '\n';
+    output << "remaining_after_event," << diagnostics.remaining_after_event << '\n';
+    output << "possible_insert," << bool_value(diagnostics.possible_insert) << '\n';
+    output << "target_price," << diagnostics.target_price << '\n';
+    output << "target_level_existed_before," << bool_value(diagnostics.target_level_existed_before) << '\n';
+    output << "target_level_depth_before," << diagnostics.target_level_depth_before << '\n';
+    output << "price_level_created," << bool_value(diagnostics.price_level_created) << '\n';
+    output << "price_level_recreated," << bool_value(diagnostics.price_level_recreated) << '\n';
+    output << "out_of_order_insert," << bool_value(diagnostics.out_of_order_insert) << '\n';
 }
 
 void write_event_mix(const std::filesystem::path& path, const EventCounts& counts) {
@@ -486,8 +744,10 @@ int main(int argc, char** argv) {
 
         std::vector<std::uint64_t> latencies;
         const auto summary = replay_flow(flow, config.output_dir / "latencies.csv", latencies);
+        const auto tail_event = diagnose_tail_event(flow, summary.max_event_index, summary.max_ns);
 
         write_summary(config.output_dir / "summary.csv", config, flow, summary);
+        write_tail_event(config.output_dir / "tail_event.csv", tail_event);
         write_event_mix(config.output_dir / "event_mix.csv", flow.measured_counts);
         write_run_config(config.output_dir / "run_config.csv", config);
 
@@ -497,6 +757,10 @@ int main(int argc, char** argv) {
         std::cout << "p95_latency_ns=" << summary.p95_ns << '\n';
         std::cout << "p99_latency_ns=" << summary.p99_ns << '\n';
         std::cout << "max_latency_ns=" << summary.max_ns << '\n';
+        std::cout << "max_event_index=" << summary.max_event_index << '\n';
+        std::cout << "max_event_action=" << action_name(tail_event.action) << '\n';
+        std::cout << "max_event_price_level_created=" << bool_value(tail_event.price_level_created) << '\n';
+        std::cout << "max_event_out_of_order_insert=" << bool_value(tail_event.out_of_order_insert) << '\n';
         std::cout << "rejects=" << summary.rejects << '\n';
     } catch (const std::exception& error) {
         std::cerr << error.what() << '\n';
