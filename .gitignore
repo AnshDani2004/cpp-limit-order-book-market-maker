@@ -4,3 +4,5 @@ compile_commands.json
 .DS_Store
 .idea/
 .vscode/
+benchmarks/results/**/latencies.csv
+benchmarks/results/**/readme_snippet.txt

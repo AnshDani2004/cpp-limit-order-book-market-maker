@@ -4,7 +4,9 @@
 
 This repository is being built as a systems focused market microstructure project. Stage 1 implements a deterministic matching engine for one instrument with price time priority, partial fills across levels, cancellation, replacement, self trade prevention, and CSV replay.
 
-No throughput, latency, or profit and loss claims are made yet. Those belong to later stages after the benchmark and strategy code exist and can be reproduced.
+Stage 2 adds a reproducible benchmark harness for deterministic synthetic order flow. On the hardware listed below, the engine processed 1,000,000 synthetic order events at 3,834,790 events per second. This is a measured result, not a target.
+
+Profit and loss claims are not made yet. Those belong to Stage 3 after the market maker strategy code exists and can be reproduced.
 
 ## What Stage 1 Proves
 
@@ -12,6 +14,52 @@ No throughput, latency, or profit and loss claims are made yet. Those belong to 
 2. A mutable order book using ordered price levels and FIFO queues.
 3. Deterministic matching behavior covered by unit tests and a CSV integration test.
 4. Explicit edge case policy documented in [docs/edge_cases.md](docs/edge_cases.md).
+
+## Stage 2 Benchmark Result
+
+Measured command:
+
+```bash
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 benchmarks/run_benchmark.py --events 1000000 --warmup 20000 --seed 42 --output-dir benchmarks/results/stage2_local --build-dir build/stage2_benchmark
+```
+
+If CMake is already on `PATH`, omit the `CMAKE=...` prefix.
+
+Measured output:
+
+```text
+processed 1,000,000 synthetic order events at 3,834,790 events per second
+p50 latency 125 ns
+p95 latency 666 ns
+p99 latency 1208 ns
+max latency 2474709 ns
+rejects 0
+```
+
+Hardware and toolchain:
+
+```text
+CPU Apple M3
+logical cores 8
+RAM 16 GB
+OS macOS 26.5.1
+compiler Apple clang 21.0.0
+CMake 4.3.4
+build type Release
+```
+
+The synthetic event mix is an explicit benchmark assumption, not a claim about any specific exchange venue:
+
+```text
+limit 599,535 events, 59.9535 percent
+market 100,566 events, 10.0566 percent
+cancel 199,619 events, 19.9619 percent
+modify 100,280 events, 10.0280 percent
+```
+
+![Latency CDF](benchmarks/results/stage2_local/latency_cdf.svg)
+
+See [docs/performance.md](docs/performance.md) for the benchmark method, memory notes, and limitations.
 
 ## Build And Test
 
@@ -56,4 +104,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1 is intended to be complete when the local test suite and CI pass. Stage 2 performance numbers and Stage 3 market making results are intentionally absent until they are implemented and measured.
+Stage 1 and Stage 2 are complete once local tests pass and CI is green on `main`. Stage 3 market making results are intentionally absent until they are implemented and measured.

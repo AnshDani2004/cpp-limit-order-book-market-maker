@@ -34,11 +34,16 @@ endif()
 add_executable(orderbook_replay src/replay_main.cpp)
 target_link_libraries(orderbook_replay PRIVATE lob_core)
 
+add_executable(orderbook_benchmark benchmarks/orderbook_benchmark.cpp)
+target_link_libraries(orderbook_benchmark PRIVATE lob_core)
+
 if(LOB_ENABLE_WARNINGS)
     if(MSVC)
         target_compile_options(orderbook_replay PRIVATE /W4 /permissive-)
+        target_compile_options(orderbook_benchmark PRIVATE /W4 /permissive-)
     else()
         target_compile_options(orderbook_replay PRIVATE -Wall -Wextra -Wpedantic)
+        target_compile_options(orderbook_benchmark PRIVATE -Wall -Wextra -Wpedantic)
     endif()
 endif()
 
