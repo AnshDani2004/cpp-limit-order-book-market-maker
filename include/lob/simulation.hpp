@@ -100,11 +100,15 @@ private:
     std::string strategy_name_{};
     FeeSchedule fees_{};
     double cash_{};
+    double cash_compensation_{};
     Quantity inventory_{};
     double reference_mid_{};
     double fee_pnl_{};
+    double fee_pnl_compensation_{};
     double spread_capture_{};
+    double spread_capture_compensation_{};
     double inventory_pnl_from_marks_{};
+    double inventory_pnl_from_marks_compensation_{};
 };
 
 bool pnl_reconciles(const PnlReconciliationFields& fields, double tolerance);

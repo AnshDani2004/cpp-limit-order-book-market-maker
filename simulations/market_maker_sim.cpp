@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -16,6 +17,8 @@ struct Args {
     std::size_t events{200'000};
     std::size_t markout_horizon{50};
     std::size_t curve_sample_stride{100};
+    std::string regime{"all"};
+    std::optional<std::uint64_t> seed_override{};
     std::filesystem::path output_dir{"benchmarks/results/stage3_naive_latest"};
 };
 
@@ -51,6 +54,14 @@ Args parse_args(int argc, char** argv) {
             args.markout_horizon = static_cast<std::size_t>(parse_u64(require_value()));
         } else if (argument == "--curve-sample-stride") {
             args.curve_sample_stride = static_cast<std::size_t>(parse_u64(require_value()));
+        } else if (argument == "--regime") {
+            args.regime = require_value();
+            if (args.regime != "all" && args.regime != "low-volatility" &&
+                args.regime != "high-volatility" && args.regime != "trending") {
+                throw std::runtime_error("unknown regime: " + args.regime);
+            }
+        } else if (argument == "--seed") {
+            args.seed_override = parse_u64(require_value());
         } else if (argument == "--output-dir") {
             args.output_dir = require_value();
         } else {
@@ -61,7 +72,34 @@ Args parse_args(int argc, char** argv) {
     if (args.events == 0) {
         throw std::runtime_error("events must be positive");
     }
+    if (args.seed_override.has_value() && args.regime == "all") {
+        throw std::runtime_error("--seed requires a single --regime");
+    }
     return args;
+}
+
+std::vector<lob::RegimeConfig> selected_regimes(const Args& args) {
+    auto regimes = lob::default_regimes(args.events);
+    if (args.regime == "all") {
+        return regimes;
+    }
+
+    std::vector<lob::RegimeConfig> selected;
+    for (auto& regime : regimes) {
+        const auto matches = (args.regime == "low-volatility" &&
+                              regime.kind == lob::RegimeKind::LowVolatility) ||
+                             (args.regime == "high-volatility" &&
+                              regime.kind == lob::RegimeKind::HighVolatility) ||
+                             (args.regime == "trending" &&
+                              regime.kind == lob::RegimeKind::Trending);
+        if (matches) {
+            if (args.seed_override.has_value()) {
+                regime.seed = *args.seed_override;
+            }
+            selected.push_back(regime);
+        }
+    }
+    return selected;
 }
 
 void write_run_config(const std::filesystem::path& path, const Args& args) {
@@ -72,6 +110,10 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
 
     output << "field,value\n";
     output << "strategy,naive symmetric\n";
+    output << "regime," << args.regime << '\n';
+    if (args.seed_override.has_value()) {
+        output << "seed_override," << *args.seed_override << '\n';
+    }
     output << "events," << args.events << '\n';
     output << "markout_horizon," << args.markout_horizon << '\n';
     output << "curve_sample_stride," << args.curve_sample_stride << '\n';
@@ -79,7 +121,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     output << "naive_full_spread_ticks,10\n";
     output << "quote_size,10\n";
     output << "refresh_cadence,10\n";
-    output << "reconciliation_tolerance_ticks,0.01\n";
+    output << "reconciliation_tolerance_ticks,0.00001\n";
     output << "external_limit_order_share,0.55\n";
     output << "external_market_order_share,0.25\n";
     output << "external_cancel_share,0.10\n";
@@ -95,10 +137,23 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
     }
 
     output << std::setprecision(12);
-    output << "strategy,regime,seed,events,fill_rate,gross_spread_capture,inventory_pnl,"
-           << "adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,"
+    output << "strategy,regime,seed,events,initial_reference_mid,final_reference_mid,"
+           << "fill_rate,gross_spread_capture,inventory_pnl,"
+           << "inventory_pnl_from_marks,inventory_pnl_mark_error,gross_identity_error,"
+           << "net_identity_error,adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,"
            << "inventory_variance,final_inventory,maker_fills,taker_fills,"
-           << "market_maker_filled_quantity,market_maker_posted_quantity,external_rejects,"
+           << "market_maker_buy_fills,market_maker_sell_fills,market_maker_filled_quantity,"
+           << "market_maker_buy_quantity,market_maker_sell_quantity,market_maker_posted_quantity,"
+           << "external_limit_buy_orders,external_limit_sell_orders,external_market_buy_orders,"
+           << "external_market_sell_orders,external_price_modify_buy_orders,"
+           << "external_price_modify_sell_orders,external_limit_buy_quantity,external_limit_sell_quantity,"
+           << "external_market_buy_quantity,external_market_sell_quantity,"
+           << "external_price_modify_buy_quantity,external_price_modify_sell_quantity,"
+           << "average_external_limit_buy_offset,average_external_limit_sell_offset,"
+           << "average_external_price_modify_buy_offset,average_external_price_modify_sell_offset,"
+           << "external_rejects,quote_refreshes,symmetric_quote_refreshes,bid_clip_events,"
+           << "ask_clip_events,average_bid_distance,average_ask_distance,"
+           << "average_abs_quote_asymmetry,max_abs_quote_asymmetry,"
            << "reconciliation_passed\n";
     for (const auto& result : results) {
         const auto& summary = result.summary;
@@ -106,9 +161,15 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
                << summary.regime_name << ','
                << summary.seed << ','
                << summary.events << ','
+               << summary.initial_reference_mid << ','
+               << summary.final_reference_mid << ','
                << summary.fill_rate << ','
                << summary.gross_spread_capture << ','
                << summary.inventory_pnl << ','
+               << summary.inventory_pnl_from_marks << ','
+               << summary.inventory_pnl_mark_error << ','
+               << summary.gross_identity_error << ','
+               << summary.net_identity_error << ','
                << summary.adverse_selection_cost << ','
                << summary.fee_pnl << ','
                << summary.net_pnl_after_fees << ','
@@ -117,9 +178,37 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
                << summary.final_inventory << ','
                << summary.maker_fills << ','
                << summary.taker_fills << ','
+               << summary.market_maker_buy_fills << ','
+               << summary.market_maker_sell_fills << ','
                << summary.market_maker_filled_quantity << ','
+               << summary.market_maker_buy_quantity << ','
+               << summary.market_maker_sell_quantity << ','
                << summary.market_maker_posted_quantity << ','
+               << summary.external_limit_buy_orders << ','
+               << summary.external_limit_sell_orders << ','
+               << summary.external_market_buy_orders << ','
+               << summary.external_market_sell_orders << ','
+               << summary.external_price_modify_buy_orders << ','
+               << summary.external_price_modify_sell_orders << ','
+               << summary.external_limit_buy_quantity << ','
+               << summary.external_limit_sell_quantity << ','
+               << summary.external_market_buy_quantity << ','
+               << summary.external_market_sell_quantity << ','
+               << summary.external_price_modify_buy_quantity << ','
+               << summary.external_price_modify_sell_quantity << ','
+               << summary.average_external_limit_buy_offset << ','
+               << summary.average_external_limit_sell_offset << ','
+               << summary.average_external_price_modify_buy_offset << ','
+               << summary.average_external_price_modify_sell_offset << ','
                << summary.external_rejects << ','
+               << summary.quote_refreshes << ','
+               << summary.symmetric_quote_refreshes << ','
+               << summary.bid_clip_events << ','
+               << summary.ask_clip_events << ','
+               << summary.average_bid_distance << ','
+               << summary.average_ask_distance << ','
+               << summary.average_abs_quote_asymmetry << ','
+               << summary.max_abs_quote_asymmetry << ','
                << (summary.reconciliation_passed ? "true" : "false") << '\n';
     }
 }
@@ -153,7 +242,7 @@ int main(int argc, char** argv) {
         std::filesystem::create_directories(args.output_dir);
 
         std::vector<lob::MarketMakerRunResult> results;
-        for (const auto& regime : lob::default_regimes(args.events)) {
+        for (const auto& regime : selected_regimes(args)) {
             lob::MarketMakerSimulationConfig config;
             config.regime = regime;
             config.markout_horizon = args.markout_horizon;

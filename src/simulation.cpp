@@ -17,6 +17,13 @@ PnlReconciliationFields fields_from_snapshot(const PnlSnapshot& state) {
                                    state.inventory_pnl_from_marks};
 }
 
+void add_compensated(double& sum, double& compensation, double value) {
+    const auto adjusted = value - compensation;
+    const auto next = sum + adjusted;
+    compensation = (next - sum) - adjusted;
+    sum = next;
+}
+
 std::string reconciliation_message(const std::string& regime_name,
                                    const std::string& strategy_name,
                                    double tolerance,
@@ -49,7 +56,9 @@ PnlAccounting::PnlAccounting(std::string regime_name,
       reference_mid_(initial_reference_mid) {}
 
 void PnlAccounting::record_reference_mid(double new_reference_mid) {
-    inventory_pnl_from_marks_ += static_cast<double>(inventory_) * (new_reference_mid - reference_mid_);
+    add_compensated(inventory_pnl_from_marks_,
+                    inventory_pnl_from_marks_compensation_,
+                    static_cast<double>(inventory_) * (new_reference_mid - reference_mid_));
     reference_mid_ = new_reference_mid;
 }
 
@@ -63,17 +72,17 @@ void PnlAccounting::record_fill(const FillEvent& fill) {
 
     const auto quantity = static_cast<double>(fill.quantity);
     if (fill.side == FillSide::Buy) {
-        cash_ -= fill.price * quantity;
+        add_compensated(cash_, cash_compensation_, -fill.price * quantity);
         inventory_ += fill.quantity;
     } else {
-        cash_ += fill.price * quantity;
+        add_compensated(cash_, cash_compensation_, fill.price * quantity);
         inventory_ -= fill.quantity;
     }
 
     const auto fee = fee_delta(fill.role, fill.quantity);
-    cash_ += fee;
-    fee_pnl_ += fee;
-    spread_capture_ += spread_capture_delta(fill);
+    add_compensated(cash_, cash_compensation_, fee);
+    add_compensated(fee_pnl_, fee_pnl_compensation_, fee);
+    add_compensated(spread_capture_, spread_capture_compensation_, spread_capture_delta(fill));
 }
 
 PnlSnapshot PnlAccounting::snapshot() const {
