@@ -42,6 +42,19 @@ The important point is not that these symbols should all be mixed without care. 
 
 ## Fit Coverage Gate
 
-Before reporting a fitted exponential arrival curve, the calibration script must report the number of execution observations used, the number of non empty distance buckets, and the number of buckets with positive fills. If QQQ from the widened prefix has too few positive fill buckets to support a meaningful curve, the writeup must say that plainly and use the pooled real ITCH fallback or the Stage 3 synthetic fallback with the weaker claim clearly labeled.
+Before reporting a fitted exponential arrival curve, the calibration script must report the number of closed quote segments, filled quote segments, execution messages inside those segments, non empty distance buckets, and buckets with positive fills.
+
+The fit coverage gate is automatic. The script must refuse to proceed past measurement unless all of these thresholds are met:
+
+```text
+closed quote segments at least 500
+filled quote segments at least 100
+non empty distance buckets at least 8
+positive fill buckets at least 5
+```
+
+The positive fill bucket threshold is `5` because an exponential arrival curve has two fitted parameters, and five positive points leave visible degrees of freedom instead of fitting a curve through one or two lucky distances. The filled quote segment threshold is `100` so repeated partial execution messages on a small number of orders cannot by themselves pass the gate.
+
+If QQQ from the widened prefix fails this gate, the script must print the exact failed fields and stop. The next run is the clearly labeled pooled real ITCH fallback from the same widened prefix. The Stage 3 synthetic flow remains the final fallback if the widened real data still fails the gate.
 
 The curve fit itself is not allowed to be the first place this decision appears. The calibration data source and fallback rule are fixed here first.
