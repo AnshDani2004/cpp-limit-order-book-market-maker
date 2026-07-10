@@ -156,6 +156,41 @@ bucket 539, open time 09:30:02.252791639, side sell, price 184.76, best bid 179.
 
 The `538` to `540` cent buckets contain many unfilled replace segments within the first two regular session minutes. They look like systematic stub quote maintenance rather than normal near touch liquidity. The next checkpoint must define a fit inclusion rule that excludes this maintenance tail by a stated rule, not by deleting individual rows.
 
+## Ladder Size And Fit Rule
+
+The regular session bucket diagnostics are checked in at `benchmarks/results/stage4b_intensity_regular_session/bucket_diagnostics.csv`. The `538` to `540` cent maintenance ladder has this measured shape:
+
+```text
+total closed quote segments 25518
+ladder closed quote segments 1276
+ladder share of closed quote segments 5.00039188024 percent
+ladder filled quote segments 0
+ladder distinct order refs 1276
+ladder distinct side price levels 69
+ladder source message type U share 100 percent
+ladder close reason replace share 100 percent
+first ladder open time 09:30:00.305358998
+last ladder open time 09:32:38.225403439
+```
+
+The ladder is therefore a meaningful fraction of the regular session sample, not a tiny nuisance. It is not caused by one repeated order reference because every segment has a distinct ITCH order reference. It is also not concentrated in only one or two exact prices. The robust signature is bucket level maintenance behavior: many observations, no fills, all opened by replace messages, and all closed by replace messages.
+
+The next exponential fit must use this coordinate independent inclusion rule:
+
+```text
+exclude a bucket from fit input if quote observations are at least 50, filled quote segments are 0, replace message share is at least 0.95, and replace close share is at least 0.95
+```
+
+This rule excludes systematic stub quote maintenance wherever it appears, without naming the `538` to `540` cent coordinates. The rule does not exclude sparse one observation tail rows by itself. Those remain outside the fit only if the fit checkpoint also applies a separate minimum observation rule.
+
+Applied to the current regular session QQQ run, this rule flags exactly three buckets:
+
+```text
+bucket 538, quote observations 65, filled quote segments 0, replace message share 1, replace close share 1
+bucket 539, quote observations 924, filled quote segments 0, replace message share 1, replace close share 1
+bucket 540, quote observations 287, filled quote segments 0, replace message share 1, replace close share 1
+```
+
 ## Segment Semantics
 
 A quote segment starts when an ITCH add or replace message creates a visible order and the symbol has a two sided book mid. Distance is side adjusted:

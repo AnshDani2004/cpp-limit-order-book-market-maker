@@ -5,6 +5,7 @@ import csv
 import math
 import shutil
 import sys
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -23,6 +24,8 @@ MIN_CLOSED_QUOTE_SEGMENTS = 500
 MIN_FILLED_QUOTE_SEGMENTS = 100
 MIN_NON_EMPTY_DISTANCE_BUCKETS = 8
 MIN_POSITIVE_FILL_BUCKETS = 5
+MAINTENANCE_MIN_OBSERVATIONS = 50
+MAINTENANCE_MIN_REPLACE_SHARE = 0.95
 
 
 @dataclass
@@ -458,6 +461,67 @@ def bucket_rows(result):
     return rows
 
 
+def bucket_diagnostic_rows(result):
+    buckets = {}
+    for segment in result.segments:
+        row = buckets.setdefault(
+            segment.bucket_lower_price_units,
+            {
+                "segments": [],
+                "side_price_counts": Counter(),
+                "close_reason_counts": Counter(),
+                "source_message_counts": Counter(),
+                "order_refs": set(),
+            },
+        )
+        row["segments"].append(segment)
+        row["side_price_counts"][(segment.side, segment.price)] += 1
+        row["close_reason_counts"][segment.close_reason] += 1
+        row["source_message_counts"][segment.source_message_type] += 1
+        row["order_refs"].add(segment.source_order_ref)
+
+    rows = []
+    for lower in sorted(buckets):
+        row = buckets[lower]
+        segments = row["segments"]
+        observations = len(segments)
+        filled = sum(1 for segment in segments if segment.fill_messages > 0)
+        replace_closes = row["close_reason_counts"].get("replace", 0)
+        replace_messages = row["source_message_counts"].get("U", 0)
+        replace_close_share = replace_closes / observations
+        replace_message_share = replace_messages / observations
+        top_price_count = row["side_price_counts"].most_common(1)[0][1]
+        top_five_price_count = sum(count for _price, count in row["side_price_counts"].most_common(5))
+        first_open = min(segment.open_timestamp for segment in segments)
+        last_open = max(segment.open_timestamp for segment in segments)
+        maintenance_bucket = (
+            observations >= MAINTENANCE_MIN_OBSERVATIONS
+            and filled == 0
+            and replace_message_share >= MAINTENANCE_MIN_REPLACE_SHARE
+            and replace_close_share >= MAINTENANCE_MIN_REPLACE_SHARE
+        )
+        rows.append(
+            {
+                "bucket_lower_cents": lower / PRICE_UNITS_PER_CENT,
+                "bucket_upper_cents": (lower + result.bucket_width_price_units) / PRICE_UNITS_PER_CENT,
+                "quote_observations": observations,
+                "filled_quote_segments": filled,
+                "fill_probability": 0.0 if observations == 0 else filled / observations,
+                "distinct_order_refs": len(row["order_refs"]),
+                "distinct_side_price_levels": len(row["side_price_counts"]),
+                "top_side_price_count": top_price_count,
+                "top_side_price_share": top_price_count / observations,
+                "top_five_side_price_share": top_five_price_count / observations,
+                "replace_close_share": replace_close_share,
+                "replace_message_share": replace_message_share,
+                "maintenance_bucket": maintenance_bucket,
+                "first_open_time": time_of_day(first_open),
+                "last_open_time": time_of_day(last_open),
+            }
+        )
+    return rows
+
+
 def coverage_summary(result, rows):
     filled_quote_segments = sum(1 for segment in result.segments if segment.fill_messages > 0)
     return CoverageSummary(
@@ -524,6 +588,49 @@ def write_bucket_rows(path, rows):
                     "fill_probability": f"{row['fill_probability']:.12g}",
                     "execution_messages": row["execution_messages"],
                     "filled_quantity": row["filled_quantity"],
+                }
+            )
+
+
+def write_bucket_diagnostics(path, rows):
+    with path.open("w", newline="") as handle:
+        fieldnames = [
+            "bucket_lower_cents",
+            "bucket_upper_cents",
+            "quote_observations",
+            "filled_quote_segments",
+            "fill_probability",
+            "distinct_order_refs",
+            "distinct_side_price_levels",
+            "top_side_price_count",
+            "top_side_price_share",
+            "top_five_side_price_share",
+            "replace_close_share",
+            "replace_message_share",
+            "maintenance_bucket",
+            "first_open_time",
+            "last_open_time",
+        ]
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(
+                {
+                    "bucket_lower_cents": f"{row['bucket_lower_cents']:.12g}",
+                    "bucket_upper_cents": f"{row['bucket_upper_cents']:.12g}",
+                    "quote_observations": row["quote_observations"],
+                    "filled_quote_segments": row["filled_quote_segments"],
+                    "fill_probability": f"{row['fill_probability']:.12g}",
+                    "distinct_order_refs": row["distinct_order_refs"],
+                    "distinct_side_price_levels": row["distinct_side_price_levels"],
+                    "top_side_price_count": row["top_side_price_count"],
+                    "top_side_price_share": f"{row['top_side_price_share']:.12g}",
+                    "top_five_side_price_share": f"{row['top_five_side_price_share']:.12g}",
+                    "replace_close_share": f"{row['replace_close_share']:.12g}",
+                    "replace_message_share": f"{row['replace_message_share']:.12g}",
+                    "maintenance_bucket": "yes" if row["maintenance_bucket"] else "no",
+                    "first_open_time": row["first_open_time"],
+                    "last_open_time": row["last_open_time"],
                 }
             )
 
@@ -637,10 +744,12 @@ def run(args):
     end_time_ns = parse_time_filter(args.end_time)
     result = measure_intensity(messages, symbols, args.bucket_width_cents, start_time_ns, end_time_ns)
     rows = bucket_rows(result)
+    diagnostic_rows = bucket_diagnostic_rows(result)
     summary = coverage_summary(result, rows)
     gate_failures = fit_gate_failures(summary)
 
     write_bucket_rows(output_dir / "fill_probability_by_distance.csv", rows)
+    write_bucket_diagnostics(output_dir / "bucket_diagnostics.csv", diagnostic_rows)
     write_distance_outliers(output_dir / "distance_outliers.csv", result, args.outlier_distance_cents)
     write_summary(output_dir / "summary.csv", args, result, summary, rows, gate_failures)
 

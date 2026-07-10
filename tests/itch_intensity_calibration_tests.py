@@ -49,6 +49,19 @@ def delete_message(order_ref, timestamp):
     return b"D" + struct.pack(">H", 1) + struct.pack(">H", 2) + u48(timestamp) + struct.pack(">Q", order_ref)
 
 
+def replace_message(old_ref, new_ref, timestamp, shares, price):
+    return (
+        b"U"
+        + struct.pack(">H", 1)
+        + struct.pack(">H", 2)
+        + u48(timestamp)
+        + struct.pack(">Q", old_ref)
+        + struct.pack(">Q", new_ref)
+        + struct.pack(">I", shares)
+        + struct.pack(">I", price)
+    )
+
+
 class ItchIntensityCalibrationTests(unittest.TestCase):
     def test_measurement_counts_filled_and_unfilled_quote_segments_by_distance(self):
         payloads = [
@@ -76,6 +89,16 @@ class ItchIntensityCalibrationTests(unittest.TestCase):
         self.assertEqual(2, rows[0]["quote_observations"])
         self.assertEqual(1, rows[0]["filled_quote_segments"])
         self.assertAlmostEqual(0.5, rows[0]["fill_probability"])
+
+        diagnostic_rows = itch_intensity_calibration.bucket_diagnostic_rows(result)
+        self.assertEqual(1, len(diagnostic_rows))
+        self.assertEqual(2, diagnostic_rows[0]["quote_observations"])
+        self.assertEqual(2, diagnostic_rows[0]["distinct_order_refs"])
+        self.assertEqual(2, diagnostic_rows[0]["distinct_side_price_levels"])
+        self.assertEqual(1, diagnostic_rows[0]["top_side_price_count"])
+        self.assertAlmostEqual(0.5, diagnostic_rows[0]["top_side_price_share"])
+        self.assertAlmostEqual(0.0, diagnostic_rows[0]["replace_close_share"])
+        self.assertFalse(diagnostic_rows[0]["maintenance_bucket"])
 
     def test_crossed_books_do_not_create_quote_segments(self):
         payloads = [
@@ -116,6 +139,30 @@ class ItchIntensityCalibrationTests(unittest.TestCase):
         self.assertEqual(1, rows[0]["filled_quote_segments"])
         self.assertEqual(10, result.first_timestamp)
         self.assertEqual(60, result.last_timestamp)
+
+    def test_replace_only_zero_fill_bucket_is_flagged_as_maintenance(self):
+        payloads = [
+            add_message(100, 10, "B", 100, "TEST", 10000),
+            add_message(200, 20, "S", 100, "TEST", 10100),
+            add_message(300, 30, "B", 100, "TEST", 9000),
+        ]
+        old_ref = 300
+        for index in range(50):
+            new_ref = 301 + index
+            payloads.append(replace_message(old_ref, new_ref, 40 + index, 100, 9000))
+            old_ref = new_ref
+        payloads.append(delete_message(old_ref, 100))
+        messages = [itch_intensity_calibration.itch_replay.parse_message(payload) for payload in payloads]
+
+        result = itch_intensity_calibration.measure_intensity(messages, ["TEST"], 1.0, start_time_ns=40)
+        diagnostic_rows = itch_intensity_calibration.bucket_diagnostic_rows(result)
+        maintenance_rows = [row for row in diagnostic_rows if row["maintenance_bucket"]]
+
+        self.assertEqual(1, len(maintenance_rows))
+        self.assertEqual(50, maintenance_rows[0]["quote_observations"])
+        self.assertEqual(0, maintenance_rows[0]["filled_quote_segments"])
+        self.assertGreaterEqual(maintenance_rows[0]["replace_close_share"], 0.95)
+        self.assertAlmostEqual(1.0, maintenance_rows[0]["replace_message_share"])
 
     def test_fit_gate_passes_when_thresholds_are_met(self):
         summary = itch_intensity_calibration.CoverageSummary(
