@@ -13,6 +13,8 @@
 
 namespace {
 
+constexpr double kCalibratedFillDecay = 0.63274456291;
+
 struct Args {
     std::string strategy{"naive"};
     std::size_t events{200'000};
@@ -46,7 +48,8 @@ Args parse_args(int argc, char** argv) {
 
         if (argument == "--strategy") {
             args.strategy = require_value();
-            if (args.strategy != "naive" && args.strategy != "avellaneda-stoikov") {
+            if (args.strategy != "naive" && args.strategy != "avellaneda-stoikov" &&
+                args.strategy != "avellaneda-stoikov-calibrated") {
                 throw std::runtime_error("unknown strategy: " + args.strategy);
             }
         } else if (argument == "--events") {
@@ -109,8 +112,15 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         throw std::runtime_error("could not write run config");
     }
 
+    output << std::setprecision(12);
     output << "field,value\n";
-    output << "strategy," << (args.strategy == "naive" ? "naive symmetric" : "avellaneda stoikov") << '\n';
+    if (args.strategy == "naive") {
+        output << "strategy,naive symmetric\n";
+    } else if (args.strategy == "avellaneda-stoikov") {
+        output << "strategy,avellaneda stoikov\n";
+    } else {
+        output << "strategy,avellaneda stoikov calibrated\n";
+    }
     output << "regime," << args.regime << '\n';
     if (args.seed_override.has_value()) {
         output << "seed_override," << *args.seed_override << '\n';
@@ -125,9 +135,12 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         output << "naive_full_spread_ticks,10\n";
     } else {
         output << "risk_aversion,0.002\n";
-        output << "fill_decay,0.25\n";
+        output << "fill_decay," << (args.strategy == "avellaneda-stoikov" ? 0.25 : kCalibratedFillDecay) << '\n';
         output << "volatility_source,regime volatility per event\n";
         output << "time_horizon,full regime run\n";
+        if (args.strategy == "avellaneda-stoikov-calibrated") {
+            output << "fill_decay_source,Stage 4B QQQ regular session exponential fit\n";
+        }
     }
     output << "reconciliation_tolerance_ticks,0.00001\n";
     output << "external_limit_order_share,0.55\n";
@@ -290,8 +303,10 @@ int main(int argc, char** argv) {
             config.curve_sample_stride = args.curve_sample_stride;
             if (args.strategy == "naive") {
                 results.push_back(lob::run_naive_symmetric_strategy(config));
-            } else {
+            } else if (args.strategy == "avellaneda-stoikov") {
                 results.push_back(lob::run_avellaneda_stoikov_strategy(config));
+            } else {
+                results.push_back(lob::run_calibrated_avellaneda_stoikov_strategy(config));
             }
         }
 

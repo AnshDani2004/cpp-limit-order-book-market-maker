@@ -138,6 +138,28 @@ TEST_CASE("avellaneda stoikov strategy reconciles in every Stage 3 regime") {
     }
 }
 
+TEST_CASE("calibrated avellaneda stoikov strategy reconciles in every Stage 4B regime") {
+    const auto regimes = lob::default_regimes(2000);
+
+    for (const auto& regime : regimes) {
+        const auto result = lob::run_calibrated_avellaneda_stoikov_strategy(make_config(regime));
+
+        CHECK(result.summary.strategy_name == "avellaneda stoikov calibrated");
+        CHECK(result.summary.regime_name == regime.name);
+        CHECK(result.summary.reconciliation_passed);
+        CHECK(result.summary.market_maker_posted_quantity > 0);
+        CHECK(result.summary.market_maker_filled_quantity > 0);
+        CHECK(result.summary.market_maker_buy_quantity + result.summary.market_maker_sell_quantity ==
+              result.summary.market_maker_filled_quantity);
+        CHECK(result.summary.fill_rate > 0.0);
+        CHECK(result.summary.maker_fills > 0);
+        CHECK(result.summary.taker_fills == 0);
+        CHECK(result.summary.quote_refreshes > 0);
+        CHECK_FALSE(result.curve.empty());
+        CHECK(result.adverse_selection_split.size() == 3);
+    }
+}
+
 TEST_CASE("avellaneda stoikov adverse selection split reconciles to maker fill totals") {
     auto regime = lob::default_regimes(2000).front();
     auto config = make_config(regime);

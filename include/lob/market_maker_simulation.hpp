@@ -122,5 +122,6 @@ struct MarketMakerRunResult {
 
 MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config);
 MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config);
+MarketMakerRunResult run_calibrated_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config);
 
 }  // namespace lob

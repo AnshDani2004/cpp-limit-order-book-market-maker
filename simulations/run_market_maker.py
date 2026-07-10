@@ -18,7 +18,11 @@ COLORS = {
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--strategy", default="naive", choices=["naive", "avellaneda-stoikov"])
+    parser.add_argument(
+        "--strategy",
+        default="naive",
+        choices=["naive", "avellaneda-stoikov", "avellaneda-stoikov-calibrated"],
+    )
     parser.add_argument("--events", type=int, default=200_000)
     parser.add_argument("--markout-horizon", type=int, default=50)
     parser.add_argument("--curve-sample-stride", type=int, default=100)
@@ -33,13 +37,17 @@ def parse_args():
 def strategy_label(strategy):
     if strategy == "naive":
         return "Naive"
-    return "Avellaneda Stoikov"
+    if strategy == "avellaneda-stoikov":
+        return "Avellaneda Stoikov"
+    return "Calibrated Avellaneda Stoikov"
 
 
 def strategy_file_prefix(strategy):
     if strategy == "naive":
         return "naive"
-    return "avellaneda_stoikov"
+    if strategy == "avellaneda-stoikov":
+        return "avellaneda_stoikov"
+    return "avellaneda_stoikov_calibrated"
 
 
 def run(command, cwd):
@@ -162,7 +170,7 @@ def write_trending_skew_csv(path, rows):
         return
 
     with path.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "event_index",
@@ -296,9 +304,9 @@ def main():
         f"{label} Cumulative PnL After Fees By Regime",
         "Net PnL after fees",
     )
-    if args.strategy == "avellaneda-stoikov":
-        write_trending_skew_csv(output_dir / "avellaneda_stoikov_trending_skew.csv", curve)
-        write_trending_skew_plot(output_dir / "avellaneda_stoikov_trending_skew.svg", curve)
+    if args.strategy in {"avellaneda-stoikov", "avellaneda-stoikov-calibrated"}:
+        write_trending_skew_csv(output_dir / f"{prefix}_trending_skew.csv", curve)
+        write_trending_skew_plot(output_dir / f"{prefix}_trending_skew.svg", curve)
 
     print((output_dir / "summary.csv").resolve())
     print((output_dir / f"{prefix}_inventory.svg").resolve())

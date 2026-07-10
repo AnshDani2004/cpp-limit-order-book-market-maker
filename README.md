@@ -8,6 +8,8 @@ Stage 2 adds a reproducible benchmark harness for deterministic synthetic order 
 
 Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. The results are regime dependent: inventory aware quoting materially reduced inventory risk in the high volatility run, helped only modestly in the low volatility run, and did not reduce inventory in the trending run because the full-run time horizon decayed before the late inventory buildup. The AS runs also show a measured tradeoff: inventory-reducing fills account for most of AS adverse selection cost. See [docs/stage3_results.md](docs/stage3_results.md).
 
+Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated strategy is more active and slightly flatter, but it underperforms the original AS on net PnL in all three synthetic regimes because tighter quotes lose spread and increase adverse selection. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
+
 ## What Stage 1 Proves
 
 1. Modern C++ structure with RAII, value semantics, const correctness, and CMake.
@@ -93,6 +95,30 @@ The replay translated `12423` QQQ messages from a bounded prefix of the public N
 
 See [docs/stage4a_replay.md](docs/stage4a_replay.md) for the source, limitations, translation rules, and comparison against the Stage 3 synthetic assumptions.
 
+## Stage 4B Calibrated Strategy Result
+
+The Stage 4B calibrated AS run uses the fitted QQQ regular session decay:
+
+```text
+fill_decay 0.63274456291
+```
+
+The original hand chosen AS value was:
+
+```text
+fill_decay 0.25
+```
+
+Measured comparison against original AS:
+
+```text
+low volatility net PnL change -467729.3851, final inventory change -78
+high volatility net PnL change -196960.86527, final inventory change -122
+trending net PnL change -304528.75032, final inventory change -643
+```
+
+The calibrated strategy improves final inventory slightly in all three regimes, but it lowers spread capture and raises adverse selection cost enough to reduce net PnL. The full attribution table is checked in at `benchmarks/results/stage4b_strategy_comparison/metrics_table.csv`.
+
 ## Build And Test
 
 ```bash
@@ -136,4 +162,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, and Stage 4A are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, and Stage 4B are complete once local tests pass and CI is green on `main`.

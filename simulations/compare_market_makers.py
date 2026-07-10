@@ -9,11 +9,13 @@ from pathlib import Path
 STRATEGY_LABELS = {
     "naive symmetric": "Naive",
     "avellaneda stoikov": "Avellaneda Stoikov",
+    "avellaneda stoikov calibrated": "Calibrated Avellaneda Stoikov",
 }
 
 STRATEGY_COLORS = {
     "naive symmetric": "#2563eb",
     "avellaneda stoikov": "#dc2626",
+    "avellaneda stoikov calibrated": "#7c3aed",
 }
 
 METRICS = [
@@ -35,6 +37,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--naive-dir", default="benchmarks/results/stage3_naive_checkpoint")
     parser.add_argument("--as-dir", default="benchmarks/results/stage3_avellaneda_stoikov_checkpoint")
+    parser.add_argument("--calibrated-as-dir", default="")
     parser.add_argument("--output-dir", default="benchmarks/results/stage3_comparison")
     return parser.parse_args()
 
@@ -75,32 +78,60 @@ def write_side_by_side(path, summaries):
         "metric",
         "naive_symmetric",
         "avellaneda_stoikov",
+        "avellaneda_stoikov_calibrated",
         "as_minus_naive",
         "as_percent_change",
+        "calibrated_minus_naive",
+        "calibrated_percent_change_vs_naive",
+        "calibrated_minus_as",
+        "calibrated_percent_change_vs_as",
     ]
     by_regime = {}
     for row in summaries:
         by_regime.setdefault(row["regime"], {})[row["strategy"]] = row
 
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for regime, strategies in by_regime.items():
             naive = strategies["naive symmetric"]
             avellaneda = strategies["avellaneda stoikov"]
+            calibrated = strategies.get("avellaneda stoikov calibrated")
             for metric, _label in METRICS:
                 naive_value = numeric(naive[metric])
                 as_value = numeric(avellaneda[metric])
                 delta = as_value - naive_value
                 percent_change = "" if naive_value == 0 else delta / abs(naive_value)
+                calibrated_value = "" if calibrated is None else numeric(calibrated[metric])
+                calibrated_minus_naive = "" if calibrated is None else calibrated_value - naive_value
+                calibrated_percent_vs_naive = (
+                    "" if calibrated is None or naive_value == 0 else calibrated_minus_naive / abs(naive_value)
+                )
+                calibrated_minus_as = "" if calibrated is None else calibrated_value - as_value
+                calibrated_percent_vs_as = (
+                    "" if calibrated is None or as_value == 0 else calibrated_minus_as / abs(as_value)
+                )
                 writer.writerow(
                     {
                         "regime": regime,
                         "metric": metric,
                         "naive_symmetric": f"{naive_value:.12g}",
                         "avellaneda_stoikov": f"{as_value:.12g}",
+                        "avellaneda_stoikov_calibrated": "" if calibrated is None else f"{calibrated_value:.12g}",
                         "as_minus_naive": f"{delta:.12g}",
                         "as_percent_change": "" if percent_change == "" else f"{percent_change:.12g}",
+                        "calibrated_minus_naive": ""
+                        if calibrated_minus_naive == ""
+                        else f"{calibrated_minus_naive:.12g}",
+                        "calibrated_percent_change_vs_naive": ""
+                        if calibrated_percent_vs_naive == ""
+                        else f"{calibrated_percent_vs_naive:.12g}",
+                        "calibrated_minus_as": ""
+                        if calibrated_minus_as == ""
+                        else f"{calibrated_minus_as:.12g}",
+                        "calibrated_percent_change_vs_as": ""
+                        if calibrated_percent_vs_as == ""
+                        else f"{calibrated_percent_vs_as:.12g}",
                     }
                 )
 
@@ -108,7 +139,7 @@ def write_side_by_side(path, summaries):
 def write_regime_summary(path, summaries):
     with path.open("w", newline="") as handle:
         fieldnames = list(summaries[0].keys())
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(summaries)
 
@@ -193,13 +224,25 @@ def main():
     output_dir.mkdir(parents=True)
 
     summaries = read_summary(naive_dir / "summary.csv") + read_summary(as_dir / "summary.csv")
+    calibrated_dir = Path(args.calibrated_as_dir) if args.calibrated_as_dir else None
+    if calibrated_dir is not None:
+        summaries += read_summary(calibrated_dir / "summary.csv")
     write_side_by_side(output_dir / "metrics_table.csv", summaries)
     write_regime_summary(output_dir / "summary_by_strategy.csv", summaries)
     as_adverse_split = as_dir / "adverse_selection_split.csv"
     if as_adverse_split.exists():
         shutil.copyfile(as_adverse_split, output_dir / "avellaneda_stoikov_adverse_selection_split.csv")
+    if calibrated_dir is not None:
+        calibrated_split = calibrated_dir / "adverse_selection_split.csv"
+        if calibrated_split.exists():
+            shutil.copyfile(
+                calibrated_split,
+                output_dir / "avellaneda_stoikov_calibrated_adverse_selection_split.csv",
+            )
 
     curves = read_curve(naive_dir / "equity_curve.csv") + read_curve(as_dir / "equity_curve.csv")
+    if calibrated_dir is not None:
+        curves += read_curve(calibrated_dir / "equity_curve.csv")
     for regime in ["low volatility", "high volatility", "trending"]:
         slug = regime.replace(" ", "_")
         write_comparison_plot(
@@ -224,6 +267,9 @@ def main():
     copied_split = output_dir / "avellaneda_stoikov_adverse_selection_split.csv"
     if copied_split.exists():
         print(copied_split.resolve())
+    copied_calibrated_split = output_dir / "avellaneda_stoikov_calibrated_adverse_selection_split.csv"
+    if copied_calibrated_split.exists():
+        print(copied_calibrated_split.resolve())
 
 
 if __name__ == "__main__":

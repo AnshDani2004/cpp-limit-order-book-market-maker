@@ -18,13 +18,16 @@ namespace {
 
 constexpr const char* kNaiveStrategyName = "naive symmetric";
 constexpr const char* kAvellanedaStoikovStrategyName = "avellaneda stoikov";
+constexpr const char* kCalibratedAvellanedaStoikovStrategyName = "avellaneda stoikov calibrated";
 constexpr const char* kMarketMakerOwner = "market_maker";
 constexpr OrderId kMarketMakerOrderIdStart = 1'000'000'000'000ULL;
 constexpr double kRunReconciliationTolerance = 1e-5;
+constexpr double kCalibratedFillDecay = 0.63274456291;
 
 enum class StrategyKind {
     NaiveSymmetric,
-    AvellanedaStoikov
+    AvellanedaStoikov,
+    CalibratedAvellanedaStoikov
 };
 
 enum class ExternalAction {
@@ -609,6 +612,8 @@ const char* strategy_name(StrategyKind kind) {
             return kNaiveStrategyName;
         case StrategyKind::AvellanedaStoikov:
             return kAvellanedaStoikovStrategyName;
+        case StrategyKind::CalibratedAvellanedaStoikov:
+            return kCalibratedAvellanedaStoikovStrategyName;
     }
     return "unknown";
 }
@@ -969,6 +974,12 @@ MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationCon
 
 MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config) {
     return run_strategy(config, StrategyKind::AvellanedaStoikov);
+}
+
+MarketMakerRunResult run_calibrated_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config) {
+    auto calibrated_config = config;
+    calibrated_config.avellaneda_stoikov.fill_decay = kCalibratedFillDecay;
+    return run_strategy(calibrated_config, StrategyKind::CalibratedAvellanedaStoikov);
 }
 
 }  // namespace lob
