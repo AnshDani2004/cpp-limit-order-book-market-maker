@@ -6,6 +6,8 @@ bucket_width_cents,1
 messages_read,10976950
 supported_symbol_messages,83209
 ignored_messages,10893741
+skipped_one_sided_mid_segments,3
+skipped_crossed_mid_segments,0
 closed_quote_segments,42377
 filled_quote_segments,334
 execution_messages_in_segments,413

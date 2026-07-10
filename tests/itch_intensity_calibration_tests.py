@@ -71,9 +71,29 @@ class ItchIntensityCalibrationTests(unittest.TestCase):
         self.assertEqual(0, summary.right_censored_quote_segments)
         self.assertEqual(1, summary.non_empty_distance_buckets)
         self.assertEqual(1, summary.positive_fill_buckets)
+        self.assertEqual(2, result.skipped_one_sided_mid_segments)
+        self.assertEqual(0, result.skipped_crossed_mid_segments)
         self.assertEqual(2, rows[0]["quote_observations"])
         self.assertEqual(1, rows[0]["filled_quote_segments"])
         self.assertAlmostEqual(0.5, rows[0]["fill_probability"])
+
+    def test_crossed_books_do_not_create_quote_segments(self):
+        payloads = [
+            add_message(100, 10, "B", 100, "TEST", 10000),
+            add_message(200, 20, "S", 100, "TEST", 9900),
+            add_message(300, 30, "B", 100, "TEST", 9800),
+            delete_message(300, 40),
+        ]
+        messages = [itch_intensity_calibration.itch_replay.parse_message(payload) for payload in payloads]
+
+        result = itch_intensity_calibration.measure_intensity(messages, ["TEST"], 1.0)
+        rows = itch_intensity_calibration.bucket_rows(result)
+        summary = itch_intensity_calibration.coverage_summary(result, rows)
+
+        self.assertEqual(0, summary.closed_quote_segments)
+        self.assertEqual(0, summary.non_empty_distance_buckets)
+        self.assertEqual(2, result.skipped_one_sided_mid_segments)
+        self.assertEqual(1, result.skipped_crossed_mid_segments)
 
     def test_fit_gate_passes_when_thresholds_are_met(self):
         summary = itch_intensity_calibration.CoverageSummary(

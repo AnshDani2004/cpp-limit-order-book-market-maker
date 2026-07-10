@@ -15,6 +15,7 @@ DEFAULT_RANGE_BYTES = 134_217_728
 DEFAULT_SYMBOLS = "QQQ"
 DEFAULT_OUTPUT_DIR = "benchmarks/results/stage4b_intensity_measurement"
 DEFAULT_BUCKET_WIDTH_CENTS = 1.0
+DEFAULT_OUTLIER_DISTANCE_CENTS = 100.0
 PRICE_UNITS_PER_CENT = 100
 MIN_CLOSED_QUOTE_SEGMENTS = 500
 MIN_FILLED_QUOTE_SEGMENTS = 100
@@ -23,12 +24,26 @@ MIN_POSITIVE_FILL_BUCKETS = 5
 
 
 @dataclass
+class MidSnapshot:
+    best_bid: int | None
+    best_ask: int | None
+    mid_price_units: float | None
+    state: str
+
+
+@dataclass
 class QuoteSegment:
+    source_order_ref: int
+    source_message_type: str
+    open_message_index: int
     symbol: str
     side: str
     price: int
     shares: int
     open_timestamp: int
+    best_bid: int
+    best_ask: int
+    mid_price_units: float
     distance_price_units: float
     bucket_lower_price_units: int
     fill_messages: int = 0
@@ -65,6 +80,8 @@ class CalibrationResult:
     messages_read: int
     supported_messages: int
     ignored_messages: int
+    skipped_one_sided_mid_segments: int
+    skipped_crossed_mid_segments: int
     symbols: list[str]
     bucket_width_price_units: int
 
@@ -89,11 +106,16 @@ class SymbolBook:
         return min(self.ask_sizes)
 
     def mid(self):
+        return self.mid_snapshot().mid_price_units
+
+    def mid_snapshot(self):
         bid = self.best_bid()
         ask = self.best_ask()
         if bid is None or ask is None:
-            return None
-        return (bid + ask) / 2.0
+            return MidSnapshot(best_bid=bid, best_ask=ask, mid_price_units=None, state="one_sided")
+        if bid >= ask:
+            return MidSnapshot(best_bid=bid, best_ask=ask, mid_price_units=None, state="crossed")
+        return MidSnapshot(best_bid=bid, best_ask=ask, mid_price_units=(bid + ask) / 2.0, state="valid")
 
     def add(self, side, price, quantity):
         sizes = self.bid_sizes if side == "buy" else self.ask_sizes
@@ -116,6 +138,7 @@ def parse_args():
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--input-gz", default="")
     parser.add_argument("--bucket-width-cents", type=float, default=DEFAULT_BUCKET_WIDTH_CENTS)
+    parser.add_argument("--outlier-distance-cents", type=float, default=DEFAULT_OUTLIER_DISTANCE_CENTS)
     parser.add_argument("--allow-thin-measurement", action="store_true")
     return parser.parse_args()
 
@@ -134,19 +157,53 @@ def bucket_lower(distance_price_units, bucket_width_price_units):
     return math.floor(distance_price_units / bucket_width_price_units) * bucket_width_price_units
 
 
-def open_segment(segments, symbol, side, price, shares, timestamp, mid, bucket_width_price_units):
+def time_of_day(timestamp):
+    seconds, nanoseconds = divmod(timestamp, 1_000_000_000)
+    hours, seconds = divmod(seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{nanoseconds:09d}"
+
+
+def open_segment(
+    segments,
+    source_order_ref,
+    source_message_type,
+    open_message_index,
+    symbol,
+    side,
+    price,
+    shares,
+    timestamp,
+    snapshot,
+    bucket_width_price_units,
+):
+    mid = snapshot.mid_price_units
     distance = distance_for_order(side, price, mid)
     segment = QuoteSegment(
+        source_order_ref=source_order_ref,
+        source_message_type=source_message_type,
+        open_message_index=open_message_index,
         symbol=symbol,
         side=side,
         price=price,
         shares=shares,
         open_timestamp=timestamp,
+        best_bid=snapshot.best_bid,
+        best_ask=snapshot.best_ask,
+        mid_price_units=mid,
         distance_price_units=distance,
         bucket_lower_price_units=bucket_lower(distance, bucket_width_price_units),
     )
     segments.append(segment)
     return len(segments) - 1
+
+
+def count_mid_skip(snapshot):
+    if snapshot.state == "one_sided":
+        return 1, 0
+    if snapshot.state == "crossed":
+        return 0, 1
+    return 0, 0
 
 
 def close_segment(segments, segment_index, timestamp, reason):
@@ -179,6 +236,8 @@ def measure_intensity(messages, symbols, bucket_width_cents):
     messages_read = 0
     supported_messages = 0
     ignored_messages = 0
+    skipped_one_sided_mid_segments = 0
+    skipped_crossed_mid_segments = 0
 
     for message in messages:
         if message is None:
@@ -192,19 +251,26 @@ def measure_intensity(messages, symbols, bucket_width_cents):
             supported_messages += 1
             side = itch_replay.side_name(message.side)
             book = books[message.stock]
-            mid = book.mid()
+            snapshot = book.mid_snapshot()
             segment_index = None
-            if mid is not None:
+            if snapshot.mid_price_units is not None:
                 segment_index = open_segment(
                     segments,
+                    message.order_ref,
+                    message.message_type,
+                    messages_read,
                     message.stock,
                     side,
                     message.price,
                     message.shares,
                     message.timestamp,
-                    mid,
+                    snapshot,
                     bucket_width_price_units,
                 )
+            else:
+                one_sided, crossed = count_mid_skip(snapshot)
+                skipped_one_sided_mid_segments += one_sided
+                skipped_crossed_mid_segments += crossed
             active[message.order_ref] = CalibrationOrder(
                 source_order_ref=message.order_ref,
                 symbol=message.stock,
@@ -256,19 +322,26 @@ def measure_intensity(messages, symbols, bucket_width_cents):
             book.remove(active_order.side, active_order.price, active_order.remaining)
             close_segment(segments, active_order.segment_index, message.timestamp, "replace")
             active.pop(message.order_ref, None)
-            mid = book.mid()
+            snapshot = book.mid_snapshot()
             segment_index = None
-            if mid is not None:
+            if snapshot.mid_price_units is not None:
                 segment_index = open_segment(
                     segments,
+                    message.new_order_ref,
+                    message.message_type,
+                    messages_read,
                     active_order.symbol,
                     active_order.side,
                     message.price,
                     message.shares,
                     message.timestamp,
-                    mid,
+                    snapshot,
                     bucket_width_price_units,
                 )
+            else:
+                one_sided, crossed = count_mid_skip(snapshot)
+                skipped_one_sided_mid_segments += one_sided
+                skipped_crossed_mid_segments += crossed
             active[message.new_order_ref] = CalibrationOrder(
                 source_order_ref=message.new_order_ref,
                 symbol=active_order.symbol,
@@ -290,6 +363,8 @@ def measure_intensity(messages, symbols, bucket_width_cents):
         messages_read=messages_read,
         supported_messages=supported_messages,
         ignored_messages=ignored_messages,
+        skipped_one_sided_mid_segments=skipped_one_sided_mid_segments,
+        skipped_crossed_mid_segments=skipped_crossed_mid_segments,
         symbols=symbols,
         bucket_width_price_units=bucket_width_price_units,
     )
@@ -405,6 +480,66 @@ def write_bucket_rows(path, rows):
             )
 
 
+def format_price_units(value):
+    return f"{value / 10000:.12g}"
+
+
+def format_distance_cents(value):
+    return f"{value / PRICE_UNITS_PER_CENT:.12g}"
+
+
+def write_distance_outliers(path, result, threshold_cents):
+    threshold_price_units = threshold_cents * PRICE_UNITS_PER_CENT
+    with path.open("w", newline="") as handle:
+        fieldnames = [
+            "source_order_ref",
+            "source_message_type",
+            "open_message_index",
+            "open_timestamp",
+            "open_time",
+            "side",
+            "price",
+            "shares",
+            "best_bid",
+            "best_ask",
+            "mid",
+            "distance_cents",
+            "bucket_lower_cents",
+            "fill_messages",
+            "filled_quantity",
+            "close_reason",
+            "close_timestamp",
+            "close_time",
+        ]
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for segment in sorted(result.segments, key=lambda item: abs(item.distance_price_units), reverse=True):
+            if abs(segment.distance_price_units) < threshold_price_units:
+                continue
+            writer.writerow(
+                {
+                    "source_order_ref": segment.source_order_ref,
+                    "source_message_type": segment.source_message_type,
+                    "open_message_index": segment.open_message_index,
+                    "open_timestamp": segment.open_timestamp,
+                    "open_time": time_of_day(segment.open_timestamp),
+                    "side": segment.side,
+                    "price": format_price_units(segment.price),
+                    "shares": segment.shares,
+                    "best_bid": format_price_units(segment.best_bid),
+                    "best_ask": format_price_units(segment.best_ask),
+                    "mid": format_price_units(segment.mid_price_units),
+                    "distance_cents": format_distance_cents(segment.distance_price_units),
+                    "bucket_lower_cents": format_distance_cents(segment.bucket_lower_price_units),
+                    "fill_messages": segment.fill_messages,
+                    "filled_quantity": segment.filled_quantity,
+                    "close_reason": segment.close_reason,
+                    "close_timestamp": segment.close_timestamp,
+                    "close_time": time_of_day(segment.close_timestamp),
+                }
+            )
+
+
 def write_summary(path, args, result, summary, rows, gate_failures):
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")
@@ -416,6 +551,8 @@ def write_summary(path, args, result, summary, rows, gate_failures):
         writer.writerow(["messages_read", result.messages_read])
         writer.writerow(["supported_symbol_messages", result.supported_messages])
         writer.writerow(["ignored_messages", result.ignored_messages])
+        writer.writerow(["skipped_one_sided_mid_segments", result.skipped_one_sided_mid_segments])
+        writer.writerow(["skipped_crossed_mid_segments", result.skipped_crossed_mid_segments])
         writer.writerow(["closed_quote_segments", summary.closed_quote_segments])
         writer.writerow(["filled_quote_segments", summary.filled_quote_segments])
         writer.writerow(["execution_messages_in_segments", summary.execution_messages_in_segments])
@@ -450,6 +587,7 @@ def run(args):
     gate_failures = fit_gate_failures(summary)
 
     write_bucket_rows(output_dir / "fill_probability_by_distance.csv", rows)
+    write_distance_outliers(output_dir / "distance_outliers.csv", result, args.outlier_distance_cents)
     write_summary(output_dir / "summary.csv", args, result, summary, rows, gate_failures)
 
     if gate_failures:
