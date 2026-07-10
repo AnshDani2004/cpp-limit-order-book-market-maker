@@ -95,6 +95,28 @@ class ItchIntensityCalibrationTests(unittest.TestCase):
         self.assertEqual(2, result.skipped_one_sided_mid_segments)
         self.assertEqual(1, result.skipped_crossed_mid_segments)
 
+    def test_start_time_filters_measured_segments_without_losing_book_state(self):
+        payloads = [
+            add_message(100, 10, "B", 100, "TEST", 9900),
+            add_message(200, 20, "S", 100, "TEST", 10100),
+            add_message(300, 30, "B", 25, "TEST", 9950),
+            delete_message(300, 40),
+            add_message(400, 50, "S", 40, "TEST", 10050),
+            execute_message(400, 60, 40),
+        ]
+        messages = [itch_intensity_calibration.itch_replay.parse_message(payload) for payload in payloads]
+
+        result = itch_intensity_calibration.measure_intensity(messages, ["TEST"], 1.0, start_time_ns=45)
+        rows = itch_intensity_calibration.bucket_rows(result)
+        summary = itch_intensity_calibration.coverage_summary(result, rows)
+
+        self.assertEqual(1, summary.closed_quote_segments)
+        self.assertEqual(1, summary.filled_quote_segments)
+        self.assertEqual(1, rows[0]["quote_observations"])
+        self.assertEqual(1, rows[0]["filled_quote_segments"])
+        self.assertEqual(10, result.first_timestamp)
+        self.assertEqual(60, result.last_timestamp)
+
     def test_fit_gate_passes_when_thresholds_are_met(self):
         summary = itch_intensity_calibration.CoverageSummary(
             closed_quote_segments=500,

@@ -16,6 +16,8 @@ DEFAULT_SYMBOLS = "QQQ"
 DEFAULT_OUTPUT_DIR = "benchmarks/results/stage4b_intensity_measurement"
 DEFAULT_BUCKET_WIDTH_CENTS = 1.0
 DEFAULT_OUTLIER_DISTANCE_CENTS = 100.0
+DEFAULT_START_TIME = ""
+DEFAULT_END_TIME = ""
 PRICE_UNITS_PER_CENT = 100
 MIN_CLOSED_QUOTE_SEGMENTS = 500
 MIN_FILLED_QUOTE_SEGMENTS = 100
@@ -80,6 +82,10 @@ class CalibrationResult:
     messages_read: int
     supported_messages: int
     ignored_messages: int
+    first_timestamp: int
+    last_timestamp: int
+    start_time_ns: int | None
+    end_time_ns: int | None
     skipped_one_sided_mid_segments: int
     skipped_crossed_mid_segments: int
     symbols: list[str]
@@ -139,12 +145,42 @@ def parse_args():
     parser.add_argument("--input-gz", default="")
     parser.add_argument("--bucket-width-cents", type=float, default=DEFAULT_BUCKET_WIDTH_CENTS)
     parser.add_argument("--outlier-distance-cents", type=float, default=DEFAULT_OUTLIER_DISTANCE_CENTS)
+    parser.add_argument("--start-time", default=DEFAULT_START_TIME)
+    parser.add_argument("--end-time", default=DEFAULT_END_TIME)
     parser.add_argument("--allow-thin-measurement", action="store_true")
     return parser.parse_args()
 
 
 def parse_symbols(value):
     return sorted({symbol.strip().upper() for symbol in value.split(",") if symbol.strip()})
+
+
+def parse_time_filter(value):
+    if not value:
+        return None
+    parts = value.split(":")
+    if len(parts) != 3:
+        raise ValueError(f"invalid time filter {value}")
+    hours = int(parts[0])
+    minutes = int(parts[1])
+    seconds_part = parts[2]
+    if "." in seconds_part:
+        seconds_text, fraction_text = seconds_part.split(".", 1)
+        fraction_text = (fraction_text + "000000000")[:9]
+    else:
+        seconds_text = seconds_part
+        fraction_text = "000000000"
+    seconds = int(seconds_text)
+    nanoseconds = int(fraction_text)
+    return ((hours * 60 + minutes) * 60 + seconds) * 1_000_000_000 + nanoseconds
+
+
+def within_measurement_window(timestamp, start_time_ns, end_time_ns):
+    if start_time_ns is not None and timestamp < start_time_ns:
+        return False
+    if end_time_ns is not None and timestamp >= end_time_ns:
+        return False
+    return True
 
 
 def distance_for_order(side, price, mid):
@@ -224,7 +260,7 @@ def record_fill(segments, segment_index, shares):
     segment.filled_quantity += shares
 
 
-def measure_intensity(messages, symbols, bucket_width_cents):
+def measure_intensity(messages, symbols, bucket_width_cents, start_time_ns=None, end_time_ns=None):
     selected_symbols = set(symbols)
     bucket_width_price_units = int(round(bucket_width_cents * PRICE_UNITS_PER_CENT))
     if bucket_width_price_units <= 0:
@@ -236,6 +272,8 @@ def measure_intensity(messages, symbols, bucket_width_cents):
     messages_read = 0
     supported_messages = 0
     ignored_messages = 0
+    first_timestamp = 0
+    last_timestamp = 0
     skipped_one_sided_mid_segments = 0
     skipped_crossed_mid_segments = 0
 
@@ -243,6 +281,10 @@ def measure_intensity(messages, symbols, bucket_width_cents):
         if message is None:
             continue
         messages_read += 1
+        if message.timestamp:
+            if first_timestamp == 0:
+                first_timestamp = message.timestamp
+            last_timestamp = message.timestamp
 
         if message.message_type in {"A", "F"}:
             if message.stock not in selected_symbols:
@@ -251,26 +293,27 @@ def measure_intensity(messages, symbols, bucket_width_cents):
             supported_messages += 1
             side = itch_replay.side_name(message.side)
             book = books[message.stock]
-            snapshot = book.mid_snapshot()
             segment_index = None
-            if snapshot.mid_price_units is not None:
-                segment_index = open_segment(
-                    segments,
-                    message.order_ref,
-                    message.message_type,
-                    messages_read,
-                    message.stock,
-                    side,
-                    message.price,
-                    message.shares,
-                    message.timestamp,
-                    snapshot,
-                    bucket_width_price_units,
-                )
-            else:
-                one_sided, crossed = count_mid_skip(snapshot)
-                skipped_one_sided_mid_segments += one_sided
-                skipped_crossed_mid_segments += crossed
+            if within_measurement_window(message.timestamp, start_time_ns, end_time_ns):
+                snapshot = book.mid_snapshot()
+                if snapshot.mid_price_units is not None:
+                    segment_index = open_segment(
+                        segments,
+                        message.order_ref,
+                        message.message_type,
+                        messages_read,
+                        message.stock,
+                        side,
+                        message.price,
+                        message.shares,
+                        message.timestamp,
+                        snapshot,
+                        bucket_width_price_units,
+                    )
+                else:
+                    one_sided, crossed = count_mid_skip(snapshot)
+                    skipped_one_sided_mid_segments += one_sided
+                    skipped_crossed_mid_segments += crossed
             active[message.order_ref] = CalibrationOrder(
                 source_order_ref=message.order_ref,
                 symbol=message.stock,
@@ -322,26 +365,27 @@ def measure_intensity(messages, symbols, bucket_width_cents):
             book.remove(active_order.side, active_order.price, active_order.remaining)
             close_segment(segments, active_order.segment_index, message.timestamp, "replace")
             active.pop(message.order_ref, None)
-            snapshot = book.mid_snapshot()
             segment_index = None
-            if snapshot.mid_price_units is not None:
-                segment_index = open_segment(
-                    segments,
-                    message.new_order_ref,
-                    message.message_type,
-                    messages_read,
-                    active_order.symbol,
-                    active_order.side,
-                    message.price,
-                    message.shares,
-                    message.timestamp,
-                    snapshot,
-                    bucket_width_price_units,
-                )
-            else:
-                one_sided, crossed = count_mid_skip(snapshot)
-                skipped_one_sided_mid_segments += one_sided
-                skipped_crossed_mid_segments += crossed
+            if within_measurement_window(message.timestamp, start_time_ns, end_time_ns):
+                snapshot = book.mid_snapshot()
+                if snapshot.mid_price_units is not None:
+                    segment_index = open_segment(
+                        segments,
+                        message.new_order_ref,
+                        message.message_type,
+                        messages_read,
+                        active_order.symbol,
+                        active_order.side,
+                        message.price,
+                        message.shares,
+                        message.timestamp,
+                        snapshot,
+                        bucket_width_price_units,
+                    )
+                else:
+                    one_sided, crossed = count_mid_skip(snapshot)
+                    skipped_one_sided_mid_segments += one_sided
+                    skipped_crossed_mid_segments += crossed
             active[message.new_order_ref] = CalibrationOrder(
                 source_order_ref=message.new_order_ref,
                 symbol=active_order.symbol,
@@ -363,6 +407,10 @@ def measure_intensity(messages, symbols, bucket_width_cents):
         messages_read=messages_read,
         supported_messages=supported_messages,
         ignored_messages=ignored_messages,
+        first_timestamp=first_timestamp,
+        last_timestamp=last_timestamp,
+        start_time_ns=start_time_ns,
+        end_time_ns=end_time_ns,
         skipped_one_sided_mid_segments=skipped_one_sided_mid_segments,
         skipped_crossed_mid_segments=skipped_crossed_mid_segments,
         symbols=symbols,
@@ -548,6 +596,10 @@ def write_summary(path, args, result, summary, rows, gate_failures):
         writer.writerow(["symbols", ",".join(result.symbols)])
         writer.writerow(["compressed_prefix_bytes", args.range_bytes])
         writer.writerow(["bucket_width_cents", f"{args.bucket_width_cents:.12g}"])
+        writer.writerow(["source_first_time", time_of_day(result.first_timestamp)])
+        writer.writerow(["source_last_time", time_of_day(result.last_timestamp)])
+        writer.writerow(["measurement_start_time", "none" if result.start_time_ns is None else time_of_day(result.start_time_ns)])
+        writer.writerow(["measurement_end_time", "none" if result.end_time_ns is None else time_of_day(result.end_time_ns)])
         writer.writerow(["messages_read", result.messages_read])
         writer.writerow(["supported_symbol_messages", result.supported_messages])
         writer.writerow(["ignored_messages", result.ignored_messages])
@@ -581,7 +633,9 @@ def run(args):
     decompressed = itch_replay.decompress_prefix(compressed)
     messages = (itch_replay.parse_message(payload) for payload in itch_replay.iter_framed_messages(decompressed))
     symbols = parse_symbols(args.symbols)
-    result = measure_intensity(messages, symbols, args.bucket_width_cents)
+    start_time_ns = parse_time_filter(args.start_time)
+    end_time_ns = parse_time_filter(args.end_time)
+    result = measure_intensity(messages, symbols, args.bucket_width_cents, start_time_ns, end_time_ns)
     rows = bucket_rows(result)
     summary = coverage_summary(result, rows)
     gate_failures = fit_gate_failures(summary)

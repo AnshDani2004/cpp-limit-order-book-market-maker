@@ -3,6 +3,10 @@ source_url,https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/03272019.NASDAQ_ITCH50.gz
 symbols,QQQ
 compressed_prefix_bytes,134217728
 bucket_width_cents,1
+source_first_time,03:02:31.068525924
+source_last_time,09:28:53.045169096
+measurement_start_time,none
+measurement_end_time,none
 messages_read,10976950
 supported_symbol_messages,83209
 ignored_messages,10893741

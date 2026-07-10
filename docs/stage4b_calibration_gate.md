@@ -8,7 +8,23 @@ The Stage 4A replay sample is not sufficient for Stage 4B intensity calibration.
 
 Stage 4B must not fit an exponential arrival curve on the Stage 4A QQQ sample alone.
 
-The primary Stage 4B calibration input will be a widened public Nasdaq TotalView ITCH prefix from the same sample file, using `134217728` compressed bytes instead of `33554432`. The first calibration candidate is QQQ from that widened prefix so the symbol stays consistent with Stage 4A. If the QQQ distance bins still do not have enough positive fill observations after binning by quote distance, the fallback will be a clearly labeled pooled real ITCH calibration from multiple symbols in the same widened prefix. The Stage 3 synthetic flow is only a final fallback if the widened real data still fails the execution coverage gate.
+The first probe widened the public Nasdaq TotalView ITCH prefix from `33554432` compressed bytes to `134217728` compressed bytes, but that only reached before regular hours data. The primary Stage 4B calibration input is now QQQ from `201326592` compressed bytes with measured quote segments restricted to those opening at or after `09:30:00`. If those QQQ distance bins fail the fit coverage gate in a later run, the fallback will be a clearly labeled pooled real ITCH calibration from multiple symbols in the same regular session prefix. The Stage 3 synthetic flow is only a final fallback if the widened real data still fails the execution coverage gate.
+
+## Regular Session Scope
+
+The `134217728` byte QQQ measurement reached only `09:28:53.045169096`, before the regular `09:30:00` open. It is therefore a before regular hours diagnostic, not the Stage 4B fit source.
+
+Stage 4B will use option A: widen the QQQ pull into regular session data and measure only quote segments that open at or after `09:30:00`. The book is still warmed from earlier messages, but calibration quote segments do not open before the regular session boundary.
+
+The range probe showed:
+
+```text
+150994944 compressed bytes reached 09:30:00.639885444
+167772160 compressed bytes reached 09:30:22.736152206
+201326592 compressed bytes reached 09:32:38.716540708
+```
+
+The chosen regular session calibration input is QQQ from `201326592` compressed bytes with measurement start `09:30:00`. That run passed the fit coverage gate with `25518` closed quote segments, `652` filled quote segments, `74` non empty distance buckets, and `15` positive fill buckets. Because the regular session QQQ run passes the gate, pooled real ITCH symbols and Stage 3 synthetic flow are not needed for the next fit checkpoint.
 
 ## Probe Evidence
 
