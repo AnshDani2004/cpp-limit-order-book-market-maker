@@ -3,6 +3,7 @@
 import importlib.util
 import struct
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -89,6 +90,15 @@ class ItchIntensityCalibrationTests(unittest.TestCase):
         self.assertEqual(2, rows[0]["quote_observations"])
         self.assertEqual(1, rows[0]["filled_quote_segments"])
         self.assertAlmostEqual(0.5, rows[0]["fill_probability"])
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "segments.csv"
+            itch_intensity_calibration.write_quote_segments(path, result)
+            exported = path.read_text().splitlines()
+
+        self.assertIn("distance_cents", exported[0])
+        self.assertIn("bucket_lower_cents", exported[0])
+        self.assertEqual(3, len(exported))
 
         diagnostic_rows = itch_intensity_calibration.bucket_diagnostic_rows(result)
         self.assertEqual(1, len(diagnostic_rows))

@@ -4,6 +4,7 @@ import argparse
 import csv
 import math
 import shutil
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -33,6 +34,15 @@ class Bucket:
 
 
 @dataclass
+class Segment:
+    bucket_lower_cents: float
+    distance_cents: float
+    price: float
+    mid: float
+    fill_messages: int
+
+
+@dataclass
 class FitResult:
     base_probability: float
     decay_per_cent: float
@@ -41,6 +51,12 @@ class FitResult:
     mcfadden_pseudo_r2: float
     weighted_brier_score: float
     weighted_rmse: float
+    likelihood_ratio_statistic: float
+    likelihood_ratio_degrees_of_freedom: int
+    likelihood_ratio_p_value: float
+    decay_standard_error: float
+    decay_ci_95_lower: float
+    decay_ci_95_upper: float
 
 
 def parse_args():
@@ -67,6 +83,24 @@ def read_buckets(path):
     return buckets
 
 
+def read_segments(path):
+    segments = []
+    if not path.exists():
+        return segments
+    with path.open() as handle:
+        for row in csv.DictReader(handle):
+            segments.append(
+                Segment(
+                    bucket_lower_cents=float(row["bucket_lower_cents"]),
+                    distance_cents=float(row["distance_cents"]),
+                    price=float(row["price"]),
+                    mid=float(row["mid"]),
+                    fill_messages=int(row["fill_messages"]),
+                )
+            )
+    return segments
+
+
 def include_bucket(bucket, min_observations):
     if bucket.maintenance:
         return False, "maintenance"
@@ -87,6 +121,40 @@ def negative_log_likelihood(buckets, base_probability, decay_per_cent):
         total -= bucket.filled * math.log(probability)
         total -= (bucket.observations - bucket.filled) * math.log1p(-probability)
     return total
+
+
+def negative_log_likelihood_alpha_decay(buckets, alpha, decay):
+    return negative_log_likelihood(buckets, math.exp(alpha), decay)
+
+
+def numeric_hessian(function, alpha, decay):
+    alpha_step = max(1e-5, abs(alpha) * 1e-5)
+    decay_step = max(1e-5, abs(decay) * 1e-5)
+    center = function(alpha, decay)
+    alpha_plus = function(alpha + alpha_step, decay)
+    alpha_minus = function(alpha - alpha_step, decay)
+    decay_plus = function(alpha, decay + decay_step)
+    decay_minus = function(alpha, decay - decay_step)
+    both_plus = function(alpha + alpha_step, decay + decay_step)
+    alpha_plus_decay_minus = function(alpha + alpha_step, decay - decay_step)
+    alpha_minus_decay_plus = function(alpha - alpha_step, decay + decay_step)
+    both_minus = function(alpha - alpha_step, decay - decay_step)
+    alpha_alpha = (alpha_plus - 2.0 * center + alpha_minus) / (alpha_step * alpha_step)
+    decay_decay = (decay_plus - 2.0 * center + decay_minus) / (decay_step * decay_step)
+    alpha_decay = (
+        both_plus
+        - alpha_plus_decay_minus
+        - alpha_minus_decay_plus
+        + both_minus
+    ) / (4.0 * alpha_step * decay_step)
+    return alpha_alpha, alpha_decay, decay_decay
+
+
+def covariance_from_hessian(alpha_alpha, alpha_decay, decay_decay):
+    determinant = alpha_alpha * decay_decay - alpha_decay * alpha_decay
+    if determinant <= 0.0:
+        raise ValueError("fit hessian is not positive definite")
+    return decay_decay / determinant, -alpha_decay / determinant, alpha_alpha / determinant
 
 
 def golden_minimize(function, lower, upper, iterations=120):
@@ -145,6 +213,19 @@ def fit_exponential(buckets):
             empirical * (1.0 - predicted) ** 2 + (1.0 - empirical) * predicted**2
         )
         rmse_total += bucket.observations * (empirical - predicted) ** 2
+    likelihood_ratio = 2.0 * (null_nll - model_nll)
+    likelihood_ratio_p_value = math.erfc(math.sqrt(max(0.0, likelihood_ratio) / 2.0))
+    alpha = math.log(base)
+    hessian = numeric_hessian(
+        lambda current_alpha, current_decay: negative_log_likelihood_alpha_decay(
+            buckets, current_alpha, current_decay
+        ),
+        alpha,
+        decay,
+    )
+    _alpha_variance, _alpha_decay_covariance, decay_variance = covariance_from_hessian(*hessian)
+    decay_standard_error = math.sqrt(decay_variance)
+    decay_ci_offset = 1.959963984540054 * decay_standard_error
     return FitResult(
         base_probability=base,
         decay_per_cent=decay,
@@ -153,6 +234,12 @@ def fit_exponential(buckets):
         mcfadden_pseudo_r2=pseudo_r2,
         weighted_brier_score=brier_total / observations,
         weighted_rmse=math.sqrt(rmse_total / observations),
+        likelihood_ratio_statistic=likelihood_ratio,
+        likelihood_ratio_degrees_of_freedom=1,
+        likelihood_ratio_p_value=likelihood_ratio_p_value,
+        decay_standard_error=decay_standard_error,
+        decay_ci_95_lower=decay - decay_ci_offset,
+        decay_ci_95_upper=decay + decay_ci_offset,
     )
 
 
@@ -216,6 +303,84 @@ def write_summary(path, buckets, included_buckets, fit, min_observations):
         writer.writerow(["mcfadden_pseudo_r2", f"{fit.mcfadden_pseudo_r2:.12g}"])
         writer.writerow(["weighted_brier_score", f"{fit.weighted_brier_score:.12g}"])
         writer.writerow(["weighted_rmse", f"{fit.weighted_rmse:.12g}"])
+        writer.writerow(["likelihood_ratio_statistic", f"{fit.likelihood_ratio_statistic:.12g}"])
+        writer.writerow(["likelihood_ratio_degrees_of_freedom", fit.likelihood_ratio_degrees_of_freedom])
+        writer.writerow(["likelihood_ratio_p_value", f"{fit.likelihood_ratio_p_value:.12g}"])
+        writer.writerow(["decay_standard_error", f"{fit.decay_standard_error:.12g}"])
+        writer.writerow(["decay_ci_95_lower", f"{fit.decay_ci_95_lower:.12g}"])
+        writer.writerow(["decay_ci_95_upper", f"{fit.decay_ci_95_upper:.12g}"])
+
+
+def is_whole_cent(value):
+    cents = value * 100.0
+    return abs(cents - round(cents)) < 1e-8
+
+
+def is_half_cent(value):
+    cents = value * 100.0
+    doubled = cents * 2.0
+    return abs(doubled - round(doubled)) < 1e-8 and not is_whole_cent(value)
+
+
+def rounded_cents(value):
+    return round(value * 100.0, 6)
+
+
+def write_parity_diagnostics(path, buckets, segments, fit, min_observations):
+    included_lowers = {
+        bucket.lower_cents
+        for bucket in buckets
+        if include_bucket(bucket, min_observations)[0]
+    }
+    segments_by_bucket = {}
+    for segment in segments:
+        if segment.bucket_lower_cents in included_lowers:
+            segments_by_bucket.setdefault(segment.bucket_lower_cents, []).append(segment)
+
+    with path.open("w", newline="") as handle:
+        fieldnames = [
+            "bucket_lower_cents",
+            "mean_distance_cents",
+            "parity",
+            "quote_observations",
+            "filled_quote_segments",
+            "empirical_probability",
+            "fitted_probability",
+            "probability_residual",
+            "whole_cent_price_share",
+            "half_cent_mid_share",
+            "half_cent_distance_share",
+            "top_distance_cents",
+            "top_distance_share",
+        ]
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for bucket in buckets:
+            if bucket.lower_cents not in included_lowers:
+                continue
+            bucket_segments = segments_by_bucket.get(bucket.lower_cents, [])
+            observations = len(bucket_segments)
+            filled = sum(1 for segment in bucket_segments if segment.fill_messages > 0)
+            fitted = predicted_probability(bucket, fit.base_probability, fit.decay_per_cent)
+            distance_counts = Counter(rounded_cents(segment.distance_cents / 100.0) for segment in bucket_segments)
+            top_distance, top_count = distance_counts.most_common(1)[0] if distance_counts else (0.0, 0)
+            writer.writerow(
+                {
+                    "bucket_lower_cents": f"{bucket.lower_cents:.12g}",
+                    "mean_distance_cents": f"{bucket.distance_cents:.12g}",
+                    "parity": "odd" if int(bucket.lower_cents) % 2 else "even",
+                    "quote_observations": observations,
+                    "filled_quote_segments": filled,
+                    "empirical_probability": f"{bucket.empirical_probability:.12g}",
+                    "fitted_probability": f"{fitted:.12g}",
+                    "probability_residual": f"{bucket.empirical_probability - fitted:.12g}",
+                    "whole_cent_price_share": f"{sum(1 for segment in bucket_segments if is_whole_cent(segment.price)) / observations:.12g}",
+                    "half_cent_mid_share": f"{sum(1 for segment in bucket_segments if is_half_cent(segment.mid)) / observations:.12g}",
+                    "half_cent_distance_share": f"{sum(1 for segment in bucket_segments if is_half_cent(segment.distance_cents / 100.0)) / observations:.12g}",
+                    "top_distance_cents": f"{top_distance:.12g}",
+                    "top_distance_share": f"{top_count / observations:.12g}",
+                }
+            )
 
 
 def svg_circle(cx, cy, radius, fill, stroke):
@@ -285,13 +450,18 @@ def run(args):
     output_dir.mkdir(parents=True)
 
     buckets = read_buckets(input_dir / "bucket_diagnostics.csv")
+    segments = read_segments(input_dir / "quote_segments.csv")
     included_buckets = [bucket for bucket in buckets if include_bucket(bucket, args.min_fit_observations)[0]]
     fit = fit_exponential(included_buckets)
     write_fit_input(output_dir / "fit_input_buckets.csv", buckets, fit, args.min_fit_observations)
     write_summary(output_dir / "fit_summary.csv", buckets, included_buckets, fit, args.min_fit_observations)
+    if segments:
+        write_parity_diagnostics(output_dir / "parity_diagnostics.csv", buckets, segments, fit, args.min_fit_observations)
     write_svg(output_dir / "fill_probability_fit.svg", buckets, fit, args.min_fit_observations)
     print(f"fit decay per cent {fit.decay_per_cent:.12g}")
     print(f"base probability {fit.base_probability:.12g}")
+    print(f"likelihood ratio statistic {fit.likelihood_ratio_statistic:.12g}")
+    print(f"likelihood ratio p value {fit.likelihood_ratio_p_value:.12g}")
     return 0
 
 

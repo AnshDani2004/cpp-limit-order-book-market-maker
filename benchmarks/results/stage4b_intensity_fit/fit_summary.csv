@@ -17,3 +17,9 @@ null_negative_log_likelihood,2951.64615553
 mcfadden_pseudo_r2,0.0255487102268
 weighted_brier_score,0.0261199804099
 weighted_rmse,0.00474337362356
+likelihood_ratio_statistic,150.821504639
+likelihood_ratio_degrees_of_freedom,1
+likelihood_ratio_p_value,1.14657252666e-34
+decay_standard_error,0.0766819728931
+decay_ci_95_lower,0.482450657776
+decay_ci_95_upper,0.783038468044

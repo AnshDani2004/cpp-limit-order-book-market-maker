@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -37,6 +38,48 @@ class FitItchIntensityTests(unittest.TestCase):
         self.assertGreater(fit.base_probability, 0.05)
         self.assertLess(fit.base_probability, 0.2)
         self.assertGreater(fit.mcfadden_pseudo_r2, 0.0)
+        self.assertGreater(fit.likelihood_ratio_statistic, 0.0)
+        self.assertEqual(1, fit.likelihood_ratio_degrees_of_freedom)
+        self.assertGreater(fit.likelihood_ratio_p_value, 0.0)
+        self.assertLess(fit.likelihood_ratio_p_value, 1.0)
+        self.assertGreater(fit.decay_standard_error, 0.0)
+        self.assertLess(fit.decay_ci_95_lower, fit.decay_per_cent)
+        self.assertGreater(fit.decay_ci_95_upper, fit.decay_per_cent)
+
+    def test_parity_diagnostics_use_raw_segment_prices_and_mids(self):
+        buckets = [
+            fit_itch_intensity.Bucket(3.0, 4.0, 100, 3, False),
+            fit_itch_intensity.Bucket(4.0, 5.0, 100, 1, False),
+        ]
+        segments = [
+            fit_itch_intensity.Segment(3.0, 3.5, 100.00, 100.035, 1),
+            fit_itch_intensity.Segment(3.0, 3.5, 100.00, 100.035, 0),
+            fit_itch_intensity.Segment(4.0, 4.5, 100.00, 100.045, 0),
+        ]
+        fit = fit_itch_intensity.FitResult(
+            base_probability=0.10,
+            decay_per_cent=0.20,
+            negative_log_likelihood=1.0,
+            null_negative_log_likelihood=2.0,
+            mcfadden_pseudo_r2=0.1,
+            weighted_brier_score=0.01,
+            weighted_rmse=0.02,
+            likelihood_ratio_statistic=2.0,
+            likelihood_ratio_degrees_of_freedom=1,
+            likelihood_ratio_p_value=0.1,
+            decay_standard_error=0.01,
+            decay_ci_95_lower=0.18,
+            decay_ci_95_upper=0.22,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "parity.csv"
+            fit_itch_intensity.write_parity_diagnostics(path, buckets, segments, fit, 50)
+            rows = path.read_text().splitlines()
+
+        self.assertIn("whole_cent_price_share", rows[0])
+        self.assertIn("3,3.5,odd,2,1", rows[1])
+        self.assertIn("1,1,1,3.5,1", rows[1])
 
 
 if __name__ == "__main__":

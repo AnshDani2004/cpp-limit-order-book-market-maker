@@ -695,6 +695,55 @@ def write_distance_outliers(path, result, threshold_cents):
             )
 
 
+def write_quote_segments(path, result):
+    with path.open("w", newline="") as handle:
+        fieldnames = [
+            "source_order_ref",
+            "source_message_type",
+            "open_message_index",
+            "open_timestamp",
+            "open_time",
+            "side",
+            "price",
+            "shares",
+            "best_bid",
+            "best_ask",
+            "mid",
+            "distance_cents",
+            "bucket_lower_cents",
+            "fill_messages",
+            "filled_quantity",
+            "close_reason",
+            "close_timestamp",
+            "close_time",
+        ]
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for segment in result.segments:
+            writer.writerow(
+                {
+                    "source_order_ref": segment.source_order_ref,
+                    "source_message_type": segment.source_message_type,
+                    "open_message_index": segment.open_message_index,
+                    "open_timestamp": segment.open_timestamp,
+                    "open_time": time_of_day(segment.open_timestamp),
+                    "side": segment.side,
+                    "price": format_price_units(segment.price),
+                    "shares": segment.shares,
+                    "best_bid": format_price_units(segment.best_bid),
+                    "best_ask": format_price_units(segment.best_ask),
+                    "mid": format_price_units(segment.mid_price_units),
+                    "distance_cents": format_distance_cents(segment.distance_price_units),
+                    "bucket_lower_cents": format_distance_cents(segment.bucket_lower_price_units),
+                    "fill_messages": segment.fill_messages,
+                    "filled_quantity": segment.filled_quantity,
+                    "close_reason": segment.close_reason,
+                    "close_timestamp": segment.close_timestamp,
+                    "close_time": time_of_day(segment.close_timestamp),
+                }
+            )
+
+
 def write_summary(path, args, result, summary, rows, gate_failures):
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")
@@ -751,6 +800,7 @@ def run(args):
     write_bucket_rows(output_dir / "fill_probability_by_distance.csv", rows)
     write_bucket_diagnostics(output_dir / "bucket_diagnostics.csv", diagnostic_rows)
     write_distance_outliers(output_dir / "distance_outliers.csv", result, args.outlier_distance_cents)
+    write_quote_segments(output_dir / "quote_segments.csv", result)
     write_summary(output_dir / "summary.csv", args, result, summary, rows, gate_failures)
 
     if gate_failures:
