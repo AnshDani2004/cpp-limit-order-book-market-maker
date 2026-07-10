@@ -1,0 +1,19 @@
+field,value
+model,fill_probability = base_probability * exp(-decay_per_cent * distance_cents)
+min_fit_observations,50
+total_buckets,74
+included_buckets,17
+excluded_sparse_buckets,54
+excluded_maintenance_buckets,3
+total_quote_observations,25518
+total_filled_quote_segments,652
+included_quote_observations,23761
+included_filled_quote_segments,642
+base_probability,0.049524662687
+decay_per_cent,0.63274456291
+decay_per_tick_if_one_tick_is_one_cent,0.63274456291
+negative_log_likelihood,2876.23540321
+null_negative_log_likelihood,2951.64615553
+mcfadden_pseudo_r2,0.0255487102268
+weighted_brier_score,0.0261199804099
+weighted_rmse,0.00474337362356
