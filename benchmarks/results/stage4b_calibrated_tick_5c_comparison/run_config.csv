@@ -1,0 +1,20 @@
+field,value
+strategy,avellaneda stoikov calibrated
+regime,all
+events,200000
+markout_horizon,50
+curve_sample_stride,100
+quote_size,10
+refresh_cadence,10
+risk_aversion,0.002
+fill_decay,0.126548912582
+volatility_source,regime volatility per event
+time_horizon,full regime run
+fill_decay_source,Stage 4B QQQ regular session exponential fit
+reconciliation_tolerance_ticks,0.00001
+external_limit_order_share,0.55
+external_market_order_share,0.25
+external_cancel_share,0.10
+external_modify_share,0.10
+external_quantity_distribution,uniform integer 1 to 100
+external_limit_offset_distribution,uniform integer 8 to 80 ticks from reference mid

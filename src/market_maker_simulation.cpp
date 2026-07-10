@@ -22,7 +22,6 @@ constexpr const char* kCalibratedAvellanedaStoikovStrategyName = "avellaneda sto
 constexpr const char* kMarketMakerOwner = "market_maker";
 constexpr OrderId kMarketMakerOrderIdStart = 1'000'000'000'000ULL;
 constexpr double kRunReconciliationTolerance = 1e-5;
-constexpr double kCalibratedFillDecay = 0.63274456291;
 
 enum class StrategyKind {
     NaiveSymmetric,
@@ -397,8 +396,11 @@ double reservation_skew_for_inventory(const MarketMakerSimulationConfig& config,
     if (kind == StrategyKind::NaiveSymmetric) {
         return 0.0;
     }
+    const auto& strategy = kind == StrategyKind::CalibratedAvellanedaStoikov
+                               ? config.calibrated_avellaneda_stoikov
+                               : config.avellaneda_stoikov;
     const auto variance = config.regime.volatility_per_event * config.regime.volatility_per_event;
-    return static_cast<double>(inventory) * config.avellaneda_stoikov.risk_aversion * variance * time_remaining;
+    return static_cast<double>(inventory) * strategy.risk_aversion * variance * time_remaining;
 }
 
 AdverseSelectionGroup classify_adverse_selection_group(const MarketMakerSimulationConfig& config,
@@ -654,9 +656,15 @@ void validate_avellaneda_stoikov_config(const AvellanedaStoikovConfig& strategy)
     }
 }
 
+const AvellanedaStoikovConfig& avellaneda_strategy_config(const MarketMakerSimulationConfig& config,
+                                                          StrategyKind kind) {
+    return kind == StrategyKind::CalibratedAvellanedaStoikov ? config.calibrated_avellaneda_stoikov
+                                                             : config.avellaneda_stoikov;
+}
+
 std::size_t refresh_cadence(const MarketMakerSimulationConfig& config, StrategyKind kind) {
     return kind == StrategyKind::NaiveSymmetric ? config.naive.refresh_cadence
-                                                : config.avellaneda_stoikov.refresh_cadence;
+                                                : avellaneda_strategy_config(config, kind).refresh_cadence;
 }
 
 QuotePrices make_naive_quote_prices(const MatchingEngine& engine,
@@ -714,16 +722,13 @@ QuotePrices make_quote_prices(const MatchingEngine& engine,
     if (kind == StrategyKind::NaiveSymmetric) {
         return make_naive_quote_prices(engine, config.naive, reference_mid);
     }
-    return make_avellaneda_stoikov_quote_prices(engine,
-                                                config.avellaneda_stoikov,
-                                                config.regime,
-                                                reference_mid,
-                                                inventory,
-                                                event_index);
+    return make_avellaneda_stoikov_quote_prices(
+        engine, avellaneda_strategy_config(config, kind), config.regime, reference_mid, inventory, event_index);
 }
 
 Quantity quote_size(const MarketMakerSimulationConfig& config, StrategyKind kind) {
-    return kind == StrategyKind::NaiveSymmetric ? config.naive.quote_size : config.avellaneda_stoikov.quote_size;
+    return kind == StrategyKind::NaiveSymmetric ? config.naive.quote_size
+                                                : avellaneda_strategy_config(config, kind).quote_size;
 }
 
 double time_remaining_after_event(const RegimeConfig& regime, std::size_t event_index) {
@@ -738,8 +743,9 @@ double reservation_skew(const MarketMakerSimulationConfig& config,
     if (kind == StrategyKind::NaiveSymmetric) {
         return 0.0;
     }
+    const auto& strategy = avellaneda_strategy_config(config, kind);
     const auto variance = config.regime.volatility_per_event * config.regime.volatility_per_event;
-    return static_cast<double>(inventory) * config.avellaneda_stoikov.risk_aversion * variance * time_remaining;
+    return static_cast<double>(inventory) * strategy.risk_aversion * variance * time_remaining;
 }
 
 void refresh_quotes(MatchingEngine& engine,
@@ -800,7 +806,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     if (kind == StrategyKind::NaiveSymmetric) {
         validate_naive_config(config.naive);
     } else {
-        validate_avellaneda_stoikov_config(config.avellaneda_stoikov);
+        validate_avellaneda_stoikov_config(avellaneda_strategy_config(config, kind));
     }
 
     const auto reference_path = generate_reference_path(config.regime);
@@ -977,9 +983,7 @@ MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulation
 }
 
 MarketMakerRunResult run_calibrated_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config) {
-    auto calibrated_config = config;
-    calibrated_config.avellaneda_stoikov.fill_decay = kCalibratedFillDecay;
-    return run_strategy(calibrated_config, StrategyKind::CalibratedAvellanedaStoikov);
+    return run_strategy(config, StrategyKind::CalibratedAvellanedaStoikov);
 }
 
 }  // namespace lob

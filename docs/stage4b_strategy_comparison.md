@@ -31,6 +31,8 @@ fill_decay 0.63274456291
 fill_decay_source Stage 4B QQQ regular session exponential fit
 ```
 
+This default comparison assumes one synthetic simulator tick equals one real cent. That assumption is load bearing. The Stage 4B fit estimates decay per cent from QQQ regular session data, while the Stage 3 simulator uses abstract integer ticks. If one synthetic tick represents more than one real cent, the fitted decay must be divided by that tick size before being used in the AS spread formula.
+
 The fitted decay is larger than the hand chosen value. In the AS spread formula, that lowers the spread term. At time remaining near `1`, the original full spread is about `7.97` ticks across the three regimes, while the calibrated full spread is about `3.16` ticks. The calibrated strategy therefore quotes more aggressively by construction.
 
 ## Full Attribution Table
@@ -94,7 +96,36 @@ trending adverse selection cost rises by 101042.069073 versus original AS
 
 This is not a bug in the fitted decay. It is a scope mismatch between the Stage 4B real data calibration and the Stage 3 synthetic environment. The real ITCH fit estimates how fill probability decays with distance in an observed QQQ regular session slice. Using that larger decay inside the toy AS formula tells the synthetic strategy that fills remain viable closer to the touch, so it quotes tighter. In this synthetic flow, tighter quotes buy more fills but give up too much spread and markout quality.
 
-The calibrated run is still useful. It turns the arrival model from an arbitrary parameter into a measured input, and the result is honestly negative for net PnL versus the hand chosen value. The comparison also makes the tradeoff visible: calibrated AS is more active and slightly flatter, but pays for that with adverse selection and lower spread capture.
+The calibrated run is still useful. It turns the arrival model from an arbitrary parameter into a measured input and makes the tradeoff visible: calibrated AS is more active and slightly flatter, but pays for that with adverse selection and lower spread capture under the direct one tick equals one cent assumption.
+
+## Tick Size Sensitivity
+
+The direct calibrated comparison is not the whole conclusion because the simulator tick size is abstract. Two additional calibrated AS runs test alternative unit mappings:
+
+```bash
+python3 simulations/run_market_maker.py --strategy avellaneda-stoikov-calibrated --fill-decay 0.126548912582 --events 200000 --markout-horizon 50 --curve-sample-stride 100 --output-dir benchmarks/results/stage4b_calibrated_tick_5c_comparison --build-dir build/stage4b_market_maker
+python3 simulations/run_market_maker.py --strategy avellaneda-stoikov-calibrated --fill-decay 0.0316372281455 --events 200000 --markout-horizon 50 --curve-sample-stride 100 --output-dir benchmarks/results/stage4b_calibrated_tick_20c_comparison --build-dir build/stage4b_market_maker --skip-build
+python3 simulations/compare_tick_size_sensitivity.py
+```
+
+The checked summary artifact is `benchmarks/results/stage4b_strategy_comparison/tick_size_sensitivity.csv`.
+
+```text
+tick_size_cents,fill_decay,regime,net_pnl_minus_original_as,final_inventory_minus_original_as,calibrated_fill_rate,calibrated_maker_fills,calibrated_adverse_selection_cost
+1,0.63274456291,low volatility,-467729.3851,-78,0.51504,22063,93693.2307408
+1,0.63274456291,high volatility,-196960.86527,-122,0.448705,19285,637130.917924
+1,0.63274456291,trending,-304528.75032,-643,0.48209,20594,268119.118439
+5,0.126548912582,low volatility,646733.488,-543,0.4596275,19768,2456.34430981
+5,0.126548912582,high volatility,208024.47003,289,0.3988725,17219,354981.866826
+5,0.126548912582,trending,416819.97528,567,0.42991,18411,70568.3696728
+20,0.0316372281455,low volatility,-1752870.56431,-8475,0.1598275,6964,0
+20,0.0316372281455,high volatility,-126571.59833,437,0.2110725,9153,14702.5317099
+20,0.0316372281455,trending,1128080.49814,-3975,0.17992,7815,0
+```
+
+This sensitivity check changes the interpretation. The statement that calibrated AS loses to original AS is true only for the direct one tick equals one cent mapping. If one synthetic tick is treated as five cents, calibrated AS beats original AS on net PnL in all three regimes. If one synthetic tick is treated as twenty cents, the result is mixed: low volatility and high volatility lose, while trending wins.
+
+The settled finding is therefore narrower and more useful: the calibrated decay is statistically real, but applying it to the synthetic simulator requires a tick to cent mapping. Stage 4B shows that the calibrated parameter can materially change strategy behavior, but the sign of the PnL comparison depends on the unit bridge between real QQQ cents and synthetic ticks.
 
 ## Artifacts
 
@@ -102,5 +133,7 @@ The calibrated run is still useful. It turns the arrival model from an arbitrary
 benchmarks/results/stage4b_naive_comparison
 benchmarks/results/stage4b_avellaneda_stoikov_comparison
 benchmarks/results/stage4b_calibrated_avellaneda_stoikov_comparison
+benchmarks/results/stage4b_calibrated_tick_5c_comparison
+benchmarks/results/stage4b_calibrated_tick_20c_comparison
 benchmarks/results/stage4b_strategy_comparison
 ```

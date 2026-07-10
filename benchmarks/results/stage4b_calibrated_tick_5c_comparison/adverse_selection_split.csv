@@ -1,0 +1,10 @@
+strategy,regime,group,maker_fills,maker_quantity,signed_markout,average_markout_per_unit,adverse_selection_cost,average_adverse_selection_cost_per_unit,adverse_selection_cost_share,total_adverse_selection_cost
+avellaneda stoikov calibrated,low volatility,inventory_reducing,7011,65436,460771.665951,7.04156222799,2418.03980401,0.0369527447279,0.984405889011,2456.34430981
+avellaneda stoikov calibrated,low volatility,inventory_increasing,12750,118362,3069476.5442,25.9329560518,38.3045057941,0.00032362165048,0.0155941109889,2456.34430981
+avellaneda stoikov calibrated,low volatility,neutral,7,53,454.651655933,8.5783331308,0,0,0,2456.34430981
+avellaneda stoikov calibrated,high volatility,inventory_reducing,8516,79078,1251130.39828,15.8214724484,323528.473859,4.09125766786,0.911394367131,354981.866826
+avellaneda stoikov calibrated,high volatility,inventory_increasing,8697,80411,3114169.80093,38.728156607,31450.6829214,0.391124136268,0.0885979985476,354981.866826
+avellaneda stoikov calibrated,high volatility,neutral,6,60,706.998647544,11.7833107924,2.71004570415,0.0451674284025,7.63432151728e-06,354981.866826
+avellaneda stoikov calibrated,trending,inventory_reducing,7765,72493,1299157.04838,17.9211378806,65223.4125454,0.899720146019,0.924258458113,70568.3696728
+avellaneda stoikov calibrated,trending,inventory_increasing,10639,99401,3845574.54748,38.6874835009,5344.95712745,0.0537716635391,0.0757415418867,70568.3696728
+avellaneda stoikov calibrated,trending,neutral,7,70,823.227431832,11.7603918833,0,0,0,70568.3696728

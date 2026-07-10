@@ -22,6 +22,7 @@ struct Args {
     std::size_t curve_sample_stride{100};
     std::string regime{"all"};
     std::optional<std::uint64_t> seed_override{};
+    std::optional<double> fill_decay_override{};
     std::filesystem::path output_dir{"benchmarks/results/stage3_naive_latest"};
 };
 
@@ -30,6 +31,15 @@ std::uint64_t parse_u64(const std::string& value) {
     const auto parsed = std::stoull(value, &consumed);
     if (consumed != value.size()) {
         throw std::runtime_error("invalid numeric argument: " + value);
+    }
+    return parsed;
+}
+
+double parse_double(const std::string& value) {
+    std::size_t consumed = 0;
+    const auto parsed = std::stod(value, &consumed);
+    if (consumed != value.size()) {
+        throw std::runtime_error("invalid decimal argument: " + value);
     }
     return parsed;
 }
@@ -66,6 +76,8 @@ Args parse_args(int argc, char** argv) {
             }
         } else if (argument == "--seed") {
             args.seed_override = parse_u64(require_value());
+        } else if (argument == "--fill-decay") {
+            args.fill_decay_override = parse_double(require_value());
         } else if (argument == "--output-dir") {
             args.output_dir = require_value();
         } else {
@@ -79,7 +91,20 @@ Args parse_args(int argc, char** argv) {
     if (args.seed_override.has_value() && args.regime == "all") {
         throw std::runtime_error("--seed requires a single --regime");
     }
+    if (args.fill_decay_override.has_value() && args.strategy == "naive") {
+        throw std::runtime_error("--fill-decay requires an Avellaneda Stoikov strategy");
+    }
     return args;
+}
+
+double selected_fill_decay(const Args& args) {
+    if (args.strategy == "avellaneda-stoikov") {
+        return args.fill_decay_override.value_or(0.25);
+    }
+    if (args.strategy == "avellaneda-stoikov-calibrated") {
+        return args.fill_decay_override.value_or(kCalibratedFillDecay);
+    }
+    return 0.0;
 }
 
 std::vector<lob::RegimeConfig> selected_regimes(const Args& args) {
@@ -135,7 +160,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         output << "naive_full_spread_ticks,10\n";
     } else {
         output << "risk_aversion,0.002\n";
-        output << "fill_decay," << (args.strategy == "avellaneda-stoikov" ? 0.25 : kCalibratedFillDecay) << '\n';
+        output << "fill_decay," << selected_fill_decay(args) << '\n';
         output << "volatility_source,regime volatility per event\n";
         output << "time_horizon,full regime run\n";
         if (args.strategy == "avellaneda-stoikov-calibrated") {
@@ -301,6 +326,12 @@ int main(int argc, char** argv) {
             config.regime = regime;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
+            if (args.strategy == "avellaneda-stoikov" && args.fill_decay_override.has_value()) {
+                config.avellaneda_stoikov.fill_decay = *args.fill_decay_override;
+            }
+            if (args.strategy == "avellaneda-stoikov-calibrated" && args.fill_decay_override.has_value()) {
+                config.calibrated_avellaneda_stoikov.fill_decay = *args.fill_decay_override;
+            }
             if (args.strategy == "naive") {
                 results.push_back(lob::run_naive_symmetric_strategy(config));
             } else if (args.strategy == "avellaneda-stoikov") {

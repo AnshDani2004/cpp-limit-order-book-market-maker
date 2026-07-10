@@ -4,6 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <cstddef>
+#include <stdexcept>
 #include <utility>
 
 namespace {
@@ -158,6 +159,14 @@ TEST_CASE("calibrated avellaneda stoikov strategy reconciles in every Stage 4B r
         CHECK_FALSE(result.curve.empty());
         CHECK(result.adverse_selection_split.size() == 3);
     }
+}
+
+TEST_CASE("calibrated avellaneda stoikov validates its configured fill decay") {
+    auto regime = lob::default_regimes(2000).front();
+    auto config = make_config(regime);
+    config.calibrated_avellaneda_stoikov.fill_decay = 0.0;
+
+    CHECK_THROWS_AS(lob::run_calibrated_avellaneda_stoikov_strategy(config), std::invalid_argument);
 }
 
 TEST_CASE("avellaneda stoikov adverse selection split reconciles to maker fill totals") {

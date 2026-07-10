@@ -27,6 +27,7 @@ struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
     NaiveSymmetricConfig naive{};
     AvellanedaStoikovConfig avellaneda_stoikov{};
+    AvellanedaStoikovConfig calibrated_avellaneda_stoikov{0.002, 0.63274456291, 10, 10};
     std::size_t markout_horizon{50};
     std::size_t curve_sample_stride{100};
 };

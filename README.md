@@ -8,7 +8,7 @@ Stage 2 adds a reproducible benchmark harness for deterministic synthetic order 
 
 Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. The results are regime dependent: inventory aware quoting materially reduced inventory risk in the high volatility run, helped only modestly in the low volatility run, and did not reduce inventory in the trending run because the full-run time horizon decayed before the late inventory buildup. The AS runs also show a measured tradeoff: inventory-reducing fills account for most of AS adverse selection cost. See [docs/stage3_results.md](docs/stage3_results.md).
 
-Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated strategy is more active and slightly flatter, but it underperforms the original AS on net PnL in all three synthetic regimes because tighter quotes lose spread and increase adverse selection. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
+Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated result depends on the tick to cent bridge between real QQQ data and the synthetic simulator. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
 
 ## What Stage 1 Proves
 
@@ -97,7 +97,7 @@ See [docs/stage4a_replay.md](docs/stage4a_replay.md) for the source, limitations
 
 ## Stage 4B Calibrated Strategy Result
 
-The Stage 4B calibrated AS run uses the fitted QQQ regular session decay:
+The default Stage 4B calibrated AS run assumes one synthetic tick equals one real cent and uses the fitted QQQ regular session decay:
 
 ```text
 fill_decay 0.63274456291
@@ -117,7 +117,16 @@ high volatility net PnL change -196960.86527, final inventory change -122
 trending net PnL change -304528.75032, final inventory change -643
 ```
 
-The calibrated strategy improves final inventory slightly in all three regimes, but it lowers spread capture and raises adverse selection cost enough to reduce net PnL. The full attribution table is checked in at `benchmarks/results/stage4b_strategy_comparison/metrics_table.csv`.
+Under that direct mapping, the calibrated strategy improves final inventory slightly in all three regimes, but it lowers spread capture and raises adverse selection cost enough to reduce net PnL.
+
+The tick size sensitivity check changes the broader conclusion:
+
+```text
+one tick equals 5 cents: calibrated AS net PnL beats original AS in all three regimes
+one tick equals 20 cents: calibrated AS loses in low and high volatility, wins in trending
+```
+
+The full attribution table is checked in at `benchmarks/results/stage4b_strategy_comparison/metrics_table.csv`, and the unit sensitivity table is checked in at `benchmarks/results/stage4b_strategy_comparison/tick_size_sensitivity.csv`.
 
 ## Build And Test
 
