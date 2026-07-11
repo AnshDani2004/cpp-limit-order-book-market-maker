@@ -32,8 +32,8 @@ It runs uncontrolled `naive` and original `avellaneda-stoikov` strategies across
 ## Checked Artifacts
 
 ```text
-benchmarks/results/stage5d_queue_position/quote_queue_events.csv
-benchmarks/results/stage5d_queue_position/quote_fill_outcomes.csv
+benchmarks/results/stage5d_queue_position/quote_queue_events.csv.gz
+benchmarks/results/stage5d_queue_position/quote_fill_outcomes.csv.gz
 benchmarks/results/stage5d_queue_position/queue_position_summary.csv
 benchmarks/results/stage5d_queue_position/fill_by_distance_bucket.csv
 benchmarks/results/stage5d_queue_position/fill_by_queue_depth_bucket.csv
@@ -52,7 +52,7 @@ fill_by_queue_depth_bucket rows 60
 fill_by_distance_and_queue_bucket rows 230
 ```
 
-Each quote placement records event index, quote order ID, strategy, regime, risk mode, flow profile, seed, side, price, reference mid, distance from mid, quote quantity, queue orders ahead, queue quantity ahead, total same-side level quantity before quote, fill outcome, filled quantity, time to first fill, and whether the quote was canceled unfilled.
+The raw quote placement and fill outcome CSVs are checked in as `.csv.gz` files because the uncompressed files were larger than GitHub's recommended 50 MB file size. Each quote placement records event index, quote order ID, strategy, regime, risk mode, flow profile, seed, side, price, reference mid, distance from mid, quote quantity, queue orders ahead, queue quantity ahead, total same-side level quantity before quote, fill outcome, filled quantity, time to first fill, and whether the quote was canceled unfilled.
 
 ## FIFO Gate
 
