@@ -164,12 +164,36 @@ struct TerminalLiquidationTrade {
     double liquidation_cost{};
 };
 
+struct MarketMakerQuoteQueueEvent {
+    std::size_t event_index{};
+    OrderId quote_order_id{};
+    std::string strategy_name{};
+    std::string regime_name{};
+    std::string risk_mode{};
+    std::string external_flow_profile{};
+    std::uint64_t seed{};
+    Side side{Side::Buy};
+    Price price{};
+    double reference_mid{};
+    double distance_from_mid{};
+    Quantity quote_quantity{};
+    std::size_t queue_orders_ahead{};
+    Quantity queue_quantity_ahead{};
+    Quantity total_level_quantity_before_quote{};
+    bool ever_filled{};
+    Quantity filled_quantity{};
+    std::size_t time_to_first_fill{};
+    bool has_time_to_first_fill{};
+    bool canceled_unfilled{};
+};
+
 struct MarketMakerRunResult {
     MarketMakerSummary summary{};
     std::vector<MarketMakerCurvePoint> curve{};
     std::vector<MarketMakerAdverseSelectionSplit> adverse_selection_split{};
     std::vector<TerminalLiquidationLevel> terminal_liquidation_levels{};
     std::vector<TerminalLiquidationTrade> terminal_liquidation_trades{};
+    std::vector<MarketMakerQuoteQueueEvent> quote_queue_events{};
 };
 
 std::string external_flow_profile_name(ExternalFlowProfile profile);

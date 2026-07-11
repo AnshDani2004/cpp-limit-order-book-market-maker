@@ -1,0 +1,13 @@
+flow_profile,strategy,regime,quote_count,filled_quote_count,fill_probability,posted_quantity,filled_quantity,average_queue_quantity_ahead,median_queue_quantity_ahead,average_queue_orders_ahead,zero_queue_quantity_share,average_distance_from_mid,average_time_to_first_fill,canceled_unfilled_quotes
+hand_chosen,avellaneda stoikov,high volatility,40000,17674,0.44185,400000,172242,208.09055,0,4.2873,0.606025,16.3475,3.44426841688,22325
+hand_chosen,avellaneda stoikov,low volatility,40000,20384,0.5096,400000,199138,932.949825,0,18.957075,0.683975,11.630475,3.44019819466,19615
+hand_chosen,avellaneda stoikov,trending,40000,19038,0.47595,400000,185763,501.666025,0,10.33145,0.641175,18.25115,3.44915432293,20962
+hand_chosen,naive symmetric,high volatility,40000,17721,0.443025,400000,172886,221.113425,0,4.54585,0.5979,17.931375,3.46233282546,22278
+hand_chosen,naive symmetric,low volatility,40000,20173,0.504325,400000,197120,968.73565,0,19.6897,0.676775,12.785075,3.43627621078,19826
+hand_chosen,naive symmetric,trending,40000,18770,0.46925,400000,183430,546.60635,0,11.245875,0.627475,19.108075,3.44070324987,21230
+itch_calibrated,avellaneda stoikov,high volatility,40000,700,0.0175,400000,6991,134.06765,0,0.10555,0.90805,5.64535,4.44714285714,39298
+itch_calibrated,avellaneda stoikov,low volatility,40000,702,0.01755,400000,7011,298.63295,0,0.241225,0.82655,4.737625,4.47435897436,39296
+itch_calibrated,avellaneda stoikov,trending,40000,612,0.0153,400000,6093,317.41575,0,0.244625,0.814225,5.3543,4.41503267974,39386
+itch_calibrated,naive symmetric,high volatility,40000,694,0.01735,400000,6931,137.905525,0,0.1076,0.90505,6.0876,4.42939481268,39304
+itch_calibrated,naive symmetric,low volatility,40000,679,0.016975,400000,6781,335.52005,0,0.2674,0.809725,5.220275,4.46244477172,39319
+itch_calibrated,naive symmetric,trending,40000,603,0.015075,400000,6003,331.4412,0,0.254525,0.8073,5.802875,4.43449419569,39395

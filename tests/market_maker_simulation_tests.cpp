@@ -105,6 +105,33 @@ void check_matching_adverse_selection_split(const std::vector<lob::MarketMakerAd
     }
 }
 
+void check_matching_quote_queue_events(const std::vector<lob::MarketMakerQuoteQueueEvent>& left,
+                                       const std::vector<lob::MarketMakerQuoteQueueEvent>& right) {
+    REQUIRE(left.size() == right.size());
+    for (std::size_t index = 0; index < left.size(); ++index) {
+        CHECK(left[index].event_index == right[index].event_index);
+        CHECK(left[index].quote_order_id == right[index].quote_order_id);
+        CHECK(left[index].strategy_name == right[index].strategy_name);
+        CHECK(left[index].regime_name == right[index].regime_name);
+        CHECK(left[index].risk_mode == right[index].risk_mode);
+        CHECK(left[index].external_flow_profile == right[index].external_flow_profile);
+        CHECK(left[index].seed == right[index].seed);
+        CHECK(left[index].side == right[index].side);
+        CHECK(left[index].price == right[index].price);
+        CHECK(left[index].reference_mid == Catch::Approx(right[index].reference_mid));
+        CHECK(left[index].distance_from_mid == Catch::Approx(right[index].distance_from_mid));
+        CHECK(left[index].quote_quantity == right[index].quote_quantity);
+        CHECK(left[index].queue_orders_ahead == right[index].queue_orders_ahead);
+        CHECK(left[index].queue_quantity_ahead == right[index].queue_quantity_ahead);
+        CHECK(left[index].total_level_quantity_before_quote == right[index].total_level_quantity_before_quote);
+        CHECK(left[index].ever_filled == right[index].ever_filled);
+        CHECK(left[index].filled_quantity == right[index].filled_quantity);
+        CHECK(left[index].time_to_first_fill == right[index].time_to_first_fill);
+        CHECK(left[index].has_time_to_first_fill == right[index].has_time_to_first_fill);
+        CHECK(left[index].canceled_unfilled == right[index].canceled_unfilled);
+    }
+}
+
 }  // namespace
 
 TEST_CASE("risk controls block only the side that would exceed the hard cap") {
@@ -211,9 +238,10 @@ TEST_CASE("naive symmetric strategy reconciles in every Stage 3 regime") {
         CHECK(result.summary.fill_rate > 0.0);
         CHECK(result.summary.maker_fills > 0);
         CHECK(result.summary.taker_fills == 0);
-        CHECK(result.summary.quote_refreshes > 0);
-        CHECK_FALSE(result.curve.empty());
-        CHECK(result.adverse_selection_split.size() == 3);
+    CHECK(result.summary.quote_refreshes > 0);
+    CHECK_FALSE(result.quote_queue_events.empty());
+    CHECK_FALSE(result.curve.empty());
+    CHECK(result.adverse_selection_split.size() == 3);
     }
 }
 
@@ -233,9 +261,10 @@ TEST_CASE("avellaneda stoikov strategy reconciles in every Stage 3 regime") {
         CHECK(result.summary.fill_rate > 0.0);
         CHECK(result.summary.maker_fills > 0);
         CHECK(result.summary.taker_fills == 0);
-        CHECK(result.summary.quote_refreshes > 0);
-        CHECK_FALSE(result.curve.empty());
-        CHECK(result.adverse_selection_split.size() == 3);
+    CHECK(result.summary.quote_refreshes > 0);
+    CHECK_FALSE(result.quote_queue_events.empty());
+    CHECK_FALSE(result.curve.empty());
+    CHECK(result.adverse_selection_split.size() == 3);
     }
 }
 
@@ -255,9 +284,10 @@ TEST_CASE("calibrated avellaneda stoikov strategy reconciles in every Stage 4B r
         CHECK(result.summary.fill_rate > 0.0);
         CHECK(result.summary.maker_fills > 0);
         CHECK(result.summary.taker_fills == 0);
-        CHECK(result.summary.quote_refreshes > 0);
-        CHECK_FALSE(result.curve.empty());
-        CHECK(result.adverse_selection_split.size() == 3);
+    CHECK(result.summary.quote_refreshes > 0);
+    CHECK_FALSE(result.quote_queue_events.empty());
+    CHECK_FALSE(result.curve.empty());
+    CHECK(result.adverse_selection_split.size() == 3);
     }
 }
 
@@ -339,6 +369,7 @@ TEST_CASE("naive symmetric strategy is deterministic for a fixed seed") {
 
     check_matching_summary(first.summary, second.summary);
     check_matching_adverse_selection_split(first.adverse_selection_split, second.adverse_selection_split);
+    check_matching_quote_queue_events(first.quote_queue_events, second.quote_queue_events);
     REQUIRE(first.curve.size() == second.curve.size());
 
     for (std::size_t index = 0; index < first.curve.size(); ++index) {
@@ -364,6 +395,7 @@ TEST_CASE("avellaneda stoikov strategy is deterministic for a fixed seed") {
 
     check_matching_summary(first.summary, second.summary);
     check_matching_adverse_selection_split(first.adverse_selection_split, second.adverse_selection_split);
+    check_matching_quote_queue_events(first.quote_queue_events, second.quote_queue_events);
     REQUIRE(first.curve.size() == second.curve.size());
 
     for (std::size_t index = 0; index < first.curve.size(); ++index) {

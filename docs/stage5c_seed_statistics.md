@@ -100,7 +100,7 @@ These are the Stage 4C style runs, with hard cap, soft skew, terminal liquidatio
 | ITCH calibrated | trending | net PnL after fees | 142,082.7 [73,296.4, 210,869.0] | 131,098.8 [66,933.1, 195,264.5] | -10,983.9 | true |
 | ITCH calibrated | trending | inventory variance | 22,596.8 [14,071.5, 31,122.2] | 21,084.2 [13,419.2, 28,749.2] | -1,512.7 | true |
 
-The Stage 4C single seed ranking was too strong. Across 30 seeds, hand chosen high volatility still shows a separated inventory variance reduction, but the risk adjusted PnL intervals overlap. Low volatility and trending do not have separated winner claims by net PnL or risk adjusted PnL.
+The Stage 4C single seed ranking was too strong. Across 30 seeds, hand chosen high volatility still shows a separated inventory variance reduction; the paired same-seed delta addendum also separates risk adjusted PnL in favor of Avellaneda Stoikov. Net PnL still does not separate in high volatility. Low volatility and trending show lower AS net PnL under paired deltas, while risk adjusted PnL does not separate for original AS versus naive in either regime.
 
 Terminal liquidation makes final inventory exactly zero in every risk controlled row, so final inventory is not a useful comparison metric in that mode. Inventory variance and drawdown carry the risk comparison instead.
 

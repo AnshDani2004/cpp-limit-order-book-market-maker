@@ -117,4 +117,10 @@ if(BUILD_TESTING)
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/seed_statistics_tests.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
+
+    add_test(
+        NAME "queue position diagnostics aggregation is deterministic"
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/queue_position_diagnostics_tests.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 endif()

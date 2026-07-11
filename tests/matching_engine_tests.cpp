@@ -284,6 +284,50 @@ TEMPLATE_TEST_CASE("orders with identical timestamp and price use order id as ti
     CHECK(result.trades[1].buy_order_id == 20);
 }
 
+TEMPLATE_TEST_CASE("market maker quote behind external queue waits for displayed depth ahead", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+    constexpr lob::OrderId market_maker_order_id = 1'000'000'000'000ULL;
+
+    REQUIRE(engine.submit_order(Order::limit(1, "external seller", Side::Sell, 100, 100, 1)).accepted);
+    REQUIRE(engine.submit_order(Order::limit(market_maker_order_id, "market_maker", Side::Sell, 100, 10, 2)).accepted);
+
+    auto first = engine.submit_order(Order::market(2, "external buyer", Side::Buy, 50, 3));
+    REQUIRE(first.accepted);
+    REQUIRE(first.trades.size() == 1);
+    CHECK(first.trades[0].maker_order_id == 1);
+    CHECK(first.trades[0].quantity == 50);
+
+    const auto* market_maker_quote = engine.book().find_order(market_maker_order_id);
+    REQUIRE(market_maker_quote != nullptr);
+    CHECK(market_maker_quote->remaining_quantity == 10);
+
+    auto second = engine.submit_order(Order::market(3, "external buyer", Side::Buy, 60, 4));
+    REQUIRE(second.accepted);
+    REQUIRE(second.trades.size() == 2);
+    CHECK(second.trades[0].maker_order_id == 1);
+    CHECK(second.trades[0].quantity == 50);
+    CHECK(second.trades[1].maker_order_id == market_maker_order_id);
+    CHECK(second.trades[1].quantity == 10);
+}
+
+TEMPLATE_TEST_CASE("market maker quote first at a price level fills before later external liquidity", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+    constexpr lob::OrderId market_maker_order_id = 1'000'000'000'000ULL;
+
+    REQUIRE(engine.submit_order(Order::limit(market_maker_order_id, "market_maker", Side::Sell, 100, 10, 1)).accepted);
+    REQUIRE(engine.submit_order(Order::limit(1, "external seller", Side::Sell, 100, 100, 2)).accepted);
+
+    auto result = engine.submit_order(Order::market(2, "external buyer", Side::Buy, 10, 3));
+    REQUIRE(result.accepted);
+    REQUIRE(result.trades.size() == 1);
+    CHECK(result.trades[0].maker_order_id == market_maker_order_id);
+    CHECK(result.trades[0].quantity == 10);
+
+    const auto* external_order = engine.book().find_order(1);
+    REQUIRE(external_order != nullptr);
+    CHECK(external_order->remaining_quantity == 100);
+}
+
 TEMPLATE_TEST_CASE("invalid order values are rejected deterministically", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
     TestType engine;
 

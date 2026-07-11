@@ -438,6 +438,77 @@ void write_terminal_liquidation_trades(const std::filesystem::path& path,
     }
 }
 
+void write_quote_queue_events(const std::filesystem::path& path,
+                              const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write quote queue events");
+    }
+
+    output << std::setprecision(12);
+    output << "event_index,quote_order_id,strategy,regime,risk_mode,flow_profile,seed,side,price,"
+           << "reference_mid,distance_from_mid,quote_quantity,queue_orders_ahead,"
+           << "queue_quantity_ahead,total_level_quantity_before_quote,whether_the_quote_ever_filled,"
+           << "filled_quantity,time_to_first_fill_if_any,whether_it_was_canceled_unfilled\n";
+    for (const auto& result : results) {
+        for (const auto& event : result.quote_queue_events) {
+            output << event.event_index << ','
+                   << event.quote_order_id << ','
+                   << event.strategy_name << ','
+                   << event.regime_name << ','
+                   << event.risk_mode << ','
+                   << event.external_flow_profile << ','
+                   << event.seed << ','
+                   << lob::to_string(event.side) << ','
+                   << event.price << ','
+                   << event.reference_mid << ','
+                   << event.distance_from_mid << ','
+                   << event.quote_quantity << ','
+                   << event.queue_orders_ahead << ','
+                   << event.queue_quantity_ahead << ','
+                   << event.total_level_quantity_before_quote << ','
+                   << (event.ever_filled ? "true" : "false") << ','
+                   << event.filled_quantity << ',';
+            if (event.has_time_to_first_fill) {
+                output << event.time_to_first_fill;
+            }
+            output << ',' << (event.canceled_unfilled ? "true" : "false") << '\n';
+        }
+    }
+}
+
+void write_quote_fill_outcomes(const std::filesystem::path& path,
+                               const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write quote fill outcomes");
+    }
+
+    output << std::setprecision(12);
+    output << "quote_order_id,strategy,regime,risk_mode,flow_profile,seed,side,distance_from_mid,"
+           << "queue_quantity_ahead,whether_the_quote_ever_filled,filled_quantity,"
+           << "time_to_first_fill_if_any,whether_it_was_canceled_unfilled\n";
+    for (const auto& result : results) {
+        for (const auto& event : result.quote_queue_events) {
+            output << event.quote_order_id << ','
+                   << event.strategy_name << ','
+                   << event.regime_name << ','
+                   << event.risk_mode << ','
+                   << event.external_flow_profile << ','
+                   << event.seed << ','
+                   << lob::to_string(event.side) << ','
+                   << event.distance_from_mid << ','
+                   << event.queue_quantity_ahead << ','
+                   << (event.ever_filled ? "true" : "false") << ','
+                   << event.filled_quantity << ',';
+            if (event.has_time_to_first_fill) {
+                output << event.time_to_first_fill;
+            }
+            output << ',' << (event.canceled_unfilled ? "true" : "false") << '\n';
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -481,6 +552,8 @@ int main(int argc, char** argv) {
         write_adverse_selection_split(args.output_dir / "adverse_selection_split.csv", results);
         write_terminal_liquidation_levels(args.output_dir / "terminal_liquidation_levels.csv", results);
         write_terminal_liquidation_trades(args.output_dir / "terminal_liquidation_trades.csv", results);
+        write_quote_queue_events(args.output_dir / "quote_queue_events.csv", results);
+        write_quote_fill_outcomes(args.output_dir / "quote_fill_outcomes.csv", results);
 
         std::cout << (args.output_dir / "summary.csv") << '\n';
         for (const auto& result : results) {

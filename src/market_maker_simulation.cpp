@@ -6,6 +6,7 @@
 #include <array>
 #include <cmath>
 #include <cstdlib>
+#include <memory>
 #include <optional>
 #include <random>
 #include <stdexcept>
@@ -160,6 +161,16 @@ struct QuotePrices {
     Price ask{};
 };
 
+struct QuoteQueueTracker {
+    std::vector<MarketMakerQuoteQueueEvent>* events{};
+    std::unordered_map<OrderId, std::size_t> index_by_order_id{};
+};
+
+struct QueueSnapshot {
+    std::size_t orders_ahead{};
+    Quantity quantity_ahead{};
+};
+
 struct AdverseSelectionAccumulator {
     std::size_t maker_fills{};
     Quantity maker_quantity{};
@@ -198,6 +209,10 @@ private:
 
 bool is_market_maker_order(OrderId id) {
     return id >= kMarketMakerOrderIdStart;
+}
+
+std::string risk_mode_name(const MarketMakerSimulationConfig& config) {
+    return config.risk_controls.enabled ? "risk_controlled" : "uncontrolled";
 }
 
 Price rounded_reference(double reference_mid) {
@@ -513,6 +528,7 @@ const char* adverse_selection_group_name(AdverseSelectionGroup group) {
 void record_market_maker_trades(PnlAccounting& accounting,
                                 MarketMakerSummary& summary,
                                 std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                                QuoteQueueTracker& quote_queue,
                                 const MarketMakerSimulationConfig& config,
                                 StrategyKind kind,
                                 const std::vector<double>& reference_path,
@@ -542,6 +558,16 @@ void record_market_maker_trades(PnlAccounting& accounting,
         }
         if (role == LiquidityRole::Maker) {
             ++summary.maker_fills;
+            const auto queue_position = quote_queue.index_by_order_id.find(trade.maker_order_id);
+            if (queue_position != quote_queue.index_by_order_id.end() && quote_queue.events != nullptr) {
+                auto& queue_event = (*quote_queue.events)[queue_position->second];
+                if (!queue_event.ever_filled) {
+                    queue_event.ever_filled = true;
+                    queue_event.time_to_first_fill = event_index - queue_event.event_index;
+                    queue_event.has_time_to_first_fill = true;
+                }
+                queue_event.filled_quantity += trade.quantity;
+            }
 
             const auto future_index = std::min(event_index + markout_horizon, reference_path.size() - 1);
             const auto future_mid = reference_path[future_index];
@@ -573,7 +599,21 @@ void sync_quote_ids(const MatchingEngine& engine, QuoteIds& quotes) {
     }
 }
 
-void cancel_quote(MatchingEngine& engine, std::optional<OrderId>& id, Timestamp timestamp) {
+void mark_quote_canceled_unfilled(QuoteQueueTracker& quote_queue, OrderId id) {
+    const auto position = quote_queue.index_by_order_id.find(id);
+    if (position == quote_queue.index_by_order_id.end() || quote_queue.events == nullptr) {
+        return;
+    }
+    auto& event = (*quote_queue.events)[position->second];
+    if (!event.ever_filled) {
+        event.canceled_unfilled = true;
+    }
+}
+
+void cancel_quote(MatchingEngine& engine,
+                  std::optional<OrderId>& id,
+                  Timestamp timestamp,
+                  QuoteQueueTracker& quote_queue) {
     if (!id.has_value()) {
         return;
     }
@@ -582,6 +622,7 @@ void cancel_quote(MatchingEngine& engine, std::optional<OrderId>& id, Timestamp 
         if (!result.accepted) {
             throw std::runtime_error("market maker quote cancel rejected: " + result.reject_reason);
         }
+        mark_quote_canceled_unfilled(quote_queue, *id);
     }
     id.reset();
 }
@@ -629,10 +670,14 @@ void record_quote_diagnostics(MarketMakerSummary& summary,
     summary.max_abs_quote_asymmetry = std::max(summary.max_abs_quote_asymmetry, abs_asymmetry);
 }
 
+const char* strategy_name(StrategyKind kind);
+QueueSnapshot queue_snapshot_before_quote(const MatchingEngine& engine, Side side, Price price);
+
 void submit_quote(MatchingEngine& engine,
                   PnlAccounting& accounting,
                   MarketMakerSummary& summary,
                   std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                  QuoteQueueTracker& quote_queue,
                   const MarketMakerSimulationConfig& config,
                   StrategyKind kind,
                   QuoteIds& quotes,
@@ -644,6 +689,7 @@ void submit_quote(MatchingEngine& engine,
                   Price price,
                   Quantity quantity,
                   Timestamp timestamp) {
+    const auto queue_before_quote = queue_snapshot_before_quote(engine, side, price);
     const auto order = Order::limit(order_id, kMarketMakerOwner, side, price, quantity, timestamp);
     const auto result = engine.submit_order(order);
     if (!result.accepted) {
@@ -653,6 +699,7 @@ void submit_quote(MatchingEngine& engine,
     record_market_maker_trades(accounting,
                                summary,
                                adverse_groups,
+                               quote_queue,
                                config,
                                kind,
                                reference_path,
@@ -667,6 +714,33 @@ void submit_quote(MatchingEngine& engine,
             quotes.ask = order_id;
         }
         summary.market_maker_posted_quantity += result.order->remaining_quantity;
+        if (quote_queue.events != nullptr) {
+            const auto reference_mid = reference_path[event_index];
+            const auto distance_from_mid = side == Side::Buy ? reference_mid - static_cast<double>(price)
+                                                             : static_cast<double>(price) - reference_mid;
+            quote_queue.index_by_order_id[order_id] = quote_queue.events->size();
+            quote_queue.events->push_back(MarketMakerQuoteQueueEvent{event_index,
+                                                                      order_id,
+                                                                      strategy_name(kind),
+                                                                      config.regime.name,
+                                                                      risk_mode_name(config),
+                                                                      external_flow_profile_name(
+                                                                          config.external_flow_profile),
+                                                                      config.regime.seed,
+                                                                      side,
+                                                                      price,
+                                                                      reference_mid,
+                                                                      distance_from_mid,
+                                                                      result.order->remaining_quantity,
+                                                                      queue_before_quote.orders_ahead,
+                                                                      queue_before_quote.quantity_ahead,
+                                                                      queue_before_quote.quantity_ahead,
+                                                                      false,
+                                                                      0,
+                                                                      0,
+                                                                      false,
+                                                                      false});
+        }
     }
 }
 
@@ -698,6 +772,22 @@ Quantity level_depth(const PriceLevel& level) {
         depth += order.remaining_quantity;
     }
     return depth;
+}
+
+QueueSnapshot queue_snapshot_before_quote(const MatchingEngine& engine, Side side, Price price) {
+    if (side == Side::Buy) {
+        const auto level = engine.book().bid_levels().find(price);
+        if (level == engine.book().bid_levels().end()) {
+            return QueueSnapshot{};
+        }
+        return QueueSnapshot{level->second.size(), level_depth(level->second)};
+    }
+
+    const auto level = engine.book().ask_levels().find(price);
+    if (level == engine.book().ask_levels().end()) {
+        return QueueSnapshot{};
+    }
+    return QueueSnapshot{level->second.size(), level_depth(level->second)};
 }
 
 std::vector<TerminalLiquidationLevel> make_terminal_liquidation_ladder(const MatchingEngine& engine,
@@ -902,6 +992,7 @@ void refresh_quotes(MatchingEngine& engine,
                     PnlAccounting& accounting,
                     MarketMakerSummary& summary,
                     std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                    QuoteQueueTracker& quote_queue,
                     QuoteIds& quotes,
                     const MarketMakerSimulationConfig& config,
                     StrategyKind kind,
@@ -909,8 +1000,8 @@ void refresh_quotes(MatchingEngine& engine,
                     std::size_t event_index,
                     OrderId& next_market_maker_order_id,
                     Timestamp& next_market_maker_timestamp) {
-    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++);
-    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++);
+    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++, quote_queue);
+    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++, quote_queue);
 
     const auto inventory = accounting.snapshot().inventory;
     const auto prices = make_quote_prices(engine, config, kind, reference_path[event_index], inventory, event_index);
@@ -938,6 +1029,7 @@ void refresh_quotes(MatchingEngine& engine,
                      accounting,
                      summary,
                      adverse_groups,
+                     quote_queue,
                      config,
                      kind,
                      quotes,
@@ -955,6 +1047,7 @@ void refresh_quotes(MatchingEngine& engine,
                      accounting,
                      summary,
                      adverse_groups,
+                     quote_queue,
                      config,
                      kind,
                      quotes,
@@ -973,6 +1066,7 @@ void liquidate_terminal_inventory(MatchingEngine& engine,
                                   PnlAccounting& accounting,
                                   MarketMakerSummary& summary,
                                   std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount>& adverse_groups,
+                                  QuoteQueueTracker& quote_queue,
                                   std::vector<TerminalLiquidationLevel>& terminal_liquidation_levels,
                                   std::vector<TerminalLiquidationTrade>& terminal_liquidation_trades,
                                   QuoteIds& quotes,
@@ -981,8 +1075,8 @@ void liquidate_terminal_inventory(MatchingEngine& engine,
                                   const std::vector<double>& reference_path,
                                   OrderId& next_market_maker_order_id,
                                   Timestamp& next_market_maker_timestamp) {
-    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++);
-    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++);
+    cancel_quote(engine, quotes.bid, next_market_maker_timestamp++, quote_queue);
+    cancel_quote(engine, quotes.ask, next_market_maker_timestamp++, quote_queue);
 
     const auto pre_liquidation_state = accounting.snapshot();
     summary.pre_liquidation_inventory = pre_liquidation_state.inventory;
@@ -1046,6 +1140,7 @@ void liquidate_terminal_inventory(MatchingEngine& engine,
     record_market_maker_trades(accounting,
                                summary,
                                adverse_groups,
+                               quote_queue,
                                config,
                                kind,
                                reference_path,
@@ -1129,6 +1224,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     double peak_equity = 0.0;
     RunningMoments inventory_moments;
     std::array<AdverseSelectionAccumulator, kAdverseSelectionGroupCount> adverse_groups{};
+    QuoteQueueTracker quote_queue{std::addressof(result.quote_queue_events), {}};
 
     for (std::size_t event_index = 0; event_index < external_events.size(); ++event_index) {
         if (event_index % refresh_cadence(config, kind) == 0) {
@@ -1136,6 +1232,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
                            accounting,
                            result.summary,
                            adverse_groups,
+                           quote_queue,
                            quotes,
                            config,
                            kind,
@@ -1152,6 +1249,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
         record_market_maker_trades(accounting,
                                    result.summary,
                                    adverse_groups,
+                                   quote_queue,
                                    config,
                                    kind,
                                    reference_path,
@@ -1188,6 +1286,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
                                      accounting,
                                      result.summary,
                                      adverse_groups,
+                                     quote_queue,
                                      result.terminal_liquidation_levels,
                                      result.terminal_liquidation_trades,
                                      quotes,

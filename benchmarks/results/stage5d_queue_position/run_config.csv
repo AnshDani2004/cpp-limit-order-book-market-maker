@@ -1,0 +1,12 @@
+field,value
+events,200000
+strategies,naive avellaneda-stoikov
+flow_profiles,hand-chosen itch-calibrated
+regimes,low-volatility high-volatility trending
+risk_mode,uncontrolled
+seed_formula,"Stage 5C base seed for each regime, seed_index 0"
+low_volatility_seed,3001
+high_volatility_seed,3002
+trending_seed,3003
+distance_buckets,0_to_5 5_to_10 10_to_20 20_to_40 40_plus
+queue_depth_buckets,0 1_to_100 101_to_500 501_to_1000 1001_plus
