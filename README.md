@@ -12,7 +12,7 @@ Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the match
 
 Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. The raw net PnL and risk adjusted PnL rankings match Stage 3: naive wins low volatility, while Avellaneda Stoikov wins high volatility and trending. See [docs/stage4c_results.md](docs/stage4c_results.md).
 
-Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as the map book. The Stage 1 matching tests now run against both engines. On the same one million event Stage 2 benchmark stream, the flat book processed 5,332,518 events per second versus 4,618,931 for the map book. See [docs/stage4d_flat_order_book.md](docs/stage4d_flat_order_book.md).
+Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as the map book. The Stage 1 matching tests now run against both engines. On one paired one million event Stage 2 benchmark stream, the flat book processed 5,332,518 events per second versus 4,618,931 for the map book. Follow up reconciliation showed the exact speedup is run length and host noise sensitive, so this is evidence that the flat book can outperform the map book on this stream, not a universal array book speedup claim. See [docs/stage4d_flat_order_book.md](docs/stage4d_flat_order_book.md).
 
 ## What Stage 1 Proves
 
@@ -157,7 +157,7 @@ map p99 875 ns
 flat p99 791 ns
 ```
 
-The full comparison table is checked in at `benchmarks/results/stage4d_comparison/metrics_table.csv`.
+This is the checked paired one million event artifact. A reconciliation rerun found overlapping map throughput between the old Stage 2 commit and current code, and a five million event diagnostic gave map `3265328.77983` events per second versus flat `3202855.57994`. Treat the one million event improvement as workload and run dependent. The full comparison table is checked in at `benchmarks/results/stage4d_comparison/metrics_table.csv`, and the reconciliation table is checked in at `benchmarks/results/stage4d_comparison/baseline_reconciliation.csv`.
 
 ## Build And Test
 

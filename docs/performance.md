@@ -92,4 +92,6 @@ At multi symbol scale, memory grows with active resting order count and active p
 
 Stage 2 only benchmarked the `std::map` price level container. Stage 4D adds the flat tick indexed comparison and reports it separately in [stage4d_flat_order_book.md](stage4d_flat_order_book.md).
 
+The Stage 2 result is a single historical measurement, not a stable constant for the map book. During the Stage 4D baseline reconciliation, the same one million event map benchmark was rerun several times on the same machine and produced overlapping old and current ranges. Current code map reruns ranged from `3,927,907.83940` to `4,637,882.80650` events per second, while reruns of the old Stage 2 commit ranged from `3,077,933.27356` to `4,218,342.82512` events per second. The deterministic stream stayed fixed, but throughput and the max latency event moved with host timing noise. See [stage4d_flat_order_book.md](stage4d_flat_order_book.md).
+
 The latency numbers include matching engine validation and state updates, but they do not include network I O, persistence, market data publication, risk checks, or CSV parsing.
