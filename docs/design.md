@@ -18,6 +18,8 @@ C++ is the right language for this project because the core problem is about exp
 
 `OrderBook` owns the bid and ask maps and an order ID index. Bids use descending price order and asks use ascending price order, so the best level is always at the beginning of the map.
 
+`FlatOrderBook` owns a fixed tick range and stores bid and ask price levels in arrays indexed by price. It keeps the same order ID index and the same `PriceLevel` queue type, so cancellation, modification, and within level priority semantics match the map book.
+
 `MatchingEngine` validates incoming events, applies self trade prevention, matches against the opposite side, produces trades, updates remaining quantities, and places any unfilled limit quantity onto the book.
 
 ## Data Structures
@@ -48,4 +50,4 @@ Self trade prevention uses owner ID. If an incoming order would execute against 
 
 ## Larger Scale Changes
 
-At larger scale, the ordered maps would be benchmarked against flat tick indexed storage for bounded price ranges. A real venue or trading system would also need sequence numbers from a gateway, persistence or recovery, replay logs, risk checks, symbol partitioning, market data publication, and much tighter control over allocation.
+Stage 4D benchmarks the ordered map book against flat tick indexed storage for a bounded price range. The flat book rejects prices outside its configured range, and the benchmark refuses to run a flat replay when the generated stream contains out of range prices. A real venue or trading system would also need sequence numbers from a gateway, persistence or recovery, replay logs, risk checks, symbol partitioning, market data publication, and much tighter control over allocation.

@@ -26,6 +26,7 @@ public:
     bool cancel_order(OrderId id);
     bool contains(OrderId id) const;
     bool reduce_order(OrderId id, Quantity new_remaining_quantity);
+    bool supports_price(Price price) const noexcept;
 
     Order* find_order(OrderId id);
     const Order* find_order(OrderId id) const;

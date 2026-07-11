@@ -1,0 +1,10 @@
+metric,map,flat,flat_minus_map,flat_percent_change_vs_map
+events_per_second,4618931.43599,5332518.0411,713586.60511,0.15449170766
+total_seconds,0.216500291,0.187528667,-0.028971624,-0.133817944845
+p50_latency_ns,125,84,-41,-0.328
+p95_latency_ns,500,458,-42,-0.084
+p99_latency_ns,875,791,-84,-0.096
+max_latency_ns,1481666,3883209,2401543,1.62083964942
+trades,350663,350663,0,0
+rejects,0,0,0,
+unsupported_flat_range_events,0,0,0,

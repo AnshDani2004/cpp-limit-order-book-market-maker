@@ -14,6 +14,9 @@ def parse_args():
     parser.add_argument("--events", type=int, default=1_000_000)
     parser.add_argument("--warmup", type=int, default=20_000)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--book", choices=["map", "flat"], default="map")
+    parser.add_argument("--min-price", type=int, default=1)
+    parser.add_argument("--max-price", type=int, default=200_000)
     parser.add_argument("--build-dir", default="build/stage2_benchmark")
     parser.add_argument("--output-dir", default="benchmarks/results/stage2_latest")
     parser.add_argument("--skip-build", action="store_true")
@@ -202,6 +205,12 @@ def main():
         str(args.warmup),
         "--seed",
         str(args.seed),
+        "--book",
+        args.book,
+        "--min-price",
+        str(args.min_price),
+        "--max-price",
+        str(args.max_price),
         "--output-dir",
         str(output_dir),
     ], root)

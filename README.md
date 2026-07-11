@@ -12,6 +12,8 @@ Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the match
 
 Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. The raw net PnL and risk adjusted PnL rankings match Stage 3: naive wins low volatility, while Avellaneda Stoikov wins high volatility and trending. See [docs/stage4c_results.md](docs/stage4c_results.md).
 
+Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as the map book. The Stage 1 matching tests now run against both engines. On the same one million event Stage 2 benchmark stream, the flat book processed 5,332,518 events per second versus 4,618,931 for the map book. See [docs/stage4d_flat_order_book.md](docs/stage4d_flat_order_book.md).
+
 ## What Stage 1 Proves
 
 1. Modern C++ structure with RAII, value semantics, const correctness, and CMake.
@@ -143,6 +145,20 @@ trending risk adjusted PnL 0.8467416267 naive, 1.9505626349 Avellaneda Stoikov
 The full table is checked in at `benchmarks/results/stage4c_risk_controlled_comparison/metrics_table.csv`. The terminal liquidation price level evidence is checked in at `benchmarks/results/stage4c_risk_controlled_comparison/naive_terminal_liquidation_levels.csv` and `benchmarks/results/stage4c_risk_controlled_comparison/avellaneda_stoikov_terminal_liquidation_levels.csv`.
 The per trade terminal liquidation trace is checked in beside those files, and the controlled runs report `passive_taker_fills` as zero in every regime.
 
+## Stage 4D Flat Book Result
+
+Measured comparison:
+
+```text
+map book throughput 4618931.43599 events per second
+flat book throughput 5332518.0411 events per second
+flat throughput improvement 15.449170766 percent
+map p99 875 ns
+flat p99 791 ns
+```
+
+The full comparison table is checked in at `benchmarks/results/stage4d_comparison/metrics_table.csv`.
+
 ## Build And Test
 
 ```bash
@@ -186,4 +202,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, and Stage 4C are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, and Stage 4D are complete once local tests pass and CI is green on `main`.

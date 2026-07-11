@@ -11,6 +11,7 @@ option(LOB_ENABLE_WARNINGS "Enable compiler warnings" ON)
 
 add_library(lob_core
     src/csv_io.cpp
+    src/flat_order_book.cpp
     src/market_maker_simulation.cpp
     src/matching_engine.cpp
     src/order_book.cpp

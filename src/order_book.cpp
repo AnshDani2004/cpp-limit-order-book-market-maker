@@ -74,6 +74,10 @@ bool OrderBook::reduce_order(OrderId id, Quantity new_remaining_quantity) {
     return true;
 }
 
+bool OrderBook::supports_price(Price price) const noexcept {
+    return price > 0;
+}
+
 Order* OrderBook::find_order(OrderId id) {
     auto location_position = locations_.find(id);
     if (location_position == locations_.end()) {

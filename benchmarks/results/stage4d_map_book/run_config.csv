@@ -1,0 +1,12 @@
+field,value
+benchmark,orderbook_benchmark
+book,map
+flat_min_price,1
+flat_max_price,200000
+seed,42
+warmup_events,20000
+measured_events,1000000
+requested_limit_share,0.60
+requested_market_share,0.10
+requested_cancel_share,0.20
+requested_modify_share,0.10

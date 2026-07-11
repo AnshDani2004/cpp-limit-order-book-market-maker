@@ -85,6 +85,9 @@ struct Config {
     std::size_t events{1'000'000};
     std::size_t warmup{20'000};
     std::uint64_t seed{42};
+    std::string book{"map"};
+    lob::Price min_price{1};
+    lob::Price max_price{200000};
     std::filesystem::path output_dir{"build/benchmark_results"};
 };
 
@@ -163,6 +166,15 @@ Config parse_args(int argc, char** argv) {
             config.warmup = static_cast<std::size_t>(parse_u64(require_value()));
         } else if (argument == "--seed") {
             config.seed = parse_u64(require_value());
+        } else if (argument == "--book") {
+            config.book = require_value();
+            if (config.book != "map" && config.book != "flat") {
+                throw std::runtime_error("unknown book type: " + config.book);
+            }
+        } else if (argument == "--min-price") {
+            config.min_price = static_cast<lob::Price>(parse_u64(require_value()));
+        } else if (argument == "--max-price") {
+            config.max_price = static_cast<lob::Price>(parse_u64(require_value()));
         } else if (argument == "--output-dir") {
             config.output_dir = require_value();
         } else {
@@ -172,6 +184,9 @@ Config parse_args(int argc, char** argv) {
 
     if (config.events == 0) {
         throw std::runtime_error("events must be positive");
+    }
+    if (config.min_price <= 0 || config.max_price < config.min_price) {
+        throw std::runtime_error("flat price range is invalid");
     }
     return config;
 }
@@ -217,6 +232,33 @@ const lob::PriceLevel* find_level(const lob::OrderBook& book, lob::Side side, lo
     return std::addressof(position->second);
 }
 
+const lob::PriceLevel* find_level(const lob::FlatOrderBook& book, lob::Side side, lob::Price price) {
+    if (!book.supports_price(price)) {
+        return nullptr;
+    }
+    if (side == lob::Side::Buy) {
+        for (const auto& entry : book.bid_levels()) {
+            if (entry.price == price) {
+                return entry.level;
+            }
+            if (entry.price < price) {
+                break;
+            }
+        }
+        return nullptr;
+    }
+
+    for (const auto& entry : book.ask_levels()) {
+        if (entry.price == price) {
+            return entry.level;
+        }
+        if (entry.price > price) {
+            break;
+        }
+    }
+    return nullptr;
+}
+
 bool has_higher_priority(lob::Timestamp timestamp, lob::OrderId id, const lob::Order& resting) {
     if (timestamp != resting.timestamp) {
         return timestamp < resting.timestamp;
@@ -232,7 +274,8 @@ bool would_insert_before_back(const lob::PriceLevel& level, lob::Timestamp times
     return back != nullptr && has_higher_priority(timestamp, id, *back);
 }
 
-InsertProbe make_insert_probe(const lob::MatchingEngine& engine, const BenchmarkEvent& event) {
+template <typename Engine>
+InsertProbe make_insert_probe(const Engine& engine, const BenchmarkEvent& event) {
     InsertProbe probe;
     lob::Timestamp timestamp{};
     lob::OrderId id{};
@@ -287,7 +330,8 @@ InsertProbe make_insert_probe(const lob::MatchingEngine& engine, const Benchmark
     return probe;
 }
 
-void sync_active_id(lob::MatchingEngine& engine, ActiveIndex& active, lob::OrderId id) {
+template <typename Engine>
+void sync_active_id(Engine& engine, ActiveIndex& active, lob::OrderId id) {
     const auto snapshot = engine.book().snapshot_order(id);
     if (snapshot.has_value()) {
         active.upsert(*snapshot);
@@ -296,7 +340,8 @@ void sync_active_id(lob::MatchingEngine& engine, ActiveIndex& active, lob::Order
     }
 }
 
-void sync_after_result(lob::MatchingEngine& engine,
+template <typename Engine>
+void sync_after_result(Engine& engine,
                        ActiveIndex& active,
                        const BenchmarkEvent& event,
                        const lob::ExecutionResult& result) {
@@ -313,7 +358,8 @@ void sync_after_result(lob::MatchingEngine& engine,
     }
 }
 
-lob::ExecutionResult apply_event(lob::MatchingEngine& engine, const BenchmarkEvent& event) {
+template <typename Engine>
+lob::ExecutionResult apply_event(Engine& engine, const BenchmarkEvent& event) {
     switch (event.action) {
         case BenchmarkAction::Limit:
         case BenchmarkAction::Market:
@@ -501,15 +547,48 @@ struct ReplaySummary {
     std::uint64_t max_ns{};
 };
 
+struct RangeSupport {
+    std::size_t unsupported_events{};
+};
+
 std::uint64_t percentile(const std::vector<std::uint64_t>& sorted, double probability) {
     const auto raw_index = static_cast<std::size_t>(probability * static_cast<double>(sorted.size() - 1));
     return sorted[raw_index];
 }
 
+bool price_supported(lob::Price price, const Config& config) {
+    return price >= config.min_price && price <= config.max_price;
+}
+
+void count_event_range_support(const BenchmarkEvent& event, const Config& config, RangeSupport& support) {
+    if (event.action == BenchmarkAction::Limit && event.order.price.has_value() &&
+        !price_supported(*event.order.price, config)) {
+        ++support.unsupported_events;
+        return;
+    }
+    if (event.action == BenchmarkAction::Modify && event.new_price.has_value() &&
+        !price_supported(*event.new_price, config)) {
+        ++support.unsupported_events;
+    }
+}
+
+RangeSupport count_range_support(const GeneratedFlow& flow, const Config& config) {
+    RangeSupport support;
+    for (const auto& event : flow.warmup_events) {
+        count_event_range_support(event, config, support);
+    }
+    for (const auto& event : flow.measured_events) {
+        count_event_range_support(event, config, support);
+    }
+    return support;
+}
+
+template <typename Engine, typename Factory>
 ReplaySummary replay_flow(const GeneratedFlow& flow,
                           const std::filesystem::path& latency_path,
-                          std::vector<std::uint64_t>& latencies) {
-    lob::MatchingEngine engine;
+                          std::vector<std::uint64_t>& latencies,
+                          Factory make_engine) {
+    auto engine = make_engine();
 
     for (const auto& event : flow.warmup_events) {
         const auto result = apply_event(engine, event);
@@ -566,10 +645,12 @@ ReplaySummary replay_flow(const GeneratedFlow& flow,
     return summary;
 }
 
+template <typename Engine, typename Factory>
 TailEventDiagnostics diagnose_tail_event(const GeneratedFlow& flow,
                                          std::size_t event_index,
-                                         std::uint64_t latency_ns) {
-    lob::MatchingEngine engine;
+                                         std::uint64_t latency_ns,
+                                         Factory make_engine) {
+    auto engine = make_engine();
 
     for (const auto& event : flow.warmup_events) {
         const auto result = apply_event(engine, event);
@@ -642,6 +723,7 @@ TailEventDiagnostics diagnose_tail_event(const GeneratedFlow& flow,
 void write_summary(const std::filesystem::path& path,
                    const Config& config,
                    const GeneratedFlow& flow,
+                   const RangeSupport& range_support,
                    const ReplaySummary& summary) {
     std::ofstream output(path);
     if (!output) {
@@ -651,6 +733,9 @@ void write_summary(const std::filesystem::path& path,
     output << std::setprecision(12);
     output << "metric,value\n";
     output << "seed," << config.seed << '\n';
+    output << "book," << config.book << '\n';
+    output << "flat_min_price," << config.min_price << '\n';
+    output << "flat_max_price," << config.max_price << '\n';
     output << "warmup_events," << config.warmup << '\n';
     output << "measured_events," << config.events << '\n';
     output << "events_per_second," << summary.events_per_second << '\n';
@@ -662,6 +747,7 @@ void write_summary(const std::filesystem::path& path,
     output << "max_latency_ns," << summary.max_ns << '\n';
     output << "trades," << summary.trades << '\n';
     output << "rejects," << summary.rejects << '\n';
+    output << "unsupported_flat_range_events," << range_support.unsupported_events << '\n';
     output << "limit_events," << flow.measured_counts.limit << '\n';
     output << "market_events," << flow.measured_counts.market << '\n';
     output << "cancel_events," << flow.measured_counts.cancel << '\n';
@@ -723,6 +809,9 @@ void write_run_config(const std::filesystem::path& path, const Config& config) {
     }
     output << "field,value\n";
     output << "benchmark,orderbook_benchmark\n";
+    output << "book," << config.book << '\n';
+    output << "flat_min_price," << config.min_price << '\n';
+    output << "flat_max_price," << config.max_price << '\n';
     output << "seed," << config.seed << '\n';
     output << "warmup_events," << config.warmup << '\n';
     output << "measured_events," << config.events << '\n';
@@ -741,12 +830,42 @@ int main(int argc, char** argv) {
 
         FlowGenerator generator(config.seed);
         const auto flow = generator.generate(config.warmup, config.events);
+        const auto range_support = count_range_support(flow, config);
+        if (config.book == "flat" && range_support.unsupported_events > 0) {
+            throw std::runtime_error("generated event stream contains prices outside flat book range");
+        }
+
+        auto make_map_engine = []() {
+            return lob::MatchingEngine{};
+        };
+        auto make_flat_engine = [&]() {
+            return lob::FlatMatchingEngine(lob::FlatOrderBook(config.min_price, config.max_price));
+        };
 
         std::vector<std::uint64_t> latencies;
-        const auto summary = replay_flow(flow, config.output_dir / "latencies.csv", latencies);
-        const auto tail_event = diagnose_tail_event(flow, summary.max_event_index, summary.max_ns);
+        ReplaySummary summary;
+        TailEventDiagnostics tail_event;
+        if (config.book == "map") {
+            summary = replay_flow<lob::MatchingEngine>(flow,
+                                                       config.output_dir / "latencies.csv",
+                                                       latencies,
+                                                       make_map_engine);
+            tail_event = diagnose_tail_event<lob::MatchingEngine>(flow,
+                                                                  summary.max_event_index,
+                                                                  summary.max_ns,
+                                                                  make_map_engine);
+        } else {
+            summary = replay_flow<lob::FlatMatchingEngine>(flow,
+                                                           config.output_dir / "latencies.csv",
+                                                           latencies,
+                                                           make_flat_engine);
+            tail_event = diagnose_tail_event<lob::FlatMatchingEngine>(flow,
+                                                                      summary.max_event_index,
+                                                                      summary.max_ns,
+                                                                      make_flat_engine);
+        }
 
-        write_summary(config.output_dir / "summary.csv", config, flow, summary);
+        write_summary(config.output_dir / "summary.csv", config, flow, range_support, summary);
         write_tail_event(config.output_dir / "tail_event.csv", tail_event);
         write_event_mix(config.output_dir / "event_mix.csv", flow.measured_counts);
         write_run_config(config.output_dir / "run_config.csv", config);

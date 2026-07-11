@@ -90,6 +90,6 @@ At multi symbol scale, memory grows with active resting order count and active p
 
 ## Limitations
 
-Only the `std::map` price level container is benchmarked in this stage. A flat tick indexed book is not reported yet, so this stage does not claim a map versus flat array comparison.
+Stage 2 only benchmarked the `std::map` price level container. Stage 4D adds the flat tick indexed comparison and reports it separately in [stage4d_flat_order_book.md](stage4d_flat_order_book.md).
 
 The latency numbers include matching engine validation and state updates, but they do not include network I O, persistence, market data publication, risk checks, or CSV parsing.

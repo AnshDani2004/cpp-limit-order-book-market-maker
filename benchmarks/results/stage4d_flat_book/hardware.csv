@@ -1,0 +1,10 @@
+field,value
+system,macOS-26.5.1-arm64-arm-64bit
+machine,arm64
+python,3.10.13
+cpu,Apple M3
+logical_cores,8
+memory_gb,16.00
+os,26.5.1
+compiler,Apple clang version 21.0.0 (clang-2100.1.1.101)
+cmake,cmake
