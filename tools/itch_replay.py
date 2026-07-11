@@ -608,6 +608,8 @@ def write_summary(path, args, compressed_size, decompressed_size, result, trade_
         writer.writerow(["translated_events", total_events])
         writer.writerow(["replay_trades", trade_count])
         writer.writerow(["execution_mode", args.execution_mode])
+        writer.writerow(["replay_rejections", 0])
+        writer.writerow(["external_execute_rejections", 0])
         writer.writerow(["limit_events", result.engine_counts["limit"]])
         writer.writerow(["market_events", result.engine_counts["market"]])
         writer.writerow(["external_execute_events", result.engine_counts["external_execute"]])

@@ -221,6 +221,7 @@ TEMPLATE_TEST_CASE("external execute targets the named order inside a price leve
 TEMPLATE_TEST_CASE("external execute rejects missing or already closed orders", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
     TestType engine;
 
+    CHECK_FALSE(engine.external_execute(0, 1, 100, 1).accepted);
     CHECK_FALSE(engine.external_execute(1, 1, 100, 1).accepted);
     REQUIRE(engine.submit_order(Order::limit(1, "seller", Side::Sell, 100, 3, 2)).accepted);
     REQUIRE(engine.external_execute(1, 3, 100, 3).accepted);
@@ -286,6 +287,7 @@ TEMPLATE_TEST_CASE("orders with identical timestamp and price use order id as ti
 TEMPLATE_TEST_CASE("invalid order values are rejected deterministically", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
     TestType engine;
 
+    CHECK_FALSE(engine.submit_order(Order::limit(0, "buyer", Side::Buy, 100, 1, 1)).accepted);
     CHECK_FALSE(engine.submit_order(Order::limit(1, "buyer", Side::Buy, 100, 0, 1)).accepted);
     CHECK_FALSE(engine.submit_order(Order::limit(2, "buyer", Side::Buy, 0, 1, 1)).accepted);
     CHECK_FALSE(engine.submit_order(Order::market(3, "buyer", Side::Buy, 0, 1)).accepted);

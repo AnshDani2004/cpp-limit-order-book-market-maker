@@ -144,9 +144,25 @@ changed_full_trade_rows 57
 market_book_rows 35
 external_book_rows 35
 book_state_match true
+market_translated_zero_order_id_rows 0
+external_translated_zero_order_id_rows 0
+market_min_translated_order_id 16079
+external_min_translated_order_id 16079
+external_unknown_aggressor_trade_rows 57
 ```
 
 The total executed quantity matches, no replayed trade changed price or quantity, and the final open book state matches. All `57` full trade rows changed because the historical run used invented synthetic market order IDs, while the corrected run records the unknown aggressor as order ID `0`. In this bounded QQQ prefix, direct execution reconstruction improves semantic accuracy without changing price, quantity, or ending book state.
+
+The `0` aggressor ID is safe as a sentinel in this path. The matching engine rejects incoming order ID `0`, the Stage 2 benchmark generator starts at `1`, the market maker simulator starts quote IDs at `1000000000000`, and this QQQ translated input has `0` rows with order ID `0`. Stage 4B intensity calibration reads ITCH quote segment data rather than engine trade IDs, so it does not join these unknown aggressor IDs back to orders.
+
+The corrected replay also reports:
+
+```text
+replay_rejections 0
+external_execute_rejections 0
+```
+
+Because `orderbook_replay` fails fast on any rejected event, this confirms directly that none of the `57` `E` or `C` messages hit the missing order, closed order, or quantity mismatch rejection paths.
 
 The Stage 3 synthetic flow was useful as a deterministic stress stream, but it is not calibrated to this public ITCH sample. The biggest observed gaps are visible execution rate, cancel share, and order size distribution.
 

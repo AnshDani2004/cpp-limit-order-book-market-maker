@@ -11,3 +11,8 @@ changed_full_trade_rows,57
 market_book_rows,35
 external_book_rows,35
 book_state_match,true
+market_translated_zero_order_id_rows,0
+external_translated_zero_order_id_rows,0
+market_min_translated_order_id,16079
+external_min_translated_order_id,16079
+external_unknown_aggressor_trade_rows,57

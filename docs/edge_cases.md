@@ -16,6 +16,12 @@ The engine accepts prices only as integer ticks. Decimal conversion and tick siz
 
 Every new order ID can be used once. A new order with an ID already seen by the engine is rejected. A replacement keeps the same ID because it is an update to an active order, not a new client order.
 
+## Zero Order ID
+
+Order ID `0` is reserved and is never accepted as a real incoming order ID. The benchmark generator starts synthetic order IDs at `1`, market maker quote IDs start at `1000000000000`, and the ITCH translator maps source order references directly into engine order IDs, where any zero source ID would be rejected by the replay rather than admitted as an active order.
+
+Stage 5A uses `0` in trade records as a sentinel for the unknown aggressor on an `external_execute` event. This is unambiguous because the engine will not accept a real order with ID `0`.
+
 ## Immediate Crossing
 
 An aggressive limit order executes against the opposite side while the best opposite price satisfies the limit. Any unfilled limit quantity rests at its limit price.
@@ -42,7 +48,7 @@ Filled orders are no longer active in the book. A cancel request for a filled or
 
 ## External Execute
 
-An `external_execute` event reduces a named resting order by the supplied quantity at the supplied execution price. The named order remains the maker in the trade record. The aggressor side is unknown at this schema boundary, so the missing taker order ID is recorded as `0`.
+An `external_execute` event reduces a named resting order by the supplied quantity at the supplied execution price. The named order remains the maker in the trade record. The aggressor side is unknown at this schema boundary, so the missing taker order ID is recorded as the reserved sentinel `0`.
 
 If the named order is missing or already closed, the event is rejected with no state change. If the supplied quantity is less than or equal to zero, the event is rejected. If the supplied execution price is less than or equal to zero, the event is rejected. If the supplied quantity is larger than the named order's remaining quantity, the event is rejected with no state change.
 

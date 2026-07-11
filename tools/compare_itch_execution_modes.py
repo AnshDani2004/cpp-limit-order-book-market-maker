@@ -28,6 +28,14 @@ def trade_quantity(rows):
     return sum(int(row["quantity"]) for row in rows)
 
 
+def order_id_values(rows):
+    return [int(row["order_id"]) for row in rows]
+
+
+def unknown_aggressor_rows(rows):
+    return sum(1 for row in rows if row["taker_order_id"] == "0")
+
+
 def write_summary(path, rows):
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")
@@ -87,6 +95,10 @@ def main():
     external_trades = read_rows(external_dir / "trades.csv")
     market_book = read_rows(market_dir / "book_state.csv")
     external_book = read_rows(external_dir / "book_state.csv")
+    market_orders = read_rows(market_dir / "translated_orders.csv")
+    external_orders = read_rows(external_dir / "translated_orders.csv")
+    market_order_ids = order_id_values(market_orders)
+    external_order_ids = order_id_values(external_orders)
 
     pair_count = min(len(market_trades), len(external_trades))
     market_quantity = trade_quantity(market_trades)
@@ -113,6 +125,11 @@ def main():
         ("market_book_rows", len(market_book)),
         ("external_book_rows", len(external_book)),
         ("book_state_match", str(market_book == external_book).lower()),
+        ("market_translated_zero_order_id_rows", sum(1 for value in market_order_ids if value == 0)),
+        ("external_translated_zero_order_id_rows", sum(1 for value in external_order_ids if value == 0)),
+        ("market_min_translated_order_id", min(market_order_ids) if market_order_ids else 0),
+        ("external_min_translated_order_id", min(external_order_ids) if external_order_ids else 0),
+        ("external_unknown_aggressor_trade_rows", unknown_aggressor_rows(external_trades)),
     ]
     write_summary(output_dir / "execution_mode_comparison.csv", rows)
     write_changed_trades(output_dir / "changed_trade_rows.csv", market_trades, external_trades)
