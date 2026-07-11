@@ -1,0 +1,16 @@
+field,value
+events,200000
+seeds_per_regime,30
+seed_formula,regime base seed plus 1000 times seed index
+low_volatility_base_seed,3001
+high_volatility_base_seed,3002
+trending_base_seed,3003
+markout_horizon,50
+curve_sample_stride,100000000
+strategies,naive avellaneda-stoikov avellaneda-stoikov-calibrated
+flow_profiles,hand-chosen itch-calibrated
+regimes,low-volatility high-volatility trending
+risk_modes,uncontrolled risk-controlled
+inventory_cap,20000
+confidence_interval,95 percent t interval
+t_critical_for_30_samples,2.045229642132703

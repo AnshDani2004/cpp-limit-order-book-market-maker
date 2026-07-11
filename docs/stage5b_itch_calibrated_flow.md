@@ -13,9 +13,11 @@ The calibrated event mix is taken from `benchmarks/results/stage4a_itch_replay/e
 | cancel | deletes | 5,864 | 47.2027690574 percent |
 | modify | replace and partial cancel translations | 592 | 4.76535458424 percent |
 
-The synthetic generator has no named external execution primitive, so Stage 4A `external_execute` events are mapped to synthetic market or taker flow. This preserves the measured execution scarcity without reverting to the older approximation that invented a taker order ID for ITCH replay.
+The synthetic generator has no named external execution primitive, so Stage 4A `external_execute` events are mapped to synthetic market or taker flow. This preserves the measured execution scarcity without reverting to the older approximation that invented a taker order ID for ITCH replay. This is different from Stage 5A because replay data names the exact resting order that executed, while a forward generated stream has no captured exchange order reference to target. In the synthetic setting, a market event is a deliberate model of anonymous liquidity consumption, not a reconstruction of a named ITCH execution.
 
 The calibrated quantity sampler uses the Stage 4A bucket counts from `benchmarks/results/stage4a_itch_replay/size_distribution.csv`: 45, 15, 34, 410, 5,799, and 6,120 observations in the `1_to_10`, `11_to_50`, `51_to_100`, `101_to_500`, `501_to_1000`, and `1001_plus` buckets. The `1001_plus` bucket is sampled uniformly from 1,001 to 3,000 shares because 3,000 is the maximum observed `quantity` in `benchmarks/results/stage4a_itch_replay/translated_orders.csv`.
+
+The market maker quote size remains at the Stage 3 default of 10 units per side. It was not recalibrated with the external order size distribution, whose ITCH calibrated average external limit size is roughly 1,300 to 1,350 units in the checked runs. This means the fill rate collapse may come from both sparse execution events and deeper queue depth ahead of small market maker quotes. Stage 5D queue position tracking should separate those mechanisms directly.
 
 Order lifetime percentiles from Stage 4A are not directly used as a survival model here. The bounded replay gives aggregate lifetimes, not a fitted per event hazard model, and the delete heavy event mix is the Stage 5B proxy for the observed cancellation pressure.
 
@@ -86,4 +88,3 @@ benchmarks/results/stage5b_itch_calibrated_avellaneda_stoikov
 benchmarks/results/stage5b_hand_chosen_stage3_comparison
 benchmarks/results/stage5b_itch_calibrated_stage3_comparison
 ```
-

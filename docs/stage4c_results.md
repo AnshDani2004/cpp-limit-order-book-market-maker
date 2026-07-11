@@ -2,6 +2,8 @@
 
 Stage 4C adds hard inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. The controls are applied to both naive symmetric and Avellaneda Stoikov so the comparison uses the same risk machinery for both strategies.
 
+Stage 5C reran the controlled comparison across 30 seeds per regime. The single seed production table below remains the mechanics checkpoint, but the winner labels in this document are now narrowed by the confidence interval results in `docs/stage5c_seed_statistics.md`.
+
 ## Reproduction
 
 ```bash
@@ -155,7 +157,7 @@ high volatility,avellaneda stoikov
 trending,avellaneda stoikov
 ```
 
-The interpretation changes even though the winner labels do not. Low volatility raw PnL drops sharply for both strategies because the hard cap blocks thousands of bids and prevents the very large long inventory that drove the uncontrolled low volatility PnL. High volatility remains the cleanest Avellaneda Stoikov win because it carries much lower terminal inventory and much lower drawdown than naive. Trending still favors Avellaneda Stoikov, but the hard cap does not fire there at the production cap. The soft skew alone pulls both strategies below the `20000` unit cap before terminal liquidation.
+The Stage 5C multi seed pass narrows this ranking. Across 30 seeds, the controlled hand chosen high volatility run still shows a separated inventory variance reduction for Avellaneda Stoikov, but net PnL and risk adjusted PnL intervals overlap. Low volatility and trending do not have separated winner claims by net PnL or risk adjusted PnL. The interpretation changes even though the single seed winner labels did not. Low volatility raw PnL drops sharply for both strategies because the hard cap blocks thousands of bids and prevents the very large long inventory that drove the uncontrolled low volatility PnL. High volatility remains the cleanest Avellaneda Stoikov risk reduction result, not a proven PnL dominance result. Trending should be treated as path dependent for PnL at this sample size.
 
 ## Mechanism Notes
 

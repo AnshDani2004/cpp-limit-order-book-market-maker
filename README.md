@@ -6,15 +6,17 @@ This repository is being built as a systems focused market microstructure projec
 
 Stage 2 adds a reproducible benchmark harness for deterministic synthetic order flow. On the hardware listed below, the engine processed 1,000,000 synthetic order events at 3,723,012 events per second. This is a measured result, not a target.
 
-Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. The results are regime dependent: inventory aware quoting materially reduced inventory risk in the high volatility run, helped only modestly in the low volatility run, and did not reduce inventory in the trending run because the full-run time horizon decayed before the late inventory buildup. The AS runs also show a measured tradeoff: inventory-reducing fills account for most of AS adverse selection cost. See [docs/stage3_results.md](docs/stage3_results.md).
+Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. Stage 5C later reruns these comparisons across 30 seeds per regime and narrows the claim: the strongest result is risk reduction in selected hand chosen flow regimes, not broad PnL dominance. The AS runs also show a measured tradeoff: inventory reducing fills account for most AS adverse selection cost. See [docs/stage3_results.md](docs/stage3_results.md) and [docs/stage5c_seed_statistics.md](docs/stage5c_seed_statistics.md).
 
 Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine, including direct `external_execute` handling for named resting order executions. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated result depends on the tick to cent bridge between real QQQ data and the synthetic simulator. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
 
-Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. The raw net PnL and risk adjusted PnL rankings match Stage 3: naive wins low volatility, while Avellaneda Stoikov wins high volatility and trending. See [docs/stage4c_results.md](docs/stage4c_results.md).
+Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. Stage 5C shows that controlled high volatility still has a separated AS inventory variance reduction, while net PnL and risk adjusted PnL intervals overlap. See [docs/stage4c_results.md](docs/stage4c_results.md).
 
 Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as the map book. The Stage 1 matching tests now run against both engines. On one paired one million event Stage 2 benchmark stream, the flat book processed 5,332,518 events per second versus 4,618,931 for the map book. Follow up reconciliation showed the exact speedup is run length and host noise sensitive, so this is evidence that the flat book can outperform the map book on this stream, not a universal array book speedup claim. See [docs/stage4d_flat_order_book.md](docs/stage4d_flat_order_book.md).
 
 Stage 5A corrects ITCH execution replay semantics by using direct named order execution instead of synthetic market orders for unknown aggressors. Stage 5B adds an ITCH calibrated synthetic flow profile beside the original hand chosen flow. Under the calibrated profile, the market maker fill rate drops from roughly 43 to 50 percent to roughly 1.5 to 1.8 percent because the Stage 4A input had only 57 external executions across 12,423 translated events. See [docs/stage5b_itch_calibrated_flow.md](docs/stage5b_itch_calibrated_flow.md).
+
+Stage 5C adds a 30 seed statistical pass for hand chosen and ITCH calibrated flow, uncontrolled and risk controlled modes, and checks confidence interval overlap for the main strategy comparisons. All 1,080 raw seed rows reconcile true. See [docs/stage5c_seed_statistics.md](docs/stage5c_seed_statistics.md).
 
 ## What Stage 1 Proves
 
@@ -204,4 +206,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, Stage 4D, and Stage 5A are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, Stage 4D, Stage 5A, Stage 5B, and Stage 5C are complete once local tests pass and CI is green on `main`.

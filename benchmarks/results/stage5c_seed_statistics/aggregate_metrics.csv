@@ -1,0 +1,757 @@
+risk_mode,flow_profile,regime,strategy,metric,sample_count,mean,stddev,ci95_low,ci95_high
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,fill_rate,30,0.431124842654,0.00641172072623,0.428730666787,0.43351901852
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,gross_spread_capture,30,3432894.53663,1908743.66155,2720157.93991,4145631.13335
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,inventory_pnl,30,162875.796706,4774613.95353,-1619994.35419,1945745.94761
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,adverse_selection_cost,30,466090.587571,78106.9143775,436924.986419,495256.188723
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,fee_pnl,30,2757.05933333,483.299732442,2576.59224735,2937.52641932
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,net_pnl_after_fees,30,3598527.39267,4273793.027,2002666.84915,5194387.93618
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_cost,30,1110256.20288,1907482.07922,397990.688744,1822521.71702
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,terminal_inventory_penalty,30,4323.71666667,2967.87031703,3215.49567719,5431.93765615
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,risk_adjusted_pnl,30,0.998943483525,1.20941161824,0.547341763409,1.45054520364
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,maximum_drawdown,30,4010721.79558,1306396.32854,3522905.38946,4498538.20169
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,inventory_variance,30,24510297.3625,12338871.8547,19902886.8913,29117707.8338
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,pre_liquidation_inventory,30,2315.56666667,10346.1555701,-1547.75131508,6178.88464841
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_quantity,30,8647.43333333,5935.74063405,6430.99135437,10863.8753123
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,maker_fills,30,18506.5,259.2265352,18409.7032209,18603.2967791
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,taker_fills,30,179.366666667,124.883803465,132.734288071,225.999045262
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_trades,30,179.366666667,124.883803465,132.734288071,225.999045262
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,hard_cap_bid_blocks,30,1.73333333333,9.49385766342,-1.8117313797,5.27839804636
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,fill_rate,30,0.448489479919,0.00664533215668,0.446008072111,0.450970887727
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,gross_spread_capture,30,3284266.8988,1927039.88655,2564698.37939,4003835.41821
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,inventory_pnl,30,152297.267865,4801046.4686,-1640442.94637,1945037.4821
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,581486.967568,86506.961623,549184.737225,613789.19791
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,fee_pnl,30,2890.75133333,488.372834955,2708.38991974,3073.11274693
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,3439454.918,4294555.11394,1835841.68381,5043068.15219
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,1111898.30982,1925683.47876,392836.281396,1830960.33824
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,4356.31666667,2995.6083214,3237.73813613,5474.8951972
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.939006864305,1.19383096944,0.493223054065,1.38479067454
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,maximum_drawdown,30,4080854.76203,1298386.25134,3596029.3679,4565680.15616
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,inventory_variance,30,24768000.5329,12403930.8299,20136296.6411,29399704.4247
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,2346.63333333,10427.1601202,-1546.93224449,6240.19891116
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,8712.63333333,5991.2166428,6475.47627227,10949.7903944
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,maker_fills,30,19243.9666667,267.894148336,19143.9333477,19343.9999857
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,taker_fills,30,180.6,125.7176914,133.656242532,227.543757468
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,180.6,125.7176914,133.656242532,227.543757468
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,1.76666666667,9.67643184926,-1.84657236777,5.3799057011
+risk-controlled,hand_chosen,high volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,naive symmetric,fill_rate,30,0.432298061504,0.0101813620009,0.428496278452,0.436099844556
+risk-controlled,hand_chosen,high volatility,naive symmetric,gross_spread_capture,30,3561964.02223,2341219.35956,2687738.34588,4436189.69859
+risk-controlled,hand_chosen,high volatility,naive symmetric,inventory_pnl,30,-947868.055566,6564039.07867,-3398920.52946,1503184.41833
+risk-controlled,hand_chosen,high volatility,naive symmetric,adverse_selection_cost,30,278600.283057,50606.2086306,259703.614196,297496.951917
+risk-controlled,hand_chosen,high volatility,naive symmetric,fee_pnl,30,2647.82066667,582.366331977,2430.36150447,2865.27982887
+risk-controlled,hand_chosen,high volatility,naive symmetric,net_pnl_after_fees,30,2616743.78733,5773762.56748,460785.41245,4772702.16222
+risk-controlled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_cost,30,1103684.38433,2311903.805,240405.31595,1966963.45271
+risk-controlled,hand_chosen,high volatility,naive symmetric,terminal_inventory_penalty,30,4930.15,3305.81807171,3695.73724502,6164.56275498
+risk-controlled,hand_chosen,high volatility,naive symmetric,risk_adjusted_pnl,30,0.434980912576,0.904126104601,0.0973746767151,0.772587148438
+risk-controlled,hand_chosen,high volatility,naive symmetric,maximum_drawdown,30,6864497.48501,1413034.719,6336861.64948,7392133.32053
+risk-controlled,hand_chosen,high volatility,naive symmetric,inventory_variance,30,41075363.3534,15304134.8115,35360705.497,46790021.2098
+risk-controlled,hand_chosen,high volatility,naive symmetric,pre_liquidation_inventory,30,516.833333333,12000.6468564,-3964.2818479,4997.94851457
+risk-controlled,hand_chosen,high volatility,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_quantity,30,9860.3,6611.63614343,7391.47449003,12329.12551
+risk-controlled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,naive symmetric,maker_fills,30,18424.1,642.314422414,18184.2558529,18663.9441471
+risk-controlled,hand_chosen,high volatility,naive symmetric,taker_fills,30,204.933333333,140.472339487,152.480099724,257.386566943
+risk-controlled,hand_chosen,high volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_trades,30,204.933333333,140.472339487,152.480099724,257.386566943
+risk-controlled,hand_chosen,high volatility,naive symmetric,hard_cap_bid_blocks,30,116.1,404.199110204,-34.8304282223,267.030428222
+risk-controlled,hand_chosen,high volatility,naive symmetric,hard_cap_ask_blocks,30,145.433333333,446.68732282,-21.3624542196,312.229120886
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,fill_rate,30,0.507325326953,0.0413946661714,0.491868304575,0.52278234933
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,gross_spread_capture,30,1174445.29921,1282020.97839,695730.79843,1653159.8
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,inventory_pnl,30,298558.600784,2935709.19286,-797653.227568,1394770.42914
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,adverse_selection_cost,30,180296.489455,115730.413955,137082.042675,223510.936236
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,fee_pnl,30,2970.548,714.067599825,2703.91077617,3237.18522383
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,net_pnl_after_fees,30,1475974.448,2399557.29426,579965.02882,2371983.86718
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_cost,30,665902.524508,1146310.29479,237863.225803,1093941.82321
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,terminal_inventory_penalty,30,5828.93333333,3458.63903803,4537.4562917,7120.41037497
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,risk_adjusted_pnl,30,0.68674470057,1.0802666359,0.283366509389,1.09012289175
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,maximum_drawdown,30,2247814.22148,813605.813552,1944008.8178,2551619.62516
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,inventory_variance,30,66347923.2399,32309087.4637,54283511.7079,78412334.7719
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,pre_liquidation_inventory,30,1437.4,13649.3089849,-3659.33573747,6534.13573747
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_quantity,30,11657.8666667,6917.27807606,9074.9125834,14240.8207499
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,maker_fills,30,20923.7,2363.94870051,20040.9870482,21806.4129518
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,taker_fills,30,236.866666667,140.211597074,184.510795875,289.222537459
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_trades,30,236.866666667,140.211597074,184.510795875,289.222537459
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,hard_cap_bid_blocks,30,844.833333333,1620.96701839,239.554301184,1450.11236548
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov,hard_cap_ask_blocks,30,778.7,1203.95392139,329.136217379,1228.26378262
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,fill_rate,30,0.529241758899,0.0389298648096,0.514705108476,0.543778409322
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,gross_spread_capture,30,856193.887098,1303878.2005,369317.765445,1343070.00875
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,inventory_pnl,30,319345.979566,2917480.64169,-770059.195912,1408751.15505
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,302081.857031,157827.331676,243148.162835,361015.551227
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,fee_pnl,30,3131.46866667,707.900317621,2867.13434385,3395.80298948
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,1178671.33533,2406755.65906,279974.002562,2077368.6681
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,665454.969953,1154942.78336,234192.247041,1096717.69286
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,5933.88333333,3455.25001761,4643.67177272,7224.09489394
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.532461521572,1.0565244472,0.137948809351,0.926974233793
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,maximum_drawdown,30,2300914.0215,800730.829324,2001916.21594,2599911.82706
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,inventory_variance,30,65682231.1834,32037292.2812,53719309.6404,77645152.7263
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,1379.96666667,13837.8325004,-3787.16490841,6547.09824175
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,11867.7666667,6910.50003522,9287.34354545,14448.1897879
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,maker_fills,30,21866.7333333,2248.62635361,21027.0824536,22706.384213
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,taker_fills,30,241.466666667,139.503240188,189.375300683,293.558032651
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,241.466666667,139.503240188,189.375300683,293.558032651
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,790.533333333,1550.23341365,211.666663271,1369.4000034
+risk-controlled,hand_chosen,low volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,728.9,1133.8751178,305.504072697,1152.2959273
+risk-controlled,hand_chosen,low volatility,naive symmetric,fill_rate,30,0.500782695924,0.0430799189797,0.484696389806,0.516869002043
+risk-controlled,hand_chosen,low volatility,naive symmetric,gross_spread_capture,30,1205002.01227,1294728.9638,721542.271748,1688461.75279
+risk-controlled,hand_chosen,low volatility,naive symmetric,inventory_pnl,30,323735.387729,3041583.99577,-812010.741759,1459481.51722
+risk-controlled,hand_chosen,low volatility,naive symmetric,adverse_selection_cost,30,138805.599709,94378.8700513,103563.950452,174047.248967
+risk-controlled,hand_chosen,low volatility,naive symmetric,fee_pnl,30,2899.336,743.04880325,2621.87701696,3176.79498304
+risk-controlled,hand_chosen,low volatility,naive symmetric,net_pnl_after_fees,30,1531636.736,2455397.87085,614776.10284,2448497.36916
+risk-controlled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_cost,30,665401.587161,1147613.10888,236875.809683,1093927.36464
+risk-controlled,hand_chosen,low volatility,naive symmetric,terminal_inventory_penalty,30,5837.63333333,3466.91698709,4543.06525472,7132.20141195
+risk-controlled,hand_chosen,low volatility,naive symmetric,risk_adjusted_pnl,30,0.698511129618,1.09339238445,0.290231703381,1.10679055585
+risk-controlled,hand_chosen,low volatility,naive symmetric,maximum_drawdown,30,2265313.20838,804675.92028,1964842.28165,2565784.13511
+risk-controlled,hand_chosen,low volatility,naive symmetric,inventory_variance,30,69127035.6565,35370237.6741,55919571.8504,82334499.4626
+risk-controlled,hand_chosen,low volatility,naive symmetric,pre_liquidation_inventory,30,1395.86666667,13677.5247225,-3711.40500036,6503.13833369
+risk-controlled,hand_chosen,low volatility,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_quantity,30,11675.2666667,6933.83397419,9086.13050944,14264.4028239
+risk-controlled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,naive symmetric,maker_fills,30,20547.0666667,2514.7640999,19608.0383193,21486.0950141
+risk-controlled,hand_chosen,low volatility,naive symmetric,taker_fills,30,237.766666667,140.610413931,185.261875213,290.27145812
+risk-controlled,hand_chosen,low volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_trades,30,237.766666667,140.610413931,185.261875213,290.27145812
+risk-controlled,hand_chosen,low volatility,naive symmetric,hard_cap_bid_blocks,30,964,1806.30247209,289.515572079,1638.48442792
+risk-controlled,hand_chosen,low volatility,naive symmetric,hard_cap_ask_blocks,30,874.066666667,1359.06433162,366.583704992,1381.54962834
+risk-controlled,hand_chosen,trending,avellaneda stoikov,fill_rate,30,0.449378395328,0.0157025747208,0.443514957564,0.455241833091
+risk-controlled,hand_chosen,trending,avellaneda stoikov,gross_spread_capture,30,2448688.80477,1352523.06284,1943648.393,2953729.21655
+risk-controlled,hand_chosen,trending,avellaneda stoikov,inventory_pnl,30,6374652.56189,7057796.21921,3739228.14165,9010076.98214
+risk-controlled,hand_chosen,trending,avellaneda stoikov,adverse_selection_cost,30,381192.221606,168269.010843,318359.540331,444024.902881
+risk-controlled,hand_chosen,trending,avellaneda stoikov,fee_pnl,30,2520.86,639.889791653,2281.92122495,2759.79877505
+risk-controlled,hand_chosen,trending,avellaneda stoikov,net_pnl_after_fees,30,8825862.22667,6405721.86737,6433926.37102,11217798.0823
+risk-controlled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_cost,30,786987.333196,1089806.67368,380046.833365,1193927.83303
+risk-controlled,hand_chosen,trending,avellaneda stoikov,terminal_inventory_penalty,30,5935.03333333,3306.49809006,4700.36665533,7169.70001134
+risk-controlled,hand_chosen,trending,avellaneda stoikov,risk_adjusted_pnl,30,2.7133467108,2.24126371508,1.87644508549,3.5502483361
+risk-controlled,hand_chosen,trending,avellaneda stoikov,maximum_drawdown,30,3364548.80558,698324.633674,3103790.10191,3625307.50924
+risk-controlled,hand_chosen,trending,avellaneda stoikov,inventory_variance,30,52082309.6904,17336620.6302,45608709.1564,58555910.2243
+risk-controlled,hand_chosen,trending,avellaneda stoikov,pre_liquidation_inventory,30,11433.6666667,7365.605794,8683.30426225,14184.0290711
+risk-controlled,hand_chosen,trending,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_quantity,30,11870.0666667,6612.99618011,9400.73331066,14339.4000227
+risk-controlled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov,maker_fills,30,18639.1,1045.60223036,18248.6657106,19029.5342894
+risk-controlled,hand_chosen,trending,avellaneda stoikov,taker_fills,30,239.733333333,130.331919327,191.066594841,288.400071825
+risk-controlled,hand_chosen,trending,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_trades,30,239.733333333,130.331919327,191.066594841,288.400071825
+risk-controlled,hand_chosen,trending,avellaneda stoikov,hard_cap_bid_blocks,30,1408.36666667,1094.45913215,999.68891029,1817.04442304
+risk-controlled,hand_chosen,trending,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,fill_rate,30,0.470241745566,0.0151505087832,0.464584452611,0.47589903852
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,gross_spread_capture,30,2205700.26097,1354110.21874,1700067.19544,2711333.32649
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,inventory_pnl,30,6459024.77236,7067287.33266,3820056.31211,9097993.23261
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,adverse_selection_cost,30,515921.124944,190980.079755,444607.991165,587234.258723
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,fee_pnl,30,2657.64666667,621.004513001,2425.75977056,2889.53356278
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,net_pnl_after_fees,30,8667382.68,6430742.11148,6266104.11167,11068661.2483
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_cost,30,797008.170167,1083647.52127,392367.535643,1201648.80469
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_inventory_penalty,30,6078.8,3229.21462802,4872.99144099,7284.60855901
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,risk_adjusted_pnl,30,2.62980182809,2.23682408439,1.79455798813,3.46504566805
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,maximum_drawdown,30,3413472.34171,689996.840943,3155823.28696,3671121.39646
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,inventory_variance,30,51941253.2722,17729905.748,45320797.6618,58561708.8827
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,pre_liquidation_inventory,30,11787.0666667,7133.69097256,9123.30267978,14450.8306536
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,12157.6,6458.42925603,9745.98288198,14569.217118
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,maker_fills,30,19485.3333333,1017.03847733,19105.5649246,19865.1017421
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,taker_fills,30,245.266666667,127.378321474,197.702819738,292.830513595
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_trades,30,245.266666667,127.378321474,197.702819738,292.830513595
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,1418.06666667,1080.50093534,1014.60098664,1821.53234669
+risk-controlled,hand_chosen,trending,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,hand_chosen,trending,naive symmetric,fill_rate,30,0.439572868426,0.0207357197374,0.431830023426,0.447315713426
+risk-controlled,hand_chosen,trending,naive symmetric,gross_spread_capture,30,2064264.46501,1459766.5121,1519178.69116,2609350.23886
+risk-controlled,hand_chosen,trending,naive symmetric,inventory_pnl,30,7419653.60166,7796597.47851,4508356.25735,10330950.946
+risk-controlled,hand_chosen,trending,naive symmetric,adverse_selection_cost,30,236843.706154,99343.5340446,199748.220894,273939.191413
+risk-controlled,hand_chosen,trending,naive symmetric,fee_pnl,30,2313.20733333,664.148134109,2065.21034434,2561.20432233
+risk-controlled,hand_chosen,trending,naive symmetric,net_pnl_after_fees,30,9486231.274,6977814.61284,6880672.4764,12091790.0716
+risk-controlled,hand_chosen,trending,naive symmetric,terminal_liquidation_cost,30,815907.929099,1087432.0318,409854.135116,1221961.72308
+risk-controlled,hand_chosen,trending,naive symmetric,terminal_inventory_penalty,30,6209.75,3052.03288315,5070.10219184,7349.39780816
+risk-controlled,hand_chosen,trending,naive symmetric,risk_adjusted_pnl,30,2.75821823736,2.44699947926,1.84449361516,3.67194285956
+risk-controlled,hand_chosen,trending,naive symmetric,maximum_drawdown,30,3683657.03568,677078.137517,3430831.90406,3936482.16729
+risk-controlled,hand_chosen,trending,naive symmetric,inventory_variance,30,56412079.055,24719853.105,47181534.2059,65642623.9042
+risk-controlled,hand_chosen,trending,naive symmetric,pre_liquidation_inventory,30,12080.4333333,6771.49774439,9551.91452053,14608.9521461
+risk-controlled,hand_chosen,trending,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,naive symmetric,terminal_liquidation_quantity,30,12419.5,6104.0657663,10140.2043837,14698.7956163
+risk-controlled,hand_chosen,trending,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,hand_chosen,trending,naive symmetric,maker_fills,30,17747.8,1519.50181037,17180.4086992,18315.1913008
+risk-controlled,hand_chosen,trending,naive symmetric,taker_fills,30,250.133333333,120.275755958,205.221627955,295.045038711
+risk-controlled,hand_chosen,trending,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,hand_chosen,trending,naive symmetric,terminal_liquidation_trades,30,250.133333333,120.275755958,205.221627955,295.045038711
+risk-controlled,hand_chosen,trending,naive symmetric,hard_cap_bid_blocks,30,2446.96666667,1681.00916905,1819.267527,3074.66580634
+risk-controlled,hand_chosen,trending,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,fill_rate,30,0.0174636666667,0.000676860696376,0.0172109227289,0.0177164106044
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,gross_spread_capture,30,37697.3649884,5230.68002281,35744.1969685,39650.5330083
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,inventory_pnl,30,-9521.73165515,113065.886731,-51741.2276183,32697.764308
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,adverse_selection_cost,30,17858.6192528,1660.2402466,17238.6753563,18478.5631494
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,fee_pnl,30,121.629333333,14.4722914644,116.225290888,127.033375779
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,net_pnl_after_fees,30,28297.2626667,110809.217047,-13079.5789882,69674.1043215
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_cost,30,2653.17435647,4912.61074926,818.775355192,4487.57335774
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,terminal_inventory_penalty,30,113,77.0959992701,84.2118807531,141.788119247
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,risk_adjusted_pnl,30,0.597659867961,1.24254967305,0.133684194817,1.0616355411
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,maximum_drawdown,30,125284.83524,86429.4590653,93011.544828,157558.125651
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,inventory_variance,30,14750.6111126,13580.0537686,9679.73569791,19821.4865273
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,pre_liquidation_inventory,30,112.4,252.077382755,18.2727583414,206.527241659
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_quantity,30,226,154.19199854,168.423761506,283.576238494
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,maker_fills,30,699.8,27.1056680674,689.678577203,709.921422797
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,taker_fills,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_trades,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,fill_rate,30,0.0187095833333,0.000701451107782,0.0184476571851,0.0189715094816
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,gross_spread_capture,30,23998.5665082,5189.75605672,22060.6797483,25936.453268
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,inventory_pnl,30,-9269.86650817,103960.650085,-48089.4112314,29549.6782151
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,25656.3194212,2177.37757897,24843.2732712,26469.3655712
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,fee_pnl,30,131.668666667,13.9191375905,126.471175272,136.866158061
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,14860.3686667,101729.823925,-23126.1718781,52846.9092114
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,2707.9371317,5082.00174186,810.286494271,4605.58776912
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,112.55,72.9343528633,85.3158650604,139.78413494
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.49004819969,1.2041159586,0.040423911382,0.939672487999
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,maximum_drawdown,30,125698.231359,87742.9893962,92934.4606614,158462.002057
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,inventory_variance,30,14160.4181833,12729.7161674,9407.06404717,18913.7723194
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,105.633333333,249.302542047,12.5422342235,198.724432443
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,225.1,145.868705727,170.631730121,279.568269879
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,maker_fills,30,749.7,27.9940264564,739.246858729,760.153141271
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,taker_fills,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,naive symmetric,fill_rate,30,0.0172,0.000701942501821,0.0169378903622,0.0174621096378
+risk-controlled,itch_calibrated,high volatility,naive symmetric,gross_spread_capture,30,39794.9537255,5758.68215032,37644.6264709,41945.2809801
+risk-controlled,itch_calibrated,high volatility,naive symmetric,inventory_pnl,30,-10084.5537255,136523.071042,-61063.1062617,40893.9988107
+risk-controlled,itch_calibrated,high volatility,naive symmetric,adverse_selection_cost,30,16456.3231423,1606.90675388,15856.2942992,17056.3519854
+risk-controlled,itch_calibrated,high volatility,naive symmetric,fee_pnl,30,116.624,16.6428747517,110.409448434,122.838551566
+risk-controlled,itch_calibrated,high volatility,naive symmetric,net_pnl_after_fees,30,29827.024,134312.625966,-20326.1347798,79980.1827797
+risk-controlled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_cost,30,3076.77695358,5403.33995303,1059.13665612,5094.41725103
+risk-controlled,itch_calibrated,high volatility,naive symmetric,terminal_inventory_penalty,30,131.1,91.0385859838,97.1056333119,165.094366688
+risk-controlled,itch_calibrated,high volatility,naive symmetric,risk_adjusted_pnl,30,0.569265192076,1.32842082763,0.0732247028401,1.06530568131
+risk-controlled,itch_calibrated,high volatility,naive symmetric,maximum_drawdown,30,142217.861766,107086.474853,102231.114892,182204.60864
+risk-controlled,itch_calibrated,high volatility,naive symmetric,inventory_variance,30,17627.5411597,17396.9337549,11131.4193348,24123.6629846
+risk-controlled,itch_calibrated,high volatility,naive symmetric,pre_liquidation_inventory,30,135.6,291.976333476,26.5742452918,244.625754708
+risk-controlled,itch_calibrated,high volatility,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_quantity,30,262.2,182.077171968,194.211266624,330.188733376
+risk-controlled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,naive symmetric,maker_fills,30,689.233333333,28.1016422803,678.740007653,699.726659014
+risk-controlled,itch_calibrated,high volatility,naive symmetric,taker_fills,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_trades,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,high volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,high volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,fill_rate,30,0.01733225,0.00194574694792,0.0166056961491,0.0180588038509
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,gross_spread_capture,30,30752.0602463,3508.69711492,29441.8912116,32062.229281
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,inventory_pnl,30,13972.4064203,55703.4485792,-6827.60311773,34772.4159584
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,adverse_selection_cost,30,533.705016289,89.3417127336,500.344272486,567.065760092
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,fee_pnl,30,115.466,22.1919147439,107.179402848,123.752597152
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,net_pnl_after_fees,30,44839.9326667,53705.4021306,24786.005934,64893.8593993
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_cost,30,2463.83521477,3004.34514117,1341.99430211,3585.67612742
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,terminal_inventory_penalty,30,144.95,92.9399463131,110.245653697,179.654346303
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,risk_adjusted_pnl,30,1.17226674082,1.01712534533,0.792465895017,1.55206758662
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,maximum_drawdown,30,39393.7436574,19526.5616072,32102.4057235,46685.0815913
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,inventory_variance,30,20239.2020946,21410.6064572,12244.3502517,28234.0539374
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,pre_liquidation_inventory,30,77.5666666667,339.51036583,-49.2085874271,204.34192076
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_quantity,30,289.9,185.879892626,220.491307393,359.308692607
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,maker_fills,30,694.4,78.0223663777,665.26596959,723.53403041
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,taker_fills,30,1.16666666667,0.461133037377,0.994476760648,1.33885657269
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_trades,30,1.16666666667,0.461133037377,0.994476760648,1.33885657269
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,fill_rate,30,0.0191261666667,0.00174208687941,0.0184756607351,0.0197766725982
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,gross_spread_capture,30,17556.9631942,2891.7727852,16477.1574901,18636.7688983
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,inventory_pnl,30,12167.1034724,52649.1719901,-7492.42044389,31826.6273888
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,2882.788476,439.729121367,2718.59092357,3046.98602843
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,fee_pnl,30,130.684,20.3808195159,123.073676921,138.294323079
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,29854.7506667,51661.6679148,10563.9668321,49145.5345012
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,2294.21038113,2848.0703722,1230.72342623,3357.69733603
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,139.533333333,84.9432806026,107.81499108,171.251675587
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.732691458528,0.878146491915,0.404786169475,1.06059674758
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,maximum_drawdown,30,39859.2016571,20082.8159502,32360.1549379,47358.2483762
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,inventory_variance,30,18120.6523491,17669.8165447,11522.634416,24718.6702823
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,89.4666666667,318.032717178,-29.2887016173,208.222034951
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,279.066666667,169.886561205,215.62998216,342.503351173
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,maker_fills,30,766.266666667,69.9477308958,740.147754698,792.385578635
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,taker_fills,30,1.2,0.484234198112,1.0191839788,1.3808160212
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,1.2,0.484234198112,1.0191839788,1.3808160212
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,naive symmetric,fill_rate,30,0.0168265833333,0.00199181812234,0.0160828262231,0.0175703404435
+risk-controlled,itch_calibrated,low volatility,naive symmetric,gross_spread_capture,30,32952.8870127,4053.79151568,31439.1763836,34466.5976418
+risk-controlled,itch_calibrated,low volatility,naive symmetric,inventory_pnl,30,13976.0463206,57922.2814254,-7652.48901866,35604.5816599
+risk-controlled,itch_calibrated,low volatility,naive symmetric,adverse_selection_cost,30,349.290053776,78.8683902306,319.840112868,378.739994685
+risk-controlled,itch_calibrated,low volatility,naive symmetric,fee_pnl,30,110.876666667,23.7752877111,101.998828332,119.754505001
+risk-controlled,itch_calibrated,low volatility,naive symmetric,net_pnl_after_fees,30,47039.81,55607.9402263,26275.463867,67804.156133
+risk-controlled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_cost,30,2509.94144472,3131.39761187,1340.65835982,3679.22452962
+risk-controlled,itch_calibrated,low volatility,naive symmetric,terminal_inventory_penalty,30,148.35,96.8888582969,112.171105728,184.528894272
+risk-controlled,itch_calibrated,low volatility,naive symmetric,risk_adjusted_pnl,30,1.25036547059,1.19178198515,0.805346763659,1.69538417753
+risk-controlled,itch_calibrated,low volatility,naive symmetric,maximum_drawdown,30,39891.0587584,19742.5473489,32519.0704231,47263.0470937
+risk-controlled,itch_calibrated,low volatility,naive symmetric,inventory_variance,30,21514.7506917,24876.3457287,12225.7705365,30803.7308469
+risk-controlled,itch_calibrated,low volatility,naive symmetric,pre_liquidation_inventory,30,75.3,350.357861385,-55.5257755027,206.125775503
+risk-controlled,itch_calibrated,low volatility,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_quantity,30,296.7,193.777716594,224.342211457,369.057788543
+risk-controlled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,naive symmetric,maker_fills,30,674.233333333,79.8531770505,644.415666983,704.050999684
+risk-controlled,itch_calibrated,low volatility,naive symmetric,taker_fills,30,1.13333333333,0.434172485455,0.971210662853,1.29545600381
+risk-controlled,itch_calibrated,low volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_trades,30,1.13333333333,0.434172485455,0.971210662853,1.29545600381
+risk-controlled,itch_calibrated,low volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,low volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,fill_rate,30,0.0170263333333,0.00113486740326,0.0166025668805,0.0174500997861
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,gross_spread_capture,30,33355.0638244,5530.6797129,31289.8740792,35420.2535697
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,inventory_pnl,30,97630.6695088,173147.777624,32976.2267779,162285.11224
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,adverse_selection_cost,30,4688.89856012,810.520222078,4386.24533523,4991.55178501
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,fee_pnl,30,113.08,20.8287573089,105.3024142,120.8575858
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,net_pnl_after_fees,30,131098.813333,171838.809383,66933.1473766,195264.47929
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_cost,30,2536.22968622,5187.75127282,599.091524971,4473.36784746
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,terminal_inventory_penalty,30,144.566666667,114.995257274,101.626731903,187.506601431
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,risk_adjusted_pnl,30,2.4709983755,2.64127389611,1.48473049383,3.45726625716
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,maximum_drawdown,30,71218.4637211,42669.9765751,55285.2326127,87151.6948296
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,inventory_variance,30,21084.1698403,20527.2729705,13419.1601422,28749.1795384
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,pre_liquidation_inventory,30,264.333333333,259.026870305,167.611110376,361.055556291
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_quantity,30,289.133333333,229.990514547,203.253463805,375.013202861
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,maker_fills,30,682.266666667,45.2753516967,665.360572499,699.172760834
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,taker_fills,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_trades,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,fill_rate,30,0.0184101666667,0.00104267641634,0.0180208248942,0.0187995084392
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,gross_spread_capture,30,20760.0926321,5495.40377725,18708.0751377,22812.1101265
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,inventory_pnl,30,89026.9740345,175218.626158,23599.2637527,154454.684316
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,adverse_selection_cost,30,9475.92041174,1281.97162567,8997.22433956,9954.61648392
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,fee_pnl,30,123.036,20.8768364627,115.240461149,130.831538851
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,net_pnl_after_fees,30,109910.102667,174309.387325,44821.9077448,174998.297589
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_cost,30,2698.36535968,5070.95117472,804.841071835,4591.88964752
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_inventory_penalty,30,151.533333333,115.006066806,108.589362223,194.477304443
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,risk_adjusted_pnl,30,2.00524774537,2.48876225904,1.07592864491,2.93456684583
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,maximum_drawdown,30,78162.1280288,53364.4256295,58235.5240142,98088.7320435
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,inventory_variance,30,23232.6736214,23649.7940876,14401.6953761,32063.6518668
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,pre_liquidation_inventory,30,252.8,286.025607727,145.996282805,359.603717195
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,303.066666667,230.012133613,217.178724447,388.954608887
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,maker_fills,30,737.833333333,41.7208153897,722.254524836,753.41214183
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,taker_fills,30,1.06666666667,0.253708131702,0.971930493344,1.16140283999
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_trades,30,1.06666666667,0.253708131702,0.971930493344,1.16140283999
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,naive symmetric,fill_rate,30,0.0166713333333,0.00115114817745,0.0162414875396,0.0171011791271
+risk-controlled,itch_calibrated,trending,naive symmetric,gross_spread_capture,30,35517.8071093,6046.09677148,33260.1574714,37775.4567472
+risk-controlled,itch_calibrated,trending,naive symmetric,inventory_pnl,30,106456.359557,185712.78031,37110.0677151,175802.6514
+risk-controlled,itch_calibrated,trending,naive symmetric,adverse_selection_cost,30,3964.64113817,721.711565845,3695.14961052,4234.13266583
+risk-controlled,itch_calibrated,trending,naive symmetric,fee_pnl,30,108.517333333,21.2030822309,100.59997231,116.434694357
+risk-controlled,itch_calibrated,trending,naive symmetric,net_pnl_after_fees,30,142082.684,184213.026784,73296.409328,210868.958672
+risk-controlled,itch_calibrated,trending,naive symmetric,terminal_liquidation_cost,30,2674.76846256,5584.50505744,589.480003356,4760.05692177
+risk-controlled,itch_calibrated,trending,naive symmetric,terminal_inventory_penalty,30,155.333333333,117.215343627,111.564404701,199.102261966
+risk-controlled,itch_calibrated,trending,naive symmetric,risk_adjusted_pnl,30,2.63135466829,2.84595381516,1.56865804878,3.6940512878
+risk-controlled,itch_calibrated,trending,naive symmetric,maximum_drawdown,30,74856.3100282,44413.423948,58272.0649715,91440.5550848
+risk-controlled,itch_calibrated,trending,naive symmetric,inventory_variance,30,22596.8299093,22831.342924,14071.4663511,31122.1934676
+risk-controlled,itch_calibrated,trending,naive symmetric,pre_liquidation_inventory,30,286.733333333,264.099502321,188.116958452,385.349708215
+risk-controlled,itch_calibrated,trending,naive symmetric,final_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,naive symmetric,terminal_liquidation_quantity,30,310.666666667,234.430687254,223.128809402,398.204523932
+risk-controlled,itch_calibrated,trending,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,naive symmetric,maker_fills,30,667.966666667,45.8832726889,650.83357107,685.099762263
+risk-controlled,itch_calibrated,trending,naive symmetric,taker_fills,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,trending,naive symmetric,passive_taker_fills,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,naive symmetric,terminal_liquidation_trades,30,1.1,0.305128576629,0.986063116986,1.21393688301
+risk-controlled,itch_calibrated,trending,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+risk-controlled,itch_calibrated,trending,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,fill_rate,30,0.431283083333,0.00632133660037,0.428922657454,0.433643509212
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,gross_spread_capture,30,4554208.5667,320154.837018,4434660.78584,4673756.34755
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,inventory_pnl,30,176862.319098,4885948.94943,-1647581.00251,2001305.6407
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,adverse_selection_cost,30,457672.875718,66511.6837804,432837.004828,482508.746607
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,fee_pnl,30,3450.26466667,50.570692803,3431.38125963,3469.1480737
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,net_pnl_after_fees,30,4734521.15045,4878262.87874,2912947.85481,6556094.4461
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,risk_adjusted_pnl,30,1.48249246623,1.44209864304,0.944003983105,2.02098094935
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,maximum_drawdown,30,3636337.50396,1327279.03297,3140723.36786,4131951.64006
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,inventory_variance,30,25805890.7102,13962199.0498,20592319.9023,31019461.518
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,pre_liquidation_inventory,30,2369.43333333,11324.9276946,-1859.36416618,6598.23083285
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,final_inventory,30,2369.43333333,11324.9276946,-1859.36416618,6598.23083285
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,maker_fills,30,18513.5333333,252.148797522,18419.379425,18607.6872417
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,fill_rate,30,0.448547083333,0.00665426509852,0.44606233991,0.451031826757
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,gross_spread_capture,30,4407280.15859,325270.799224,4285822.04605,4528738.27113
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,inventory_pnl,30,164612.520176,4920869.63557,-1672870.39993,2002095.44028
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,571811.615547,73380.7818485,544410.781284,599212.449809
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,fee_pnl,30,3588.37666667,53.2341207882,3568.49871928,3608.25461405
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,4575481.05543,4916087.77844,2739783.71012,6411178.40074
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,1.4029588655,1.41605352563,0.874195789053,1.93172194195
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,maximum_drawdown,30,3712917.29517,1338231.56543,3213213.41623,4212621.17411
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,inventory_variance,30,26126081.111,14094366.0981,20863158.3163,31389003.9058
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,2411.76666667,11445.9196213,-1862.20996078,6685.74329411
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,final_inventory,30,2411.76666667,11445.9196213,-1862.20996078,6685.74329411
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,maker_fills,30,19245.6,267.534412869,19145.7010084,19345.4989916
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,fill_rate,30,0.43576425,0.00705811321343,0.433128707212,0.438399792788
+uncontrolled,hand_chosen,high volatility,naive symmetric,gross_spread_capture,30,4835346.17843,309739.730255,4719687.46236,4951004.89451
+uncontrolled,hand_chosen,high volatility,naive symmetric,inventory_pnl,30,-976902.792456,10012532.397,-4715643.83398,2761838.24907
+uncontrolled,hand_chosen,high volatility,naive symmetric,adverse_selection_cost,30,242368.050661,17046.3679664,236002.832253,248733.26907
+uncontrolled,hand_chosen,high volatility,naive symmetric,fee_pnl,30,3486.114,56.4649057075,3465.0296577,3507.1983423
+uncontrolled,hand_chosen,high volatility,naive symmetric,net_pnl_after_fees,30,3861929.49998,9941198.6556,149824.915246,7574034.08471
+uncontrolled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,risk_adjusted_pnl,30,0.424649243756,0.944380988683,0.0720115871444,0.777286900368
+uncontrolled,hand_chosen,high volatility,naive symmetric,maximum_drawdown,30,9225723.66744,3856674.10904,7785617.88765,10665829.4472
+uncontrolled,hand_chosen,high volatility,naive symmetric,inventory_variance,30,74175077.3618,75653121.3611,45925737.5807,102424417.143
+uncontrolled,hand_chosen,high volatility,naive symmetric,pre_liquidation_inventory,30,-577.7,21578.2536926,-8635.15234936,7479.75234936
+uncontrolled,hand_chosen,high volatility,naive symmetric,final_inventory,30,-577.7,21578.2536926,-8635.15234936,7479.75234936
+uncontrolled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,maker_fills,30,18682.9666667,291.18408484,18574.2367425,18791.6965909
+uncontrolled,hand_chosen,high volatility,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,high volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,fill_rate,30,0.5144735,0.0348554898498,0.50145824619,0.52748875381
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,gross_spread_capture,30,2535489.18513,698291.882257,2274742.71105,2796235.65921
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,inventory_pnl,30,872688.32695,6194208.42788,-1440267.11238,3185643.76628
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,adverse_selection_cost,30,25596.3733037,12758.1998576,20832.3831829,30360.3634245
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,fee_pnl,30,4115.788,278.843918799,4011.66596952,4219.91003048
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,net_pnl_after_fees,30,3412293.30008,6471738.38856,995706.470296,5828880.12986
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,risk_adjusted_pnl,30,0.758944606779,1.18879646065,0.315040713017,1.20284850054
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,maximum_drawdown,30,4125777.69324,2382293.88996,3236214.53517,5015340.85132
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,inventory_variance,30,244097023.996,199943273.071,169436978.828,318757069.165
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,pre_liquidation_inventory,30,-514.2,41520.7488716,-16018.3024314,14989.9024314
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,final_inventory,30,-514.2,41520.7488716,-16018.3024314,14989.9024314
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,maker_fills,30,22039.0666667,1471.73106926,21489.5132537,22588.6200796
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,fill_rate,30,0.530355583333,0.0350850897185,0.517254595524,0.543456571143
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,gross_spread_capture,30,2211468.94593,736106.869393,1936602.12359,2486335.76827
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,inventory_pnl,30,876793.623561,6068308.45696,-1389149.99401,3142737.24113
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,90314.4071063,24833.1266704,81041.5652127,99587.2489999
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,fee_pnl,30,4242.84466667,280.680717748,4138.03676419,4347.65256914
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,3092505.41415,6365455.01079,715605.449869,5469405.37844
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.66317867881,1.18995647552,0.218841628377,1.10751572924
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,maximum_drawdown,30,4101970.29987,2332328.99265,3231064.34108,4972876.25866
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,inventory_variance,30,236012652.068,196392009.919,162678670.354,309346633.782
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,-458.966666667,40971.6038743,-15758.0149862,14840.0816528
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,final_inventory,30,-458.966666667,40971.6038743,-15758.0149862,14840.0816528
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,maker_fills,30,22712.1333333,1484.35003153,22157.8679225,23266.3987442
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,fill_rate,30,0.510147583333,0.0346757752287,0.497199436066,0.523095730601
+uncontrolled,hand_chosen,low volatility,naive symmetric,gross_spread_capture,30,2594915.25493,689481.786618,2337458.52462,2852371.98523
+uncontrolled,hand_chosen,low volatility,naive symmetric,inventory_pnl,30,1061784.66562,6662251.92239,-1425941.08683,3549510.41807
+uncontrolled,hand_chosen,low volatility,naive symmetric,adverse_selection_cost,30,7652.09607715,1601.00404582,7054.27134147,8249.92081283
+uncontrolled,hand_chosen,low volatility,naive symmetric,fee_pnl,30,4081.18066667,277.406201829,3977.59548853,4184.7658448
+uncontrolled,hand_chosen,low volatility,naive symmetric,net_pnl_after_fees,30,3660781.10122,6933313.1341,1071839.42888,6249722.77356
+uncontrolled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,risk_adjusted_pnl,30,0.742493224897,1.17855821241,0.302412355854,1.18257409394
+uncontrolled,hand_chosen,low volatility,naive symmetric,maximum_drawdown,30,4477513.30789,2692705.53416,3472040.53695,5482986.07882
+uncontrolled,hand_chosen,low volatility,naive symmetric,inventory_variance,30,285753833.583,234371660.909,198238017.117,373269650.048
+uncontrolled,hand_chosen,low volatility,naive symmetric,pre_liquidation_inventory,30,-888.166666667,45727.6018517,-17963.1338173,16186.800484
+uncontrolled,hand_chosen,low volatility,naive symmetric,final_inventory,30,-888.166666667,45727.6018517,-17963.1338173,16186.800484
+uncontrolled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,maker_fills,30,21847.0333333,1466.92814114,21299.2733632,22394.7933034
+uncontrolled,hand_chosen,low volatility,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,low volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,fill_rate,30,0.457421916667,0.0134304512577,0.452406903748,0.462436929586
+uncontrolled,hand_chosen,trending,avellaneda stoikov,gross_spread_capture,30,4173773.82059,642809.846857,3933744.67901,4413802.96218
+uncontrolled,hand_chosen,trending,avellaneda stoikov,inventory_pnl,30,9395925.41805,11968784.6647,4926707.77473,13865143.0614
+uncontrolled,hand_chosen,trending,avellaneda stoikov,adverse_selection_cost,30,238691.666808,87238.9217152,206116.118076,271267.215541
+uncontrolled,hand_chosen,trending,avellaneda stoikov,fee_pnl,30,3659.37533333,107.443610061,3619.25522998,3699.49543669
+uncontrolled,hand_chosen,trending,avellaneda stoikov,net_pnl_after_fees,30,13573358.614,12234955.8121,9004751.03077,18141966.1972
+uncontrolled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,risk_adjusted_pnl,30,2.37418775276,2.07585289094,1.59905154427,3.14932396124
+uncontrolled,hand_chosen,trending,avellaneda stoikov,maximum_drawdown,30,5927189.69145,2502146.96415,4992872.65996,6861506.72293
+uncontrolled,hand_chosen,trending,avellaneda stoikov,inventory_variance,30,146170030.847,81277239.5401,115820610.824,176519450.87
+uncontrolled,hand_chosen,trending,avellaneda stoikov,pre_liquidation_inventory,30,30087.1666667,16963.9680603,23752.7168892,36421.6164441
+uncontrolled,hand_chosen,trending,avellaneda stoikov,final_inventory,30,30087.1666667,16963.9680603,23752.7168892,36421.6164441
+uncontrolled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,maker_fills,30,19639.7333333,566.907517443,19428.0465873,19851.4200793
+uncontrolled,hand_chosen,trending,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,fill_rate,30,0.47662525,0.0138214052405,0.471464252465,0.481786247535
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,gross_spread_capture,30,3970603.93095,646412.533009,3729229.52424,4211978.33765
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,inventory_pnl,30,9550529.35737,12049353.8488,5051226.68627,14049832.0285
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,adverse_selection_cost,30,351640.093398,102839.032087,313239.367719,390040.819078
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,fee_pnl,30,3813.002,110.571241924,3771.71401972,3854.28998028
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,net_pnl_after_fees,30,13524946.2903,12327384.8301,8921825.14459,18128067.436
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,risk_adjusted_pnl,30,2.31879085204,2.08258217717,1.54114188678,3.0964398173
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,maximum_drawdown,30,6059885.40246,2503991.38122,5124879.65432,6994891.15059
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,inventory_variance,30,149561004.996,82698775.3506,118680774.778,180441235.215
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,pre_liquidation_inventory,30,30798.4333333,16708.8841673,24559.2334469,37037.6332198
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,final_inventory,30,30798.4333333,16708.8841673,24559.2334469,37037.6332198
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,maker_fills,30,20450.6333333,586.124117921,20231.7709908,20669.4956759
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,fill_rate,30,0.460365416667,0.0141301572532,0.455089129235,0.465641704098
+uncontrolled,hand_chosen,trending,naive symmetric,gross_spread_capture,30,4313414.56612,627620.562345,4079057.19658,4547771.93565
+uncontrolled,hand_chosen,trending,naive symmetric,inventory_pnl,30,15056219.4096,19127859.9532,7913759.12006,22198679.6992
+uncontrolled,hand_chosen,trending,naive symmetric,adverse_selection_cost,30,69295.5197065,8946.57607442,65954.8132973,72636.2261156
+uncontrolled,hand_chosen,trending,naive symmetric,fee_pnl,30,3682.92333333,113.041258026,3640.71303388,3725.13363279
+uncontrolled,hand_chosen,trending,naive symmetric,net_pnl_after_fees,30,19373316.8991,19399520.1078,12129417.0407,26617216.7575
+uncontrolled,hand_chosen,trending,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,risk_adjusted_pnl,30,2.11048794753,2.08519614177,1.33186291184,2.88911298321
+uncontrolled,hand_chosen,trending,naive symmetric,maximum_drawdown,30,9217023.49207,3780863.62719,7805225.81143,10628821.1727
+uncontrolled,hand_chosen,trending,naive symmetric,inventory_variance,30,316028401.188,219608013.159,234025421.393,398031380.983
+uncontrolled,hand_chosen,trending,naive symmetric,pre_liquidation_inventory,30,46289.7,23704.1474549,37438.4258737,55140.9741263
+uncontrolled,hand_chosen,trending,naive symmetric,final_inventory,30,46289.7,23704.1474549,37438.4258737,55140.9741263
+uncontrolled,hand_chosen,trending,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,maker_fills,30,19732.3666667,601.441571865,19507.7846928,19956.9486405
+uncontrolled,hand_chosen,trending,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,hand_chosen,trending,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,fill_rate,30,0.0174636666667,0.000676860696376,0.0172109227289,0.0177164106044
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,gross_spread_capture,30,40350.5393449,1739.42476241,39701.0274642,41000.0512256
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,inventory_pnl,30,-9521.73165515,113065.886731,-51741.2276183,32697.764308
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,adverse_selection_cost,30,17858.6192528,1660.2402466,17238.6753563,18478.5631494
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,fee_pnl,30,139.709333333,5.41488557101,137.687381831,141.731284835
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,net_pnl_after_fees,30,30968.5170231,113033.29602,-11238.8093687,73175.8434149
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,risk_adjusted_pnl,30,0.629971215646,1.25465154125,0.16147663065,1.09846580064
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,maximum_drawdown,30,125284.83524,86429.4590653,93011.544828,157558.125651
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,inventory_variance,30,14750.5796045,13580.0216096,9679.71619816,19821.4430108
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,pre_liquidation_inventory,30,112.4,252.077382755,18.2727583414,206.527241659
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,final_inventory,30,112.4,252.077382755,18.2727583414,206.527241659
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,maker_fills,30,699.8,27.1056680674,689.678577203,709.921422797
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,fill_rate,30,0.0187095833333,0.000701451107782,0.0184476571851,0.0189715094816
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,gross_spread_capture,30,26706.5036399,1924.5775311,25987.8545791,27425.1527006
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,inventory_pnl,30,-9269.86650817,103960.650085,-48089.4112314,29549.6782151
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,25656.3194212,2177.37757897,24843.2732712,26469.3655712
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,fee_pnl,30,149.676666667,5.61160886226,147.58125748,151.772075853
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,17586.3137983,103847.74492,-21191.0714433,56363.69904
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.52075840729,1.21587678213,0.0667425553016,0.974774259278
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,maximum_drawdown,30,125698.231359,87742.9893962,92934.4606614,158462.002057
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,inventory_variance,30,14160.3840567,12729.6626648,9407.04989883,18913.7182146
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,105.633333333,249.302542047,12.5422342235,198.724432443
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,final_inventory,30,105.633333333,249.302542047,12.5422342235,198.724432443
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,maker_fills,30,749.7,27.9940264564,739.246858729,760.153141271
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,fill_rate,30,0.0172,0.000701942501821,0.0169378903622,0.0174621096378
+uncontrolled,itch_calibrated,high volatility,naive symmetric,gross_spread_capture,30,42871.7306791,1729.77359695,42225.8226028,43517.6387554
+uncontrolled,itch_calibrated,high volatility,naive symmetric,inventory_pnl,30,-10084.5537255,136523.071042,-61063.1062617,40893.9988107
+uncontrolled,itch_calibrated,high volatility,naive symmetric,adverse_selection_cost,30,16456.3231423,1606.90675388,15856.2942992,17056.3519854
+uncontrolled,itch_calibrated,high volatility,naive symmetric,fee_pnl,30,137.6,5.61554001456,135.503122897,139.696877103
+uncontrolled,itch_calibrated,high volatility,naive symmetric,net_pnl_after_fees,30,32924.7769536,136347.61593,-17988.2595671,83837.8134742
+uncontrolled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,risk_adjusted_pnl,30,0.602488714351,1.33921356727,0.102418149903,1.1025592788
+uncontrolled,itch_calibrated,high volatility,naive symmetric,maximum_drawdown,30,142217.861766,107086.474853,102231.114892,182204.60864
+uncontrolled,itch_calibrated,high volatility,naive symmetric,inventory_variance,30,17627.4794251,17396.8569128,11131.3862936,24123.5725567
+uncontrolled,itch_calibrated,high volatility,naive symmetric,pre_liquidation_inventory,30,135.6,291.976333476,26.5742452918,244.625754708
+uncontrolled,itch_calibrated,high volatility,naive symmetric,final_inventory,30,135.6,291.976333476,26.5742452918,244.625754708
+uncontrolled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,maker_fills,30,689.233333333,28.1016422803,678.740007653,699.726659014
+uncontrolled,itch_calibrated,high volatility,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,high volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,fill_rate,30,0.01733225,0.00194574694792,0.0166056961491,0.0180588038509
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,gross_spread_capture,30,33215.8954611,2611.93273334,32240.5837497,34191.2071725
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,inventory_pnl,30,13972.4064203,55703.4485792,-6827.60311773,34772.4159584
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,adverse_selection_cost,30,533.705016289,89.3417127336,500.344272486,567.065760092
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,fee_pnl,30,138.658,15.5659755834,132.845569193,144.470430807
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,net_pnl_after_fees,30,47326.9598814,55468.1940272,26614.7958368,68039.123926
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,risk_adjusted_pnl,30,1.2301232365,1.02494277305,0.847403315216,1.61284315778
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,maximum_drawdown,30,39342.9386693,19494.7507759,32063.479095,46622.3982436
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,inventory_variance,30,20239.1046615,21410.6118459,12244.2508065,28233.9585164
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,pre_liquidation_inventory,30,77.5666666667,339.51036583,-49.2085874271,204.34192076
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,final_inventory,30,77.5666666667,339.51036583,-49.2085874271,204.34192076
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,maker_fills,30,694.4,78.0223663777,665.26596959,723.53403041
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,fill_rate,30,0.0191261666667,0.00174208687941,0.0184756607351,0.0197766725982
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,gross_spread_capture,30,19851.1735754,1148.99796149,19422.1306854,20280.2164653
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,inventory_pnl,30,12167.1034724,52649.1719901,-7492.42044389,31826.6273888
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,adverse_selection_cost,30,2882.788476,439.729121367,2718.59092357,3046.98602843
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,fee_pnl,30,153.009333333,13.9366950353,147.805285881,158.213380786
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,net_pnl_after_fees,30,32171.2863811,53040.1424825,12365.7716836,51976.8010786
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,risk_adjusted_pnl,30,0.791103893413,0.899094570721,0.45537646318,1.12683132365
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,maximum_drawdown,30,39789.1631479,20093.9710902,32285.951031,47292.3752648
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,inventory_variance,30,18120.570516,17669.8329708,11522.5464492,24718.5945828
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,pre_liquidation_inventory,30,89.4666666667,318.032717178,-29.2887016173,208.222034951
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,final_inventory,30,89.4666666667,318.032717178,-29.2887016173,208.222034951
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,maker_fills,30,766.266666667,69.9477308958,740.147754698,792.385578635
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,fill_rate,30,0.0168265833333,0.00199181812234,0.0160828262231,0.0175703404435
+uncontrolled,itch_calibrated,low volatility,naive symmetric,gross_spread_capture,30,35462.8284574,3178.75718056,34275.861019,36649.7958959
+uncontrolled,itch_calibrated,low volatility,naive symmetric,inventory_pnl,30,13976.0463206,57922.2814254,-7652.48901866,35604.5816599
+uncontrolled,itch_calibrated,low volatility,naive symmetric,adverse_selection_cost,30,349.290053776,78.8683902306,319.840112868,378.739994685
+uncontrolled,itch_calibrated,low volatility,naive symmetric,fee_pnl,30,134.612666667,15.9345449787,128.662609785,140.562723548
+uncontrolled,itch_calibrated,low volatility,naive symmetric,net_pnl_after_fees,30,49573.4874447,57484.0082259,28108.6060077,71038.3688817
+uncontrolled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,risk_adjusted_pnl,30,1.31138613242,1.19773233904,0.864145526829,1.75862673801
+uncontrolled,itch_calibrated,low volatility,naive symmetric,maximum_drawdown,30,39803.6924918,19686.5502241,32452.6138265,47154.7711571
+uncontrolled,itch_calibrated,low volatility,naive symmetric,inventory_variance,30,21514.6502028,24876.3656444,12225.662611,30803.6377946
+uncontrolled,itch_calibrated,low volatility,naive symmetric,pre_liquidation_inventory,30,75.3,350.357861385,-55.5257755027,206.125775503
+uncontrolled,itch_calibrated,low volatility,naive symmetric,final_inventory,30,75.3,350.357861385,-55.5257755027,206.125775503
+uncontrolled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,maker_fills,30,674.233333333,79.8531770505,644.415666983,704.050999684
+uncontrolled,itch_calibrated,low volatility,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,low volatility,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,fill_rate,30,0.0170263333333,0.00113486740326,0.0166025668805,0.0174500997861
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,gross_spread_capture,30,35891.2935106,1636.97418785,35280.0373032,36502.5497181
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,inventory_pnl,30,97630.6695088,173147.777624,32976.2267779,162285.11224
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,adverse_selection_cost,30,4688.89856012,810.520222078,4386.24533523,4991.55178501
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,fee_pnl,30,136.210666667,9.0789392261,132.820535044,139.600798289
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,net_pnl_after_fees,30,133658.173686,172787.918387,69138.1046029,198178.242769
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,risk_adjusted_pnl,30,2.51071095442,2.65503288076,1.51930538345,3.5021165254
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,maximum_drawdown,30,71218.4637211,42669.9765751,55285.2326127,87151.6948296
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,inventory_variance,30,21084.0694381,20527.1666334,13419.0994469,28749.0394292
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,pre_liquidation_inventory,30,264.333333333,259.026870305,167.611110376,361.055556291
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,final_inventory,30,264.333333333,259.026870305,167.611110376,361.055556291
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,maker_fills,30,682.266666667,45.2753516967,665.360572499,699.172760834
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,fill_rate,30,0.0184101666667,0.00104267641634,0.0180208248942,0.0187995084392
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,gross_spread_capture,30,23458.4579918,1309.64697499,22969.4277743,23947.4882092
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,inventory_pnl,30,89026.9740345,175218.626158,23599.2637527,154454.684316
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,adverse_selection_cost,30,9475.92041174,1281.97162567,8997.22433956,9954.61648392
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,fee_pnl,30,147.281333333,8.34141133073,144.166599153,150.396067513
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,net_pnl_after_fees,30,112632.71336,175134.80396,47236.3028011,178029.123918
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,risk_adjusted_pnl,30,2.04735795118,2.49863049852,1.11435398954,2.98036191282
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,maximum_drawdown,30,78162.1280288,53364.4256295,58235.5240142,98088.7320435
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,inventory_variance,30,23232.5875926,23649.7202834,14401.6369061,32063.538279
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,pre_liquidation_inventory,30,252.8,286.025607727,145.996282805,359.603717195
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,final_inventory,30,252.8,286.025607727,145.996282805,359.603717195
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,maker_fills,30,737.833333333,41.7208153897,722.254524836,753.41214183
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,avellaneda stoikov calibrated,hard_cap_ask_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,fill_rate,30,0.0166713333333,0.00115114817745,0.0162414875396,0.0171011791271
+uncontrolled,itch_calibrated,trending,naive symmetric,gross_spread_capture,30,38192.5755718,1909.08473592,37479.7116159,38905.4395278
+uncontrolled,itch_calibrated,trending,naive symmetric,inventory_pnl,30,106456.359557,185712.78031,37110.0677151,175802.6514
+uncontrolled,itch_calibrated,trending,naive symmetric,adverse_selection_cost,30,3964.64113817,721.711565845,3695.14961052,4234.13266583
+uncontrolled,itch_calibrated,trending,naive symmetric,fee_pnl,30,133.370666667,9.20918541957,129.931900316,136.809433017
+uncontrolled,itch_calibrated,trending,naive symmetric,net_pnl_after_fees,30,144782.305796,185276.938847,75598.7598306,213965.851761
+uncontrolled,itch_calibrated,trending,naive symmetric,terminal_liquidation_cost,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,terminal_inventory_penalty,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,risk_adjusted_pnl,30,2.67171593965,2.8561657872,1.60520610711,3.73822577219
+uncontrolled,itch_calibrated,trending,naive symmetric,maximum_drawdown,30,74856.3100282,44413.423948,58272.0649715,91440.5550848
+uncontrolled,itch_calibrated,trending,naive symmetric,inventory_variance,30,22596.7066094,22831.1956237,14071.398054,31122.0151648
+uncontrolled,itch_calibrated,trending,naive symmetric,pre_liquidation_inventory,30,286.733333333,264.099502321,188.116958452,385.349708215
+uncontrolled,itch_calibrated,trending,naive symmetric,final_inventory,30,286.733333333,264.099502321,188.116958452,385.349708215
+uncontrolled,itch_calibrated,trending,naive symmetric,terminal_liquidation_quantity,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,terminal_liquidation_residual_inventory,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,maker_fills,30,667.966666667,45.8832726889,650.83357107,685.099762263
+uncontrolled,itch_calibrated,trending,naive symmetric,taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,passive_taker_fills,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,terminal_liquidation_trades,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,hard_cap_bid_blocks,30,0,0,0,0
+uncontrolled,itch_calibrated,trending,naive symmetric,hard_cap_ask_blocks,30,0,0,0,0

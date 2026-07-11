@@ -2,6 +2,8 @@
 
 This document reports the first naive symmetric versus Avellaneda Stoikov comparison. The numbers are measured outputs from the checked CSV artifacts, not target values.
 
+Stage 5C reran this comparison across 30 seeds per regime. The single seed tables below remain useful mechanism probes, but the PnL winner labels should now be read through the multi seed confidence intervals in `docs/stage5c_seed_statistics.md`.
+
 ## Reproduction
 
 ```bash
@@ -120,3 +122,7 @@ High volatility is the cleanest inventory control result. AS reduced final inven
 Trending is not an inventory control win. AS ended with higher final inventory (`27169` versus `22260`) and slightly higher inventory variance (`114699721.514` versus `112831901.12`). Its net PnL was higher because inventory PnL was better on this specific path, not because it carried less inventory. The skew diagnostic above shows why: the full-run horizon makes the reservation skew fade toward zero late in the run.
 
 The large PnL numbers are a property of this toy environment allowing very large unhedged positions, not proof of deployable market making skill. In low volatility, both strategies earn most of their net PnL from inventory exposure rather than spread capture. In high volatility and trending, the spread and inventory components can offset each other by millions of ticks. Resume or README claims should therefore cite the attribution table and risk metrics, not net PnL alone.
+
+## Stage 5C Statistical Update
+
+The Stage 5C 30 seed pass narrows the conclusions above. In hand chosen high volatility, AS still has separated confidence intervals for risk adjusted PnL and inventory variance, so the risk control finding survives. In hand chosen trending, the single seed inventory result reverses across seeds: AS lowers final inventory and inventory variance with separated intervals, while net PnL and risk adjusted PnL intervals overlap. Under the ITCH calibrated flow, no AS versus naive winner claim separates for the displayed key metrics. See `benchmarks/results/stage5c_seed_statistics/aggregate_metrics.csv` and `docs/stage5c_seed_statistics.md`.
