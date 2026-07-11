@@ -1,0 +1,289 @@
+risk_mode,flow_profile,regime,metric,left_strategy,right_strategy,sample_count,mean_delta,stddev_delta,ci95_low,ci95_high,paired_ci95_excludes_zero,previous_unpaired_ci95_overlap,changed_from_unpaired,paired_delta_conclusion
+risk-controlled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,187490.304514,49763.0174116,168908.488429,206072.120599,true,,,left_higher
+risk-controlled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,115396.379997,10168.4161757,111599.430996,119193.328998,true,,,left_higher
+risk-controlled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,302886.684511,55409.9607671,282196.265123,323577.103899,true,,,left_higher
+risk-controlled,hand_chosen,high volatility,fill_rate,avellaneda stoikov,naive symmetric,30,-0.0011732188503,0.00558569953042,-0.00325895333304,0.000912515632444,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.0173646372655,0.00128547004772,0.016884634861,0.0178446396699,true,false,false,left_higher
+risk-controlled,hand_chosen,high volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.0161914184152,0.00622350586165,0.0138675231343,0.0185153136961,true,false,false,left_higher
+risk-controlled,hand_chosen,high volatility,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-129069.485604,1289416.32554,-610545.454397,352406.483189,false,,,not_separated
+risk-controlled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-148627.637828,30101.8533731,-159867.854605,-137387.421051,true,,,left_lower
+risk-controlled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-277697.123432,1281187.35375,-756100.343658,200706.096794,false,,,not_separated
+risk-controlled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-16565065.9908,11646317.7417,-20913872.5062,-12216259.4754,true,false,false,left_lower
+risk-controlled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,257703.170397,408386.817027,105209.026749,410197.314046,true,true,true,left_higher
+risk-controlled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-16307362.8204,11567161.8643,-20626612.0455,-11988113.5954,true,false,false,left_lower
+risk-controlled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-2853775.68943,1778426.51261,-3517851.06301,-2189700.31585,true,,,left_lower
+risk-controlled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,70132.966453,51020.3541723,51081.6531055,89184.2798005,true,,,left_higher
+risk-controlled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-2783642.72298,1756666.24126,-3439592.6777,-2127692.76826,true,,,left_lower
+risk-controlled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,981783.605333,4121005.04972,-557024.969845,2520592.18051,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-159072.474667,94548.9165461,-194377.620329,-123767.329005,true,true,true,left_lower
+risk-controlled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,822711.130667,4052839.48863,-690644.005683,2336066.26702,false,true,false,not_separated
+risk-controlled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,0.563962570948,0.907879962212,0.224954621619,0.902970520278,true,true,true,left_higher
+risk-controlled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.0599366192204,0.0408837150158,-0.0752028493008,-0.0446703891401,true,true,true,left_lower
+risk-controlled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,0.504025951728,0.882372341584,0.174542704475,0.833509198981,true,true,true,left_higher
+risk-controlled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,41490.8897456,25264.017405,32057.1506074,50924.6288838,true,,,left_higher
+risk-controlled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,121785.367576,44700.9881555,105093.744279,138476.990872,true,,,left_higher
+risk-controlled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,163276.257321,67650.5666247,138015.120588,188537.394054,true,,,left_higher
+risk-controlled,hand_chosen,low volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.0065426310283,0.00359946666617,0.0051985680861,0.0078866939705,true,true,true,left_higher
+risk-controlled,hand_chosen,low volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.0219164319464,0.00628772852516,0.0195685555288,0.0242643083639,true,true,true,left_higher
+risk-controlled,hand_chosen,low volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.0284590629747,0.00957013143302,0.024885517168,0.0320326087813,true,true,true,left_higher
+risk-controlled,hand_chosen,low volatility,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,low volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,low volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-30556.7130562,79847.7007018,-60372.3345042,-741.091608079,true,,,left_lower
+risk-controlled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-318251.412116,77697.1679216,-347264.011426,-289238.812805,true,,,left_lower
+risk-controlled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-348808.125172,115782.261255,-392041.932052,-305574.318292,true,,,left_lower
+risk-controlled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-2779112.41659,3775645.09766,-4188961.46628,-1369263.3669,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-665692.056587,1882454.85705,-1368612.25238,37228.139207,false,true,false,not_separated
+risk-controlled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-3444804.47318,4700862.03931,-5200135.20671,-1689473.73964,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-17498.9869,53570.9116997,-37502.6940804,2504.72028038,false,,,not_separated
+risk-controlled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,53099.800022,46672.5698596,35671.9760181,70527.6240259,true,,,left_higher
+risk-controlled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,35600.813122,65632.2148376,11093.3413326,60108.2849114,true,,,left_higher
+risk-controlled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-55662.288,114683.730002,-98485.8965691,-12838.6794309,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-297303.112667,83255.979812,-328391.40645,-266214.818883,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-352965.400667,136065.612031,-403773.135201,-302157.666132,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.0117664290479,0.0848392515439,-0.0434459262123,0.0199130681166,false,true,false,not_separated
+risk-controlled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.154283178998,0.0705586469383,-0.180630210766,-0.12793614723,true,true,true,left_lower
+risk-controlled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.166049608046,0.105439530802,-0.205421375904,-0.126677840187,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,144348.515453,74336.0605587,116590.974258,172106.056648,true,,,left_higher
+risk-controlled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,134728.903338,25444.5384397,125227.756537,144230.050138,true,,,left_higher
+risk-controlled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,279077.41879,95278.6723133,243499.777847,314655.059734,true,,,left_higher
+risk-controlled,hand_chosen,trending,fill_rate,avellaneda stoikov,naive symmetric,30,0.00980552690163,0.0073216143811,0.00707159116075,0.0125394626425,true,true,true,left_higher
+risk-controlled,hand_chosen,trending,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.020863350238,0.00280687541844,0.0198152457316,0.0219114547443,true,false,false,left_higher
+risk-controlled,hand_chosen,trending,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.0306688771396,0.00948412361824,0.0271274471788,0.0342103071004,true,false,false,left_higher
+risk-controlled,hand_chosen,trending,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,trending,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,trending,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov,naive symmetric,30,384424.339762,341362.913563,256957.332976,511891.346548,true,,,left_higher
+risk-controlled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-242988.543807,93630.1899013,-277950.631302,-208026.456312,true,,,left_lower
+risk-controlled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,141435.795955,298849.088965,29843.7121715,253027.879739,true,,,left_higher
+risk-controlled,hand_chosen,trending,inventory_variance,avellaneda stoikov,naive symmetric,30,-4329769.36465,8807813.0531,-7618660.81009,-1040877.9192,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-141056.41815,1046378.67159,-531780.635494,249667.799194,false,true,false,not_separated
+risk-controlled,hand_chosen,trending,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-4470825.7828,8329661.08047,-7581172.34736,-1360479.21823,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-319108.230099,407915.87014,-471426.51929,-166789.940907,true,,,left_lower
+risk-controlled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,48923.5361297,42439.269885,33076.4523151,64770.6199443,true,,,left_higher
+risk-controlled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-270184.693969,402829.374004,-420603.654288,-119765.73365,true,,,left_lower
+risk-controlled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-660369.047333,960428.116014,-1018998.79977,-301739.294899,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-158479.546667,84546.5245303,-190049.737768,-126909.355565,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-818848.594,927861.656965,-1165317.83077,-472379.357227,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.0448715265622,0.370179897806,-0.183098972107,0.0933559189828,false,true,false,not_separated
+risk-controlled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.0835448827052,0.0444760116175,-0.100152498382,-0.0669372670287,true,true,true,left_lower
+risk-controlled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.128416409267,0.366234974967,-0.265170796416,0.00833797788075,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,1402.29611059,215.122327362,1321.9681134,1482.62410778,true,,,left_higher
+risk-controlled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,7797.70016833,802.192786518,7498.15645898,8097.24387768,true,,,left_higher
+risk-controlled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,9199.99627892,901.790205156,8863.26228225,9536.7302756,true,,,left_higher
+risk-controlled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.000263666666667,0.000103787609165,0.000224911736485,0.000302421596848,true,true,true,left_higher
+risk-controlled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00124591666667,0.000150032300162,0.00118989368507,0.00130193964826,true,false,false,left_higher
+risk-controlled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00150958333333,0.000183305477246,0.00144113594323,0.00157803072344,true,false,false,left_higher
+risk-controlled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2097.5887371,1015.33240028,-2476.72008621,-1718.45738799,true,,,left_lower
+risk-controlled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-13698.7984802,1362.93589573,-14207.7271077,-13189.8698528,true,,,left_lower
+risk-controlled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-15796.3872174,2153.77535616,-16600.6201525,-14992.1542822,true,,,left_lower
+risk-controlled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-2876.93004707,5982.58384328,-5110.86356782,-642.996526323,true,true,true,left_lower
+risk-controlled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-590.192929362,2502.21362214,-1524.53485135,344.148992626,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-3467.12297644,6515.23242705,-5899.9507471,-1034.29520577,true,true,true,left_lower
+risk-controlled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-16933.0265263,30032.3819207,-28147.3022369,-5718.7508156,true,,,left_lower
+risk-controlled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,413.396119723,18033.4587399,-6320.40804072,7147.20028016,false,,,not_separated
+risk-controlled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-16519.6304065,38251.7683388,-30803.0754461,-2236.185367,true,,,left_lower
+risk-controlled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-1529.76133333,36068.7431035,-14998.0513533,11938.5286867,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-13436.894,20605.1956064,-21131.0004885,-5742.78751146,true,true,true,left_lower
+risk-controlled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-14966.6553333,52137.8919187,-34435.2641334,4501.95346675,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,0.0283946758846,0.343915222262,-0.100025378632,0.156814730402,false,true,false,not_separated
+risk-controlled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.10761166827,0.182990684958,-0.175941513003,-0.0392818235375,true,true,true,left_lower
+risk-controlled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.0792169923858,0.432386356606,-0.240672711393,0.0822387266214,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,184.414962513,38.8757188421,169.898530526,198.931394499,true,,,left_higher
+risk-controlled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,2349.08345971,391.497666613,2202.89582847,2495.27109095,true,,,left_higher
+risk-controlled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,2533.49842222,402.86889005,2383.06470637,2683.93213808,true,,,left_higher
+risk-controlled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.000505666666667,0.000110277731936,0.000464488284814,0.000546845048519,true,true,true,left_higher
+risk-controlled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00179391666667,0.000339702381995,0.00166706971256,0.00192076362078,true,false,false,left_higher
+risk-controlled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00229958333333,0.000403792411743,0.00214880476881,0.00245036189785,true,false,false,left_higher
+risk-controlled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2200.82676642,808.426515252,-2502.69818833,-1898.95534451,true,,,left_lower
+risk-controlled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-13195.0970521,2959.44001418,-14300.1701147,-12090.0239894,true,,,left_lower
+risk-controlled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-15395.9238185,3634.92249685,-16753.2261855,-14038.6214515,true,,,left_lower
+risk-controlled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-1275.54859718,4659.35248029,-3015.37940663,464.282212282,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-2118.54974542,7093.06391848,-4767.14334099,530.04385016,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-3394.09834259,10105.9632886,-7167.72705242,379.530367231,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-497.315101068,5089.82285607,-2397.88619054,1403.2559884,false,,,not_separated
+risk-controlled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,465.45799969,11037.3641123,-3655.96149348,4586.87749286,false,,,not_separated
+risk-controlled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-31.8571013783,12934.1327033,-4861.54162642,4797.82742367,false,,,not_separated
+risk-controlled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-2199.87733334,6221.85490646,-4523.15613743,123.401470755,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-14985.182,13215.9741249,-19920.1078415,-10050.2561585,true,true,true,left_lower
+risk-controlled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-17185.0593333,15137.9686899,-22837.6697402,-11532.4489265,true,true,true,left_lower
+risk-controlled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.0780987297765,0.371670453257,-0.216882757875,0.0606852983215,false,true,false,not_separated
+risk-controlled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.439575282288,0.72925133883,-0.711882207446,-0.16726835713,true,true,true,left_lower
+risk-controlled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.517674012065,0.978872999199,-0.883191197072,-0.152156827057,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,724.25742195,128.363013664,676.325884915,772.188958985,true,,,left_higher
+risk-controlled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,4787.02185162,523.171595807,4591.66636717,4982.37733607,true,,,left_higher
+risk-controlled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,5511.27927357,608.157717355,5284.18944979,5738.36909734,true,,,left_higher
+risk-controlled,itch_calibrated,trending,fill_rate,avellaneda stoikov,naive symmetric,30,0.000355,9.17901467178e-05,0.000320724995922,0.000389275004078,true,true,true,left_higher
+risk-controlled,itch_calibrated,trending,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00138383333333,0.000219861568255,0.00130173567451,0.00146593099216,true,false,false,left_higher
+risk-controlled,itch_calibrated,trending,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00173883333333,0.000236935111637,0.00165036030863,0.00182730635803,true,false,false,left_higher
+risk-controlled,itch_calibrated,trending,final_inventory,avellaneda stoikov,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,0,0,0,0,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2162.74328487,716.468429511,-2430.27699324,-1895.20957649,true,,,left_lower
+risk-controlled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-12594.9711923,1654.14543737,-13212.6392497,-11977.3031349,true,,,left_lower
+risk-controlled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-14757.7144772,2067.37713612,-15529.6857868,-13985.7431676,true,,,left_lower
+risk-controlled,itch_calibrated,trending,inventory_variance,avellaneda stoikov,naive symmetric,30,-1512.66006907,4003.82012449,-3007.71107403,-17.609064109,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,2148.50378117,6124.01933885,-138.242621581,4435.25018392,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,635.843712101,7594.45701221,-2199.9731416,3471.6605658,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-3637.84630706,7761.50281679,-6536.03908931,-739.653524807,true,,,left_lower
+risk-controlled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,6943.66430773,18745.2877198,-55.9411621502,13943.2697776,false,,,not_separated
+risk-controlled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,3305.81800067,17022.5463482,-3050.50526898,9662.14127032,false,,,not_separated
+risk-controlled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-10983.8706667,28420.362573,-21596.2084603,-371.532873033,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-21188.7106667,33916.766087,-33853.4392626,-8523.98207078,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-32172.5813333,37045.5340685,-46005.611094,-18339.5515727,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.160356292798,0.884413156762,-0.490601592962,0.169889007367,false,true,false,not_separated
+risk-controlled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.465750630126,0.542439598172,-0.668300904905,-0.263200355348,true,true,true,left_lower
+risk-controlled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.626106922924,1.08616617575,-1.03168803849,-0.220525807359,true,true,true,left_lower
+uncontrolled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,215304.825056,66780.2631746,190368.664972,240240.98514,true,,,left_higher
+uncontrolled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,114138.739829,9013.57960868,110773.013889,117504.465769,true,,,left_higher
+uncontrolled,hand_chosen,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,329443.564885,72667.1069713,302309.221202,356577.908569,true,,,left_higher
+uncontrolled,hand_chosen,high volatility,fill_rate,avellaneda stoikov,naive symmetric,30,-0.00448116666667,0.00243665787693,-0.00539102967109,-0.00357130366224,true,true,true,left_lower
+uncontrolled,hand_chosen,high volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.017264,0.00120482625017,0.0168141104845,0.0177138895155,true,false,false,left_higher
+uncontrolled,hand_chosen,high volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.0127828333333,0.00284874751164,0.0117190935304,0.0138465731363,true,false,false,left_higher
+uncontrolled,hand_chosen,high volatility,final_inventory,avellaneda stoikov,naive symmetric,30,2947.13333333,14568.9832692,-2493.01442572,8387.28109239,false,true,false,not_separated
+uncontrolled,hand_chosen,high volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,42.3333333333,269.012412652,-58.1175524151,142.784219082,false,true,false,not_separated
+uncontrolled,hand_chosen,high volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,2989.46666667,14485.0157719,-2419.3271136,8398.26044694,false,true,false,not_separated
+uncontrolled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-281137.611737,71032.8430473,-307661.711242,-254613.512231,true,,,left_lower
+uncontrolled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-146928.408104,13168.0113245,-151845.424341,-142011.391867,true,,,left_lower
+uncontrolled,hand_chosen,high volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-428066.019841,70147.4428743,-454259.505488,-401872.534194,true,,,left_lower
+uncontrolled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-48369186.6517,71711860.227,-75146835.3388,-21591537.9646,true,false,false,left_lower
+uncontrolled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,320190.40087,482629.20815,139973.692768,500407.108972,true,true,true,left_higher
+uncontrolled,hand_chosen,high volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-48048996.2508,71521235.5907,-74755464.5289,-21342527.9727,true,false,false,left_lower
+uncontrolled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-5589386.16348,3536391.07769,-6909896.29387,-4268876.0331,true,,,left_lower
+uncontrolled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,76579.7912113,54202.2156105,56340.3512765,96819.2311462,true,,,left_higher
+uncontrolled,hand_chosen,high volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-5512806.37227,3521794.01905,-6827865.87139,-4197746.87316,true,,,left_lower
+uncontrolled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,872591.65048,8095141.42422,-2150183.83525,3895367.13621,false,true,false,not_separated
+uncontrolled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-159040.095025,100506.917638,-196569.994857,-121510.195192,true,true,true,left_lower
+uncontrolled,hand_chosen,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,713551.555454,8033915.74967,-2286361.88767,3713464.99858,false,true,false,not_separated
+uncontrolled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,1.05784322247,1.17408746306,0.619431758675,1.49625468627,true,false,false,left_higher
+uncontrolled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.079533600729,0.0585377035567,-0.101391938469,-0.0576752629892,true,true,true,left_lower
+uncontrolled,hand_chosen,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,0.978309621744,1.14130180269,0.552140524728,1.40447871876,true,false,false,left_higher
+uncontrolled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,17944.2772265,12838.6035727,13150.2638651,22738.290588,true,,,left_higher
+uncontrolled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,64718.0338026,13186.6190543,59794.0693246,69641.9982806,true,,,left_higher
+uncontrolled,hand_chosen,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,82662.3110292,24455.7121721,73530.3980253,91794.224033,true,,,left_higher
+uncontrolled,hand_chosen,low volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.00432591666667,0.00356885241162,0.00299328527498,0.00565854805835,true,true,true,left_higher
+uncontrolled,hand_chosen,low volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.0158820833333,0.00354200070602,0.0145594785333,0.0172046881334,true,true,true,left_higher
+uncontrolled,hand_chosen,low volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.020208,0.00617415697861,0.0179025318949,0.0225134681051,true,true,true,left_higher
+uncontrolled,hand_chosen,low volatility,final_inventory,avellaneda stoikov,naive symmetric,30,373.966666667,5285.89340299,-1599.81836826,2347.75170159,false,true,false,not_separated
+uncontrolled,hand_chosen,low volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,55.2333333333,1208.04983008,-395.859886728,506.326553394,false,true,false,not_separated
+uncontrolled,hand_chosen,low volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,429.2,5723.8368817,-1708.11581743,2566.51581743,false,true,false,not_separated
+uncontrolled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-59426.0697953,24719.4333794,-68656.4579164,-50195.6816743,true,,,left_lower
+uncontrolled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-324020.239204,67317.664717,-349157.068322,-298883.410087,true,,,left_lower
+uncontrolled,hand_chosen,low volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-383446.309,84218.8738675,-414894.153333,-351998.464667,true,,,left_lower
+uncontrolled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-41656809.5863,53978016.5395,-61812532.2122,-21501086.9604,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-8084371.92833,11087611.8203,-12224554.224,-3944189.63264,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-49741181.5147,54980346.994,-70271180.4833,-29211182.546,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-351735.614643,464436.627332,-525159.101424,-178312.127862,true,,,left_lower
+uncontrolled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,-23807.393373,132672.519365,-73348.1262832,25733.3395372,false,,,not_separated
+uncontrolled,hand_chosen,low volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-375543.008016,522760.159524,-570744.859635,-180341.156397,true,,,left_lower
+uncontrolled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-248487.801139,579311.865017,-464806.406633,-32169.1956447,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-319787.885924,156605.326563,-378265.275912,-261310.495936,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-568275.687063,660751.424784,-815004.323949,-321547.050177,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,0.0164513818822,0.0742296959289,-0.0112664421073,0.0441692058718,false,true,false,not_separated
+uncontrolled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.0957659279686,0.0673419207768,-0.120911814448,-0.0706200414895,true,true,true,left_lower
+uncontrolled,hand_chosen,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.0793145460864,0.105300096197,-0.118634248208,-0.0399948439653,true,true,true,left_lower
+uncontrolled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,169396.147102,90030.5223603,135778.197557,203014.096647,true,,,left_higher
+uncontrolled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,112948.42659,18229.5936363,106141.384456,119755.468724,true,,,left_higher
+uncontrolled,hand_chosen,trending,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,282344.573692,104984.515655,243142.711282,321546.436102,true,,,left_higher
+uncontrolled,hand_chosen,trending,fill_rate,avellaneda stoikov,naive symmetric,30,-0.0029435,0.0046783821253,-0.00469043659569,-0.00119656340431,true,true,true,left_lower
+uncontrolled,hand_chosen,trending,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.0192033333333,0.00237478958536,0.0183165723287,0.020090094338,true,false,false,left_higher
+uncontrolled,hand_chosen,trending,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.0162598333333,0.00497400613593,0.0144025089179,0.0181171577488,true,false,false,left_higher
+uncontrolled,hand_chosen,trending,final_inventory,avellaneda stoikov,naive symmetric,30,-16202.5333333,9520.66090409,-19757.6065409,-12647.4601258,true,false,false,left_lower
+uncontrolled,hand_chosen,trending,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,711.266666667,577.89725452,495.476285413,927.05704792,true,true,true,left_higher
+uncontrolled,hand_chosen,trending,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,-15491.2666667,9549.6782684,-19057.1751362,-11925.3581972,true,false,false,left_lower
+uncontrolled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-139640.745526,48751.8887351,-157844.999958,-121436.491093,true,,,left_lower
+uncontrolled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-203169.889647,24702.2736562,-212393.870222,-193945.909072,true,,,left_lower
+uncontrolled,hand_chosen,trending,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-342810.635173,48535.0928776,-360933.936702,-324687.333644,true,,,left_lower
+uncontrolled,hand_chosen,trending,inventory_variance,avellaneda stoikov,naive symmetric,30,-169858370.341,150815500.897,-226173803.894,-113542936.788,true,false,false,left_lower
+uncontrolled,hand_chosen,trending,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,3390974.14884,3203641.53025,2194714.74147,4587233.55621,true,true,true,left_higher
+uncontrolled,hand_chosen,trending,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-166467396.192,149651325.332,-222348119.445,-110586672.939,true,false,false,left_lower
+uncontrolled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-3289833.80063,1629266.4859,-3898211.90488,-2681455.69638,true,,,left_lower
+uncontrolled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,132695.711011,119211.86617,88181.2686089,177210.153413,true,,,left_higher
+uncontrolled,hand_chosen,trending,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-3157138.08962,1628606.97305,-3765269.92772,-2549006.25151,true,,,left_lower
+uncontrolled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-5799958.28511,7602678.48909,-8638845.08873,-2961071.48148,true,true,true,left_lower
+uncontrolled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-48412.3236665,226431.911601,-132963.389016,36138.7416831,false,true,false,not_separated
+uncontrolled,hand_chosen,trending,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-5848370.60877,7484091.51686,-8642976.30923,-3053764.90832,true,true,true,left_lower
+uncontrolled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,0.263699805231,0.445875101233,0.0972073062028,0.430192304259,true,true,true,left_higher
+uncontrolled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.0553969007179,0.055742355809,-0.0762114384543,-0.0345823629814,true,true,true,left_lower
+uncontrolled,hand_chosen,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,0.208302904513,0.411825705063,0.0545246589676,0.362081150058,true,true,true,left_higher
+uncontrolled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,1402.29611059,215.122327362,1321.9681134,1482.62410778,true,,,left_higher
+uncontrolled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,7797.70016833,802.192786518,7498.15645898,8097.24387768,true,,,left_higher
+uncontrolled,itch_calibrated,high volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,9199.99627892,901.790205156,8863.26228225,9536.7302756,true,,,left_higher
+uncontrolled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.000263666666667,0.000103787609165,0.000224911736485,0.000302421596848,true,true,true,left_higher
+uncontrolled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00124591666667,0.000150032300162,0.00118989368507,0.00130193964826,true,false,false,left_higher
+uncontrolled,itch_calibrated,high volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00150958333333,0.000183305477246,0.00144113594323,0.00157803072344,true,false,false,left_higher
+uncontrolled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov,naive symmetric,30,-23.2,69.9188692404,-49.3081348496,2.90813484957,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,-6.76666666667,41.9274277222,-22.4226254766,8.88929214329,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,-29.9666666667,94.1599824705,-65.1265819582,5.19324862486,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2521.19133421,359.787065334,-2655.53803233,-2386.84463609,true,,,left_lower
+uncontrolled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-13644.035705,992.134841562,-14014.5049434,-13273.5664667,true,,,left_lower
+uncontrolled,itch_calibrated,high volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-16165.2270392,1267.9514377,-16638.6878872,-15691.7661913,true,,,left_lower
+uncontrolled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-2876.89982065,5982.55128741,-5110.82118484,-642.978456465,true,true,true,left_lower
+uncontrolled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-590.195547752,2502.22600337,-1524.54209296,344.150997461,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-3467.09536841,6515.21591792,-5899.91697446,-1034.27376235,true,true,true,left_lower
+uncontrolled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-16933.0265263,30032.3819207,-28147.3022369,-5718.7508156,true,,,left_lower
+uncontrolled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,413.396119723,18033.4587399,-6320.40804072,7147.20028016,false,,,not_separated
+uncontrolled,itch_calibrated,high volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-16519.6304065,38251.7683388,-30803.0754461,-2236.185367,true,,,left_lower
+uncontrolled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-1956.25993047,36191.4488191,-15470.3690177,11557.8491567,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-13382.2032248,20856.2653222,-21170.0606859,-5594.34576363,true,true,true,left_lower
+uncontrolled,itch_calibrated,high volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-15338.4631552,52520.9086604,-34950.0927571,4273.16644666,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,0.0274825012953,0.347710396318,-0.102354694504,0.157319697095,false,true,false,not_separated
+uncontrolled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.109212808356,0.183898964042,-0.177881810073,-0.0405438066393,true,true,true,left_lower
+uncontrolled,itch_calibrated,high volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.0817303070611,0.435177642386,-0.244228309308,0.0807676951858,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,184.414962513,38.8757188421,169.898530526,198.931394499,true,,,left_higher
+uncontrolled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,2349.08345971,391.497666613,2202.89582847,2495.27109095,true,,,left_higher
+uncontrolled,itch_calibrated,low volatility,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,2533.49842222,402.86889005,2383.06470637,2683.93213808,true,,,left_higher
+uncontrolled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov,naive symmetric,30,0.000505666666667,0.000110277731936,0.000464488284814,0.000546845048519,true,true,true,left_higher
+uncontrolled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00179391666667,0.000339702381995,0.00166706971256,0.00192076362078,true,false,false,left_higher
+uncontrolled,itch_calibrated,low volatility,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00229958333333,0.000403792411743,0.00214880476881,0.00245036189785,true,false,false,left_higher
+uncontrolled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov,naive symmetric,30,2.26666666667,52.281686207,-17.2556358031,21.7889691364,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,11.9,80.879369519,-18.3008529155,42.1008529155,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,14.1666666667,94.2842669193,-21.0396572007,49.3729905341,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2246.93299636,641.661018666,-2486.53315845,-2007.33283427,true,,,left_lower
+uncontrolled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-13364.7218857,2809.23092371,-14413.7059522,-12315.7378192,true,,,left_lower
+uncontrolled,itch_calibrated,low volatility,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-15611.6548821,3410.68876592,-16885.2269979,-14338.0827663,true,,,left_lower
+uncontrolled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov,naive symmetric,30,-1275.54554134,4659.34653083,-3015.37412924,464.283046551,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,-2118.53414544,7093.03211902,-4767.11586691,530.047576022,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,-3394.07968678,10105.9331781,-7167.69715316,379.537779593,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-460.753822468,5059.74148119,-2350.09234196,1428.58469702,false,,,not_separated
+uncontrolled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,446.224478553,11011.5763043,-3665.56568886,4558.01464596,false,,,not_separated
+uncontrolled,itch_calibrated,low volatility,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,-14.529343915,12873.5144898,-4821.57865604,4792.51996821,false,,,not_separated
+uncontrolled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-2246.52756332,6283.37617038,-4592.7787849,99.7236582623,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-15155.6735003,13182.4671946,-20078.0876484,-10233.2593522,true,true,true,left_lower
+uncontrolled,itch_calibrated,low volatility,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-17402.2010636,15114.5008746,-23046.0484443,-11758.353683,true,true,true,left_lower
+uncontrolled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.0812628959234,0.369171626947,-0.219113846943,0.0565880550957,false,true,false,not_separated
+uncontrolled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.439019343085,0.719970346881,-0.707860688895,-0.170177997276,true,true,true,left_lower
+uncontrolled,itch_calibrated,low volatility,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.520282239009,0.966712451639,-0.881258600931,-0.159305877086,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov,naive symmetric,30,724.25742195,128.363013664,676.325884915,772.188958985,true,,,left_higher
+uncontrolled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov calibrated,avellaneda stoikov,30,4787.02185162,523.171595807,4591.66636717,4982.37733607,true,,,left_higher
+uncontrolled,itch_calibrated,trending,adverse_selection_cost,avellaneda stoikov calibrated,naive symmetric,30,5511.27927357,608.157717355,5284.18944979,5738.36909734,true,,,left_higher
+uncontrolled,itch_calibrated,trending,fill_rate,avellaneda stoikov,naive symmetric,30,0.000355,9.17901467178e-05,0.000320724995922,0.000389275004078,true,true,true,left_higher
+uncontrolled,itch_calibrated,trending,fill_rate,avellaneda stoikov calibrated,avellaneda stoikov,30,0.00138383333333,0.000219861568255,0.00130173567451,0.00146593099216,true,false,false,left_higher
+uncontrolled,itch_calibrated,trending,fill_rate,avellaneda stoikov calibrated,naive symmetric,30,0.00173883333333,0.000236935111637,0.00165036030863,0.00182730635803,true,false,false,left_higher
+uncontrolled,itch_calibrated,trending,final_inventory,avellaneda stoikov,naive symmetric,30,-22.4,43.5245471762,-38.6523330152,-6.14766698478,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,final_inventory,avellaneda stoikov calibrated,avellaneda stoikov,30,-11.5333333333,75.1397471994,-39.5909760521,16.5243093854,false,true,false,not_separated
+uncontrolled,itch_calibrated,trending,final_inventory,avellaneda stoikov calibrated,naive symmetric,30,-33.9333333333,78.301774029,-63.1716962748,-4.69497039185,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov,naive symmetric,30,-2301.28206121,385.564670009,-2445.25427511,-2157.30984731,true,,,left_lower
+uncontrolled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov calibrated,avellaneda stoikov,30,-12432.8355188,1503.57779649,-12994.2806951,-11871.3903425,true,,,left_lower
+uncontrolled,itch_calibrated,trending,gross_spread_capture,avellaneda stoikov calibrated,naive symmetric,30,-14734.1175801,1833.36272192,-15418.7064713,-14049.5286888,true,,,left_lower
+uncontrolled,itch_calibrated,trending,inventory_variance,avellaneda stoikov,naive symmetric,30,-1512.63717132,4003.78384651,-3007.67462985,-17.5997127765,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,inventory_variance,avellaneda stoikov calibrated,avellaneda stoikov,30,2148.5181545,6124.0166883,-138.227258525,4435.26356752,false,true,false,not_separated
+uncontrolled,itch_calibrated,trending,inventory_variance,avellaneda stoikov calibrated,naive symmetric,30,635.880983181,7594.44005137,-2199.92953724,3471.6915036,false,true,false,not_separated
+uncontrolled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov,naive symmetric,30,-3637.84630706,7761.50281679,-6536.03908931,-739.653524807,true,,,left_lower
+uncontrolled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov calibrated,avellaneda stoikov,30,6943.66430773,18745.2877198,-55.9411621502,13943.2697776,false,,,not_separated
+uncontrolled,itch_calibrated,trending,maximum_drawdown,avellaneda stoikov calibrated,naive symmetric,30,3305.81800067,17022.5463482,-3050.50526898,9662.14127032,false,,,not_separated
+uncontrolled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov,naive symmetric,30,-11124.1321097,28618.6774422,-21810.5218925,-437.742326915,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov calibrated,avellaneda stoikov,30,-21025.4603265,34097.6496234,-33757.7319449,-8293.18870813,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,net_pnl_after_fees,avellaneda stoikov calibrated,naive symmetric,30,-32149.5924363,37213.5218489,-46045.349865,-18253.8350075,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov,naive symmetric,30,-0.161004985228,0.881978451467,-0.490341151494,0.168331181038,false,true,false,not_separated
+uncontrolled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,avellaneda stoikov,30,-0.463353003242,0.544976733283,-0.666850659841,-0.259855346644,true,true,true,left_lower
+uncontrolled,itch_calibrated,trending,risk_adjusted_pnl,avellaneda stoikov calibrated,naive symmetric,30,-0.624357988471,1.08451113993,-1.0293211035,-0.219394873437,true,true,true,left_lower

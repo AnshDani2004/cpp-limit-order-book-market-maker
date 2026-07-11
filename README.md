@@ -16,7 +16,7 @@ Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as th
 
 Stage 5A corrects ITCH execution replay semantics by using direct named order execution instead of synthetic market orders for unknown aggressors. Stage 5B adds an ITCH calibrated synthetic flow profile beside the original hand chosen flow. Under the calibrated profile, the market maker fill rate drops from roughly 43 to 50 percent to roughly 1.5 to 1.8 percent because the Stage 4A input had only 57 external executions across 12,423 translated events. See [docs/stage5b_itch_calibrated_flow.md](docs/stage5b_itch_calibrated_flow.md).
 
-Stage 5C adds a 30 seed statistical pass for hand chosen and ITCH calibrated flow, uncontrolled and risk controlled modes, and checks confidence interval overlap for the main strategy comparisons. All 1,080 raw seed rows reconcile true. See [docs/stage5c_seed_statistics.md](docs/stage5c_seed_statistics.md).
+Stage 5C adds a 30 seed statistical pass for hand chosen and ITCH calibrated flow, uncontrolled and risk controlled modes. It checks both separate confidence interval overlap and paired same-seed strategy deltas. All 1,080 raw seed rows reconcile true. See [docs/stage5c_seed_statistics.md](docs/stage5c_seed_statistics.md).
 
 ## What Stage 1 Proves
 

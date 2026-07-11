@@ -53,6 +53,23 @@ CLAIM_METRICS = [
     "fill_rate",
 ]
 
+COMPARISON_PAIRS = [
+    ("avellaneda stoikov", "naive symmetric"),
+    ("avellaneda stoikov calibrated", "naive symmetric"),
+    ("avellaneda stoikov calibrated", "avellaneda stoikov"),
+]
+
+PAIRED_DELTA_METRICS = [
+    "net_pnl_after_fees",
+    "risk_adjusted_pnl",
+    "final_inventory",
+    "inventory_variance",
+    "fill_rate",
+    "maximum_drawdown",
+    "gross_spread_capture",
+    "adverse_selection_cost",
+]
+
 T_CRITICAL_95 = {
     29: 2.045229642132703,
 }
@@ -215,14 +232,9 @@ def comparison_rows(aggregate):
         lookup[key] = row
 
     comparisons = []
-    pairs = [
-        ("avellaneda stoikov", "naive symmetric"),
-        ("avellaneda stoikov calibrated", "naive symmetric"),
-        ("avellaneda stoikov calibrated", "avellaneda stoikov"),
-    ]
     prefixes = sorted({(row["risk_mode"], row["flow_profile"], row["regime"]) for row in aggregate})
     for risk_mode, flow_profile, regime in prefixes:
-        for left_strategy, right_strategy in pairs:
+        for left_strategy, right_strategy in COMPARISON_PAIRS:
             for metric in CLAIM_METRICS:
                 left = lookup.get((risk_mode, flow_profile, regime, left_strategy, metric))
                 right = lookup.get((risk_mode, flow_profile, regime, right_strategy, metric))
@@ -254,6 +266,146 @@ def comparison_rows(aggregate):
                     }
                 )
     return comparisons
+
+
+def paired_delta_rows(raw_rows, comparisons):
+    raw_lookup = {}
+    for row in raw_rows:
+        key = (
+            row["risk_mode"],
+            row["external_flow_profile"],
+            row["regime"],
+            row["strategy"],
+            row["seed_index"],
+        )
+        raw_lookup[key] = row
+
+    prefixes = sorted({
+        (
+            row["risk_mode"],
+            row["flow_profile"],
+            row["regime"],
+            row["left_strategy"],
+            row["right_strategy"],
+        )
+        for row in comparisons
+    })
+    seed_indexes = sorted({row["seed_index"] for row in raw_rows}, key=lambda value: int(value))
+
+    deltas = []
+    for risk_mode, flow_profile, regime, left_strategy, right_strategy in prefixes:
+        for metric in PAIRED_DELTA_METRICS:
+            for seed_index in seed_indexes:
+                left_key = (risk_mode, flow_profile, regime, left_strategy, seed_index)
+                right_key = (risk_mode, flow_profile, regime, right_strategy, seed_index)
+                left = raw_lookup.get(left_key)
+                right = raw_lookup.get(right_key)
+                if left is None or right is None:
+                    raise RuntimeError(
+                        "missing paired seed row for "
+                        f"{risk_mode} {flow_profile} {regime} {left_strategy} vs {right_strategy} seed {seed_index}"
+                    )
+                left_value = float(left[metric])
+                right_value = float(right[metric])
+                deltas.append(
+                    {
+                        "risk_mode": risk_mode,
+                        "flow_profile": flow_profile,
+                        "regime": regime,
+                        "metric": metric,
+                        "left_strategy": left_strategy,
+                        "right_strategy": right_strategy,
+                        "seed_index": seed_index,
+                        "left_value": f"{left_value:.12g}",
+                        "right_value": f"{right_value:.12g}",
+                        "delta": f"{left_value - right_value:.12g}",
+                    }
+                )
+    return deltas
+
+
+def paired_delta_summary_rows(deltas):
+    grouped = {}
+    for row in deltas:
+        key = (
+            row["risk_mode"],
+            row["flow_profile"],
+            row["regime"],
+            row["metric"],
+            row["left_strategy"],
+            row["right_strategy"],
+        )
+        grouped.setdefault(key, []).append(float(row["delta"]))
+
+    summary = []
+    for key in sorted(grouped):
+        risk_mode, flow_profile, regime, metric, left_strategy, right_strategy = key
+        values = grouped[key]
+        mean, low, high = confidence_interval_95(values)
+        excludes_zero = low > 0.0 or high < 0.0
+        summary.append(
+            {
+                "risk_mode": risk_mode,
+                "flow_profile": flow_profile,
+                "regime": regime,
+                "metric": metric,
+                "left_strategy": left_strategy,
+                "right_strategy": right_strategy,
+                "sample_count": len(values),
+                "mean_delta": f"{mean:.12g}",
+                "stddev_delta": f"{sample_stddev(values):.12g}",
+                "ci95_low": f"{low:.12g}",
+                "ci95_high": f"{high:.12g}",
+                "paired_ci95_excludes_zero": "true" if excludes_zero else "false",
+            }
+        )
+    return summary
+
+
+def paired_delta_claim_rows(summary, comparisons):
+    unpaired_lookup = {}
+    for row in comparisons:
+        key = (
+            row["risk_mode"],
+            row["flow_profile"],
+            row["regime"],
+            row["metric"],
+            row["left_strategy"],
+            row["right_strategy"],
+        )
+        unpaired_lookup[key] = row
+
+    claims = []
+    for row in summary:
+        key = (
+            row["risk_mode"],
+            row["flow_profile"],
+            row["regime"],
+            row["metric"],
+            row["left_strategy"],
+            row["right_strategy"],
+        )
+        previous = unpaired_lookup.get(key)
+        mean_delta = float(row["mean_delta"])
+        excludes_zero = row["paired_ci95_excludes_zero"] == "true"
+        if not excludes_zero:
+            conclusion = "not_separated"
+        elif mean_delta > 0.0:
+            conclusion = "left_higher"
+        else:
+            conclusion = "left_lower"
+
+        previous_overlap = previous["ci95_overlap"] if previous else ""
+        changed_from_unpaired = ""
+        if previous is not None:
+            changed_from_unpaired = "true" if (previous_overlap == "true") == excludes_zero else "false"
+
+        claim = dict(row)
+        claim["previous_unpaired_ci95_overlap"] = previous_overlap
+        claim["changed_from_unpaired"] = changed_from_unpaired
+        claim["paired_delta_conclusion"] = conclusion
+        claims.append(claim)
+    return claims
 
 
 def read_raw_rows(path):
@@ -326,12 +478,22 @@ def main():
         rows = read_raw_rows(raw_path)
 
     aggregate = aggregate_rows(rows)
+    comparisons = comparison_rows(aggregate)
+    deltas = paired_delta_rows(rows, comparisons)
+    delta_summary = paired_delta_summary_rows(deltas)
+    delta_claims = paired_delta_claim_rows(delta_summary, comparisons)
     write_rows(output_dir / "aggregate_metrics.csv", aggregate)
-    write_rows(output_dir / "comparison_claims.csv", comparison_rows(aggregate))
+    write_rows(output_dir / "comparison_claims.csv", comparisons)
+    write_rows(output_dir / "paired_deltas.csv", deltas)
+    write_rows(output_dir / "paired_delta_summary.csv", delta_summary)
+    write_rows(output_dir / "paired_delta_claims.csv", delta_claims)
     write_run_config(output_dir / "run_config.csv", args)
     print(raw_path.resolve())
     print((output_dir / "aggregate_metrics.csv").resolve())
     print((output_dir / "comparison_claims.csv").resolve())
+    print((output_dir / "paired_deltas.csv").resolve())
+    print((output_dir / "paired_delta_summary.csv").resolve())
+    print((output_dir / "paired_delta_claims.csv").resolve())
 
 
 if __name__ == "__main__":

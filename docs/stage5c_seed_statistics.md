@@ -43,10 +43,15 @@ all reconciled true
 benchmarks/results/stage5c_seed_statistics/raw_seed_results.csv
 benchmarks/results/stage5c_seed_statistics/aggregate_metrics.csv
 benchmarks/results/stage5c_seed_statistics/comparison_claims.csv
+benchmarks/results/stage5c_seed_statistics/paired_deltas.csv
+benchmarks/results/stage5c_seed_statistics/paired_delta_summary.csv
+benchmarks/results/stage5c_seed_statistics/paired_delta_claims.csv
 benchmarks/results/stage5c_seed_statistics/run_config.csv
 ```
 
 `aggregate_metrics.csv` reports every attribution metric used by the existing comparison table. `comparison_claims.csv` checks interval overlap for net PnL after fees, risk adjusted PnL, final inventory, inventory variance, and fill rate.
+
+The paired delta files are an addendum to the original interval overlap method. `paired_deltas.csv` pairs strategies by `risk_mode`, `external_flow_profile`, `regime`, and `seed_index`, then records `left_strategy_metric - right_strategy_metric` for each strategy comparison already present in `comparison_claims.csv`. `paired_delta_summary.csv` reports the mean delta, sample standard deviation of the delta, and a 95 percent t interval for the delta with 29 degrees of freedom. `paired_delta_claims.csv` joins that result back to the old unpaired interval-overlap result and marks whether the conclusion changed.
 
 ## Uncontrolled Results
 
@@ -103,16 +108,82 @@ Terminal liquidation makes final inventory exactly zero in every risk controlled
 
 The calibrated Avellaneda Stoikov strategy is included in `raw_seed_results.csv` and `aggregate_metrics.csv`. It does not overturn the main finding. Under hand chosen flow it generally has a higher fill rate than original AS because its fitted decay changes quoted width, but the major net PnL and risk adjusted PnL interval comparisons still overlap in the regimes where the original AS comparisons overlap. Under ITCH calibrated flow, sparse fills dominate both AS variants.
 
+## Paired Delta Addendum
+
+The first Stage 5C writeup compared separate confidence intervals. That is conservative, but it ignores that every strategy in a regime was run on the same seed path. The paired delta addendum uses that design directly: if two strategies experience the same synthetic path, the per seed difference is the relevant sample.
+
+The checked output contains:
+
+```text
+paired delta rows 8640
+paired delta summary rows 288
+paired delta claim rows 288
+changed conclusions versus unpaired interval overlap 81
+```
+
+The paired metrics are:
+
+```text
+net_pnl_after_fees
+risk_adjusted_pnl
+final_inventory
+inventory_variance
+fill_rate
+maximum_drawdown
+gross_spread_capture
+adverse_selection_cost
+```
+
+For risk controlled rows, `final_inventory` is still emitted in the paired files for completeness, but it is not informative. Terminal liquidation forces final inventory to exactly zero for every strategy and seed, so every risk controlled final inventory paired interval is `[0, 0]`.
+
+Key paired Avellaneda Stoikov versus naive deltas:
+
+| Mode | Flow | Regime | Metric | Mean delta | 95 percent paired interval | Excludes zero |
+| --- | --- | --- | --- | ---: | ---: | --- |
+| uncontrolled | hand chosen | high volatility | risk adjusted PnL | 1.057843 | [0.619432, 1.496255] | true |
+| uncontrolled | hand chosen | high volatility | inventory variance | -48,369,187 | [-75,146,841, -21,591,532] | true |
+| uncontrolled | hand chosen | trending | net PnL after fees | -5,799,958 | [-8,638,845, -2,961,071] | true |
+| uncontrolled | hand chosen | trending | risk adjusted PnL | 0.263700 | [0.097207, 0.430192] | true |
+| uncontrolled | hand chosen | trending | final inventory | -16,202.5 | [-19,757.6, -12,647.5] | true |
+| uncontrolled | hand chosen | trending | inventory variance | -169,858,370 | [-226,173,700, -113,543,040] | true |
+| risk controlled | hand chosen | high volatility | risk adjusted PnL | 0.563963 | [0.224955, 0.902971] | true |
+| risk controlled | hand chosen | high volatility | inventory variance | -16,565,066 | [-20,913,916, -12,216,216] | true |
+| risk controlled | hand chosen | low volatility | net PnL after fees | -55,662 | [-98,486, -12,839] | true |
+| risk controlled | hand chosen | trending | net PnL after fees | -660,369 | [-1,018,999, -301,739] | true |
+| ITCH calibrated | uncontrolled | trending | net PnL after fees | -11,124 | [-21,811, -438] | true |
+| ITCH calibrated | risk controlled | trending | net PnL after fees | -10,984 | [-21,596, -372] | true |
+
+This changes the interpretation in a few important ways:
+
+```text
+hand chosen, uncontrolled, high volatility:
+  unchanged. AS improves risk adjusted PnL and lowers inventory variance. Net PnL still does not separate.
+
+hand chosen, uncontrolled, trending:
+  changed. AS still lowers final inventory and inventory variance, but the paired design also separates PnL metrics: AS has lower net PnL and higher risk adjusted PnL on average.
+
+hand chosen, risk controlled, high volatility:
+  strengthened. The unpaired intervals only separated inventory variance; paired deltas also separate risk adjusted PnL in favor of AS. Net PnL still does not separate.
+
+hand chosen, risk controlled, low volatility and trending:
+  changed. Paired deltas show AS has lower net PnL in both regimes. Risk adjusted PnL does not separate for original AS versus naive in either regime.
+
+ITCH calibrated flow:
+  narrowed. The old "no AS versus naive winner claim separates" statement is no longer true under paired deltas. Paired analysis detects small fill-rate increases in every regime, inventory variance reductions in high volatility and trending, and lower AS net PnL in trending. It still does not show a robust AS risk adjusted PnL advantage under ITCH calibrated flow, so the sparse-execution mechanism from Stage 5B still stands.
+```
+
+The calibrated Avellaneda Stoikov comparison is also clearer under paired deltas. It generally increases fill rate, but it often lowers net PnL and risk adjusted PnL versus original AS. Under hand chosen high volatility, for example, calibrated AS minus original AS has mean net PnL delta `-159,040` uncontrolled and `-159,072` risk controlled, and both paired intervals exclude zero.
+
 ## Interpretation Update
 
-The strongest statistically supported conclusions after Stage 5C are narrower than the single seed story:
+After the paired delta addendum, the strongest statistically supported conclusions are:
 
 ```text
 hand chosen, uncontrolled, high volatility: AS improves risk adjusted PnL and lowers inventory variance
-hand chosen, uncontrolled, trending: AS lowers final inventory and inventory variance, but PnL intervals overlap
-hand chosen, risk controlled, high volatility: AS lowers inventory variance, but PnL intervals overlap
-ITCH calibrated, all checked modes: no AS versus naive winner claim separates by the displayed confidence intervals
+hand chosen, uncontrolled, trending: AS lowers inventory and inventory variance, lowers net PnL, and improves risk adjusted PnL
+hand chosen, risk controlled, high volatility: AS improves risk adjusted PnL and lowers inventory variance, while net PnL does not separate
+hand chosen, risk controlled, low volatility and trending: AS lowers net PnL, while risk adjusted PnL does not separate
+ITCH calibrated flow: paired deltas show small fill-rate and selected inventory-risk effects, but no AS risk adjusted PnL advantage
 ```
 
-This is a useful correction, not a failure. The earlier single seed runs were good mechanism probes, but Stage 5C shows that most PnL rankings were path dependent at this sample size. The robust claim is about risk reduction in selected hand chosen regimes, not broad PnL dominance.
-
+This is a useful correction, not a failure. The earlier single seed runs were good mechanism probes, and the original unpaired confidence intervals were a conservative first pass. The paired deltas are the better statistical test for this experiment because they respect the shared-seed design. The robust claim is still not broad PnL dominance; it is selected risk-adjusted improvement and inventory-risk reduction under hand chosen flow, with weaker and sometimes negative PnL effects under ITCH calibrated flow.
