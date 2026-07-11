@@ -9,10 +9,10 @@ supported_symbol_messages,12423
 ignored_messages,2866655
 translated_events,12423
 replay_trades,57
-execution_mode,external_execute
+execution_mode,market
 limit_events,5910
-market_events,0
-external_execute_events,57
+market_events,57
+external_execute_events,0
 cancel_events,5864
 modify_events,592
 executed_quantity,11941

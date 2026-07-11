@@ -73,6 +73,9 @@ EventType parse_event_type(const std::string& value, std::size_t line_number) {
     if (value == "modify") {
         return EventType::Modify;
     }
+    if (value == "external_execute") {
+        return EventType::ExternalExecute;
+    }
     throw std::runtime_error("action is invalid on line " + std::to_string(line_number));
 }
 
@@ -202,6 +205,15 @@ std::vector<Trade> replay_order_events(const std::vector<OrderEvent>& events, Ma
                 }
                 result = engine.modify_order(event.order_id, event.price, *event.quantity, event.timestamp);
                 break;
+            case EventType::ExternalExecute:
+                if (!event.price.has_value()) {
+                    throw std::runtime_error("price is missing on line " + std::to_string(event.line_number));
+                }
+                if (!event.quantity.has_value()) {
+                    throw std::runtime_error("quantity is missing on line " + std::to_string(event.line_number));
+                }
+                result = engine.external_execute(event.order_id, *event.quantity, *event.price, event.timestamp);
+                break;
         }
 
         if (!result.accepted) {
@@ -228,6 +240,27 @@ void write_trades_csv(const std::filesystem::path& path, const std::vector<Trade
                << trade.taker_order_id << ','
                << trade.price << ','
                << trade.quantity << '\n';
+    }
+}
+
+void write_book_snapshot_csv(const std::filesystem::path& path, const MatchingEngine& engine) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not open output csv");
+    }
+
+    output << "side,price,order_id,remaining_quantity,owner_id,timestamp\n";
+    for (const auto& [price, level] : engine.book().bid_levels()) {
+        for (const auto& order : level) {
+            output << "buy," << price << ',' << order.id << ',' << order.remaining_quantity << ','
+                   << order.owner_id << ',' << order.timestamp << '\n';
+        }
+    }
+    for (const auto& [price, level] : engine.book().ask_levels()) {
+        for (const auto& order : level) {
+            output << "sell," << price << ',' << order.id << ',' << order.remaining_quantity << ','
+                   << order.owner_id << ',' << order.timestamp << '\n';
+        }
     }
 }
 

@@ -13,7 +13,8 @@ namespace lob {
 enum class EventType {
     Submit,
     Cancel,
-    Modify
+    Modify,
+    ExternalExecute
 };
 
 struct OrderEvent {
@@ -31,5 +32,6 @@ struct OrderEvent {
 std::vector<OrderEvent> read_order_events_csv(const std::filesystem::path& path);
 std::vector<Trade> replay_order_events(const std::vector<OrderEvent>& events, MatchingEngine& engine);
 void write_trades_csv(const std::filesystem::path& path, const std::vector<Trade>& trades);
+void write_book_snapshot_csv(const std::filesystem::path& path, const MatchingEngine& engine);
 
 }  // namespace lob

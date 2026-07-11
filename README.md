@@ -8,7 +8,7 @@ Stage 2 adds a reproducible benchmark harness for deterministic synthetic order 
 
 Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations with PnL attribution, reconciliation checks, and regime comparisons. The results are regime dependent: inventory aware quoting materially reduced inventory risk in the high volatility run, helped only modestly in the low volatility run, and did not reduce inventory in the trending run because the full-run time horizon decayed before the late inventory buildup. The AS runs also show a measured tradeoff: inventory-reducing fills account for most of AS adverse selection cost. See [docs/stage3_results.md](docs/stage3_results.md).
 
-Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated result depends on the tick to cent bridge between real QQQ data and the synthetic simulator. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
+Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine, including direct `external_execute` handling for named resting order executions. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated result depends on the tick to cent bridge between real QQQ data and the synthetic simulator. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
 
 Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. The raw net PnL and risk adjusted PnL rankings match Stage 3: naive wins low volatility, while Avellaneda Stoikov wins high volatility and trending. See [docs/stage4c_results.md](docs/stage4c_results.md).
 
@@ -95,7 +95,7 @@ Measured command:
 CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage4a_itch_replay
 ```
 
-The replay translated `12423` QQQ messages from a bounded prefix of the public Nasdaq TotalView ITCH sample file `03272019.NASDAQ_ITCH50.gz` and replayed them through the existing matching engine. The observed event mix was `47.5730499879` percent limit, `0.458826370442` percent market, `47.2027690574` percent cancel, and `4.76535458424` percent modify.
+The replay translated `12423` QQQ messages from a bounded prefix of the public Nasdaq TotalView ITCH sample file `03272019.NASDAQ_ITCH50.gz` and replayed them through the existing matching engine. The observed event mix was `47.5730499879` percent limit, `0` percent market, `0.458826370442` percent external execution, `47.2027690574` percent cancel, and `4.76535458424` percent modify.
 
 See [docs/stage4a_replay.md](docs/stage4a_replay.md) for the source, limitations, translation rules, and comparison against the Stage 3 synthetic assumptions.
 
@@ -175,7 +175,7 @@ Input CSV columns:
 timestamp,action,order_id,side,order_type,price,quantity,owner_id
 ```
 
-For `new`, provide side, order type, quantity, and price for limit orders. For `cancel`, only timestamp, action, and order ID are required. For `modify`, quantity means the desired remaining open quantity, and price may be empty to keep the current price.
+For `new`, provide side, order type, quantity, and price for limit orders. For `cancel`, only timestamp, action, and order ID are required. For `modify`, quantity means the desired remaining open quantity, and price may be empty to keep the current price. For `external_execute`, provide timestamp, action, order ID, execution price, and execution quantity.
 
 Run the sample replay:
 
@@ -202,4 +202,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, and Stage 4D are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, Stage 4D, and Stage 5A are complete once local tests pass and CI is green on `main`.

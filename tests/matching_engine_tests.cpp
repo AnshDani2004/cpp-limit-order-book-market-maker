@@ -161,6 +161,89 @@ TEMPLATE_TEST_CASE("market order fills completely when liquidity is sufficient",
     CHECK_FALSE(engine.book().best_ask().has_value());
 }
 
+TEMPLATE_TEST_CASE("external execute fully fills the named resting order", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+
+    REQUIRE(engine.submit_order(Order::limit(1, "seller", Side::Sell, 100, 5, 1)).accepted);
+    auto result = engine.external_execute(1, 5, 100, 2);
+
+    REQUIRE(result.accepted);
+    REQUIRE(result.trades.size() == 1);
+    CHECK(result.trades[0].buy_order_id == 0);
+    CHECK(result.trades[0].sell_order_id == 1);
+    CHECK(result.trades[0].maker_order_id == 1);
+    CHECK(result.trades[0].taker_order_id == 0);
+    CHECK(result.trades[0].price == 100);
+    CHECK(result.trades[0].quantity == 5);
+    REQUIRE(result.order.has_value());
+    CHECK(result.order->status == OrderStatus::Filled);
+    CHECK(result.order->remaining_quantity == 0);
+    CHECK_FALSE(engine.book().best_ask().has_value());
+}
+
+TEMPLATE_TEST_CASE("external execute partially fills the named resting order", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+
+    REQUIRE(engine.submit_order(Order::limit(1, "buyer", Side::Buy, 99, 10, 1)).accepted);
+    auto result = engine.external_execute(1, 4, 99, 2);
+
+    REQUIRE(result.accepted);
+    REQUIRE(result.trades.size() == 1);
+    CHECK(result.trades[0].buy_order_id == 1);
+    CHECK(result.trades[0].sell_order_id == 0);
+    REQUIRE(result.order.has_value());
+    CHECK(result.order->status == OrderStatus::PartiallyFilled);
+    CHECK(result.order->remaining_quantity == 6);
+    const auto* resting = engine.book().find_order(1);
+    REQUIRE(resting != nullptr);
+    CHECK(resting->remaining_quantity == 6);
+    CHECK(resting->status == OrderStatus::PartiallyFilled);
+}
+
+TEMPLATE_TEST_CASE("external execute targets the named order inside a price level", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+
+    REQUIRE(engine.submit_order(Order::limit(1, "seller a", Side::Sell, 100, 5, 1)).accepted);
+    REQUIRE(engine.submit_order(Order::limit(2, "seller b", Side::Sell, 100, 7, 2)).accepted);
+    auto result = engine.external_execute(2, 7, 100, 3);
+
+    REQUIRE(result.accepted);
+    REQUIRE(result.trades.size() == 1);
+    CHECK(result.trades[0].sell_order_id == 2);
+    CHECK(engine.book().find_order(2) == nullptr);
+    const auto* front = engine.book().find_order(1);
+    REQUIRE(front != nullptr);
+    CHECK(front->remaining_quantity == 5);
+    REQUIRE(engine.book().best_ask_level() != nullptr);
+    CHECK(engine.book().best_ask_level()->front().id == 1);
+}
+
+TEMPLATE_TEST_CASE("external execute rejects missing or already closed orders", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+
+    CHECK_FALSE(engine.external_execute(1, 1, 100, 1).accepted);
+    REQUIRE(engine.submit_order(Order::limit(1, "seller", Side::Sell, 100, 3, 2)).accepted);
+    REQUIRE(engine.external_execute(1, 3, 100, 3).accepted);
+
+    auto result = engine.external_execute(1, 1, 100, 4);
+    CHECK_FALSE(result.accepted);
+    CHECK(result.reject_reason == "order is not active");
+}
+
+TEMPLATE_TEST_CASE("external execute rejects quantity mismatch without changing the book", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
+    TestType engine;
+
+    REQUIRE(engine.submit_order(Order::limit(1, "seller", Side::Sell, 100, 3, 1)).accepted);
+    auto result = engine.external_execute(1, 4, 100, 2);
+
+    CHECK_FALSE(result.accepted);
+    CHECK(result.reject_reason == "execution quantity exceeds remaining quantity");
+    const auto* resting = engine.book().find_order(1);
+    REQUIRE(resting != nullptr);
+    CHECK(resting->remaining_quantity == 3);
+    CHECK(resting->status == OrderStatus::New);
+}
+
 TEMPLATE_TEST_CASE("market order cancels unfilled remainder when liquidity is insufficient", "", lob::MatchingEngine, lob::FlatMatchingEngine) {
     TestType engine;
 

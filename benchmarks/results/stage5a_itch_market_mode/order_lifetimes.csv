@@ -1,0 +1,7 @@
+metric,value
+closed_order_count,5875
+p50_lifetime_ns,2906518162
+p95_lifetime_ns,106025741539
+max_lifetime_ns,3152000868845
+reason_delete,5864
+reason_executed,11

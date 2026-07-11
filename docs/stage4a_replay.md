@@ -12,7 +12,7 @@ CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 tools/itch_replay.py --symbol QQQ --
 
 If CMake is already on `PATH`, omit the `CMAKE=...` prefix.
 
-The command downloads the bounded prefix, decompresses complete Soup framed messages from that prefix, translates supported QQQ ITCH messages into the existing CSV event schema, builds `orderbook_replay`, and replays the translated stream through the unmodified matching engine.
+The command downloads the bounded prefix, decompresses complete Soup framed messages from that prefix, translates supported QQQ ITCH messages into the CSV event schema, builds `orderbook_replay`, and replays the translated stream through the matching engine.
 
 Checked outputs are in `benchmarks/results/stage4a_itch_replay`.
 
@@ -21,8 +21,8 @@ Checked outputs are in `benchmarks/results/stage4a_itch_replay`.
 ```text
 A Add Order, translated to a limit order
 F Add Order With Attribution, translated to a limit order
-E Order Executed, translated to a market order from the opposite side
-C Order Executed With Price, translated to a market order from the opposite side
+E Order Executed, translated to external_execute against the named resting order
+C Order Executed With Price, translated to external_execute against the named resting order
 X Order Cancel, translated to a quantity modify when shares remain, or cancel when no shares remain
 D Order Delete, translated to cancel
 U Order Replace, translated to modify while tracking the new ITCH order reference
@@ -30,7 +30,7 @@ U Order Replace, translated to modify while tracking the new ITCH order referenc
 
 Administrative messages are ignored because they do not change the displayed book. Non displayed trade messages and cross trade messages are also ignored because the Nasdaq specification states that non displayed trade messages do not affect the displayed book.
 
-The most important translation limitation is execution handling. ITCH execution messages identify the resting order that was executed, while the existing CSV schema has no direct action for reducing a named resting order because of an external execution. The translator therefore emits an opposite side market order with the executed quantity. In this QQQ run, `57` translated market orders produced `57` replay trades.
+Stage 5A corrects the execution translation. ITCH execution messages identify the exact resting order that was executed. The replay schema now has `external_execute`, so `E` and `C` messages reduce that named resting order directly. The trade record keeps the named order as maker and records the unknown aggressor order ID as `0`.
 
 ITCH replace messages assign a new order reference number. The matching engine modify operation keeps the same order ID. The translator keeps the engine order ID stable and maps later ITCH messages for the new reference back to that engine order ID. Lifetime tracking follows that stable engine order ID across replace messages, so the reported lifetime is the full translated order lifetime rather than the shorter reference number segment lifetime.
 
@@ -67,12 +67,13 @@ The translated event mix compared with the Stage 3 synthetic assumptions was:
 
 ```text
 limit observed 5910, 47.5730499879 percent, Stage 3 assumption 55 percent
-market observed 57, 0.458826370442 percent, Stage 3 assumption 25 percent
+market observed 0, 0 percent, Stage 3 assumption 25 percent
+external execute observed 57, 0.458826370442 percent, Stage 3 market order analog 25 percent
 cancel observed 5864, 47.2027690574 percent, Stage 3 assumption 10 percent
 modify observed 592, 4.76535458424 percent, Stage 3 assumption 10 percent
 ```
 
-For this bounded QQQ prefix, the Stage 3 generator materially overstated market order activity and understated full order deletion. This is a real gap between the hand chosen synthetic mix and the public ITCH sample. The bounded prefix may be biased toward early session book maintenance, so this should not be generalized to a full day without a larger replay.
+For this bounded QQQ prefix, the Stage 3 generator materially overstated visible execution activity and understated full order deletion. This is a real gap between the hand chosen synthetic mix and the public ITCH sample. The bounded prefix may be biased toward early session book maintenance, so this should not be generalized to a full day without a larger replay.
 
 ## Size Distribution
 
@@ -107,8 +108,46 @@ Removed quantity includes partial cancels, deletes, and the remaining displayed 
 
 ## Findings
 
-The matching engine core did not need to change. The replay exposed one schema limitation at the ingestion boundary: the CSV format can submit, cancel, and modify, but it cannot directly express "reduce this resting order because Nasdaq reported an execution against it." The Stage 4A translator uses market orders for those execution messages and documents that approximation.
+Stage 5A changed the matching engine boundary by adding `external_execute`. The replay no longer invents an opposite side market order for ITCH `E` and `C` messages.
 
-The Stage 3 synthetic flow was useful as a deterministic stress stream, but it is not calibrated to this public ITCH sample. The biggest observed gaps are market order share, cancel share, and order size distribution.
+## Stage 5A Execution Translation Comparison
+
+The historical market order translation can still be reproduced for comparison:
+
+```bash
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --execution-mode market --output-dir benchmarks/results/stage5a_itch_market_mode --build-dir build/stage5a_itch_replay
+```
+
+The corrected direct execution replay is:
+
+```bash
+CMAKE=/tmp/lob_cmake_venv/bin/cmake python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage5a_itch_replay
+```
+
+The comparison command is:
+
+```bash
+python3 tools/compare_itch_execution_modes.py --market-dir benchmarks/results/stage5a_itch_market_mode --external-dir benchmarks/results/stage4a_itch_replay --output-dir benchmarks/results/stage5a_execution_mode_comparison
+```
+
+The checked comparison reports:
+
+```text
+market_replay_trades 57
+external_replay_trades 57
+market_trade_quantity 11941
+external_trade_quantity 11941
+trade_count_match true
+trade_quantity_match true
+changed_price_or_quantity_rows 0
+changed_full_trade_rows 57
+market_book_rows 35
+external_book_rows 35
+book_state_match true
+```
+
+The total executed quantity matches, no replayed trade changed price or quantity, and the final open book state matches. All `57` full trade rows changed because the historical run used invented synthetic market order IDs, while the corrected run records the unknown aggressor as order ID `0`. In this bounded QQQ prefix, direct execution reconstruction improves semantic accuracy without changing price, quantity, or ending book state.
+
+The Stage 3 synthetic flow was useful as a deterministic stress stream, but it is not calibrated to this public ITCH sample. The biggest observed gaps are visible execution rate, cancel share, and order size distribution.
 
 Stage 4B should not assume the Stage 3 fill decay value is realistic. It also should not fit an arrival intensity curve on this bounded QQQ prefix alone because the sample has only `57` execution messages and `11` execution closures. The Stage 4B calibration data decision is fixed before fitting in [stage4b_calibration_gate.md](stage4b_calibration_gate.md).

@@ -66,7 +66,7 @@ class TranslationResult:
         self.events = []
         self.lifetimes = []
         self.source_counts = {}
-        self.engine_counts = {"limit": 0, "market": 0, "cancel": 0, "modify": 0}
+        self.engine_counts = {"limit": 0, "market": 0, "external_execute": 0, "cancel": 0, "modify": 0}
         self.message_counts = {}
         self.size_values = []
         self.executed_quantity = 0
@@ -86,6 +86,7 @@ def parse_args():
     parser.add_argument("--build-dir", default="build/stage4a_itch_replay")
     parser.add_argument("--input-gz", default="")
     parser.add_argument("--skip-build", action="store_true")
+    parser.add_argument("--execution-mode", choices=["external_execute", "market"], default="external_execute")
     return parser.parse_args()
 
 
@@ -224,13 +225,19 @@ def append_event(result, event):
         result.engine_counts["limit"] += 1
     elif event.action == "new" and event.order_type == "market":
         result.engine_counts["market"] += 1
+    elif event.action == "external_execute":
+        result.engine_counts["external_execute"] += 1
     elif event.action == "cancel":
         result.engine_counts["cancel"] += 1
     elif event.action == "modify":
         result.engine_counts["modify"] += 1
 
 
-def translate_messages(messages, symbol):
+def execution_price(message, active_order):
+    return message.price if message.message_type == "C" and message.price > 0 else active_order.price
+
+
+def translate_messages(messages, symbol, execution_mode="external_execute"):
     result = TranslationResult()
     active = {}
     market_order_id = MARKET_ORDER_ID_START
@@ -283,22 +290,39 @@ def translate_messages(messages, symbol):
             result.supported_messages += 1
             result.executed_quantity += message.shares
             result.size_values.append(message.shares)
-            append_event(
-                result,
-                CsvEvent(
-                    timestamp=message.timestamp,
-                    action="new",
-                    order_id=market_order_id,
-                    side=opposite_side(active_order.side),
-                    order_type="market",
-                    price="",
-                    quantity=str(message.shares),
-                    owner_id=f"itch_aggressor_{market_order_id}",
-                    source_message_type=message.message_type,
-                    source_order_ref=message.order_ref,
-                ),
-            )
-            market_order_id += 1
+            if execution_mode == "market":
+                append_event(
+                    result,
+                    CsvEvent(
+                        timestamp=message.timestamp,
+                        action="new",
+                        order_id=market_order_id,
+                        side=opposite_side(active_order.side),
+                        order_type="market",
+                        price="",
+                        quantity=str(message.shares),
+                        owner_id=f"itch_aggressor_{market_order_id}",
+                        source_message_type=message.message_type,
+                        source_order_ref=message.order_ref,
+                    ),
+                )
+                market_order_id += 1
+            else:
+                append_event(
+                    result,
+                    CsvEvent(
+                        timestamp=message.timestamp,
+                        action="external_execute",
+                        order_id=active_order.engine_order_id,
+                        side="",
+                        order_type="",
+                        price=str(execution_price(message, active_order)),
+                        quantity=str(message.shares),
+                        owner_id="",
+                        source_message_type=message.message_type,
+                        source_order_ref=message.order_ref,
+                    ),
+                )
             active_order.remaining -= message.shares
             if active_order.remaining <= 0:
                 close_lifetime(result, active_order, message.timestamp, "executed")
@@ -461,11 +485,11 @@ def percent(count, total):
 
 def write_event_mix(path, result):
     total = sum(result.engine_counts.values())
-    assumptions = {"limit": 55.0, "market": 25.0, "cancel": 10.0, "modify": 10.0}
+    assumptions = {"limit": 55.0, "market": 25.0, "external_execute": 25.0, "cancel": 10.0, "modify": 10.0}
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")
-        writer.writerow(["event_type", "observed_count", "observed_percent", "stage3_synthetic_percent"])
-        for event_type in ["limit", "market", "cancel", "modify"]:
+        writer.writerow(["event_type", "observed_count", "observed_percent", "stage3_synthetic_analog_percent"])
+        for event_type in ["limit", "market", "external_execute", "cancel", "modify"]:
             count = result.engine_counts[event_type]
             writer.writerow([event_type, count, f"{percent(count, total):.12g}", assumptions[event_type]])
 
@@ -536,12 +560,13 @@ def write_cancel_to_fill(path, result):
         writer.writerow(["removed_to_executed_quantity_ratio", f"{ratio:.12g}"])
 
 
-def write_message_support(path, result):
+def write_message_support(path, result, execution_mode):
+    execution_translation = "market" if execution_mode == "market" else "external_execute"
     support = {
         "A": ("yes", "limit", "add order without attribution"),
         "F": ("yes", "limit", "add order with attribution"),
-        "E": ("yes", "market", "visible order execution"),
-        "C": ("yes", "market", "visible order execution with price"),
+        "E": ("yes", execution_translation, "visible order execution"),
+        "C": ("yes", execution_translation, "visible order execution with price"),
         "X": ("yes", "modify", "partial displayed size cancel"),
         "D": ("yes", "cancel", "delete remaining displayed order"),
         "U": ("yes", "modify", "replace order"),
@@ -582,8 +607,10 @@ def write_summary(path, args, compressed_size, decompressed_size, result, trade_
         writer.writerow(["ignored_messages", result.ignored_messages])
         writer.writerow(["translated_events", total_events])
         writer.writerow(["replay_trades", trade_count])
+        writer.writerow(["execution_mode", args.execution_mode])
         writer.writerow(["limit_events", result.engine_counts["limit"]])
         writer.writerow(["market_events", result.engine_counts["market"]])
+        writer.writerow(["external_execute_events", result.engine_counts["external_execute"]])
         writer.writerow(["cancel_events", result.engine_counts["cancel"]])
         writer.writerow(["modify_events", result.engine_counts["modify"]])
         writer.writerow(["executed_quantity", result.executed_quantity])
@@ -596,11 +623,11 @@ def configure_and_build(build_dir):
     subprocess.run([cmake, "--build", str(build_dir), "--config", "Release", "--target", "orderbook_replay"], check=True)
 
 
-def replay_orders(build_dir, input_csv, trades_csv):
+def replay_orders(build_dir, input_csv, trades_csv, book_snapshot_csv):
     executable = build_dir / "orderbook_replay"
     if not executable.exists():
         executable = build_dir / "Release" / "orderbook_replay"
-    subprocess.run([str(executable), str(input_csv), str(trades_csv)], check=True)
+    subprocess.run([str(executable), str(input_csv), str(trades_csv), str(book_snapshot_csv)], check=True)
 
 
 def main():
@@ -614,18 +641,19 @@ def main():
     compressed = read_compressed_input(args)
     decompressed = decompress_prefix(compressed)
     messages = (parse_message(payload) for payload in iter_framed_messages(decompressed))
-    result = translate_messages(messages, args.symbol)
+    result = translate_messages(messages, args.symbol, args.execution_mode)
 
     input_csv = output_dir / "translated_orders.csv"
     detail_csv = output_dir / "translation_detail.csv"
     trades_csv = output_dir / "trades.csv"
+    book_snapshot_csv = output_dir / "book_state.csv"
 
     write_order_events(input_csv, result.events)
     write_translation_detail(detail_csv, result.events)
 
     if not args.skip_build:
         configure_and_build(build_dir)
-    replay_orders(build_dir, input_csv, trades_csv)
+    replay_orders(build_dir, input_csv, trades_csv, book_snapshot_csv)
 
     trade_count = read_trade_count(trades_csv)
     write_summary(output_dir / "summary.csv", args, len(compressed), len(decompressed), result, trade_count)
@@ -634,7 +662,7 @@ def main():
     write_size_distribution(output_dir / "size_distribution.csv", result.size_values)
     write_lifetime_distribution(output_dir / "order_lifetimes.csv", result.lifetimes)
     write_cancel_to_fill(output_dir / "cancel_to_fill.csv", result)
-    write_message_support(output_dir / "message_support.csv", result)
+    write_message_support(output_dir / "message_support.csv", result, args.execution_mode)
 
     print((output_dir / "summary.csv").resolve())
     print((output_dir / "event_mix.csv").resolve())

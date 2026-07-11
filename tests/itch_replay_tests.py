@@ -100,18 +100,34 @@ class ItchReplayTests(unittest.TestCase):
 
         result = itch_replay.translate_messages(messages, "TEST")
 
-        self.assertEqual(["new", "new", "modify", "modify", "cancel"], [event.action for event in result.events])
-        self.assertEqual(["limit", "market", "", "", ""], [event.order_type for event in result.events])
-        self.assertEqual(["buy", "sell", "", "", ""], [event.side for event in result.events])
+        self.assertEqual(["new", "external_execute", "modify", "modify", "cancel"], [event.action for event in result.events])
+        self.assertEqual(["limit", "", "", "", ""], [event.order_type for event in result.events])
+        self.assertEqual(["buy", "", "", "", ""], [event.side for event in result.events])
         self.assertEqual(["100", "40", "50", "80", ""], [event.quantity for event in result.events])
+        self.assertEqual("12345", result.events[1].price)
         self.assertEqual("12300", result.events[3].price)
         self.assertEqual(100, result.events[4].order_id)
-        self.assertEqual({"limit": 1, "market": 1, "cancel": 1, "modify": 2}, result.engine_counts)
+        self.assertEqual({"limit": 1, "market": 0, "external_execute": 1, "cancel": 1, "modify": 2}, result.engine_counts)
         self.assertEqual(40, result.executed_quantity)
         self.assertEqual(140, result.removed_quantity)
         self.assertEqual(1, len(result.lifetimes))
         self.assertEqual("delete", result.lifetimes[0].reason)
         self.assertEqual(40, result.lifetimes[0].nanoseconds)
+
+    def test_translation_can_reproduce_historical_market_execution_mode(self):
+        payloads = [
+            add_message(100, 10, "B", 100, "TEST", 12345),
+            execute_message(100, 20, 40),
+        ]
+        messages = [itch_replay.parse_message(payload) for payload in payloads]
+
+        result = itch_replay.translate_messages(messages, "TEST", execution_mode="market")
+
+        self.assertEqual(["new", "new"], [event.action for event in result.events])
+        self.assertEqual(["limit", "market"], [event.order_type for event in result.events])
+        self.assertEqual(["buy", "sell"], [event.side for event in result.events])
+        self.assertEqual(itch_replay.MARKET_ORDER_ID_START, result.events[1].order_id)
+        self.assertEqual({"limit": 1, "market": 1, "external_execute": 0, "cancel": 0, "modify": 0}, result.engine_counts)
 
     def test_translation_filters_other_symbols(self):
         messages = [

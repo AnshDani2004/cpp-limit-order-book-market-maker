@@ -65,6 +65,47 @@ public:
         return ExecutionResult{true, {}, snapshot, {}};
     }
 
+    ExecutionResult external_execute(OrderId id, Quantity quantity, Price execution_price, Timestamp timestamp) {
+        auto* resting_order = book_.find_order(id);
+        if (resting_order == nullptr) {
+            return ExecutionResult{false, "order is not active", std::nullopt, {}};
+        }
+        auto snapshot = *resting_order;
+        if (quantity <= 0) {
+            return ExecutionResult{false, "quantity must be positive", snapshot, {}};
+        }
+        if (execution_price <= 0) {
+            return ExecutionResult{false, "execution price must be positive", snapshot, {}};
+        }
+        if (quantity > snapshot.remaining_quantity) {
+            return ExecutionResult{false, "execution quantity exceeds remaining quantity", snapshot, {}};
+        }
+
+        Trade trade{};
+        if (snapshot.side == Side::Buy) {
+            trade.buy_order_id = snapshot.id;
+            trade.sell_order_id = 0;
+        } else {
+            trade.buy_order_id = 0;
+            trade.sell_order_id = snapshot.id;
+        }
+        trade.maker_order_id = snapshot.id;
+        trade.taker_order_id = 0;
+        trade.price = execution_price;
+        trade.quantity = quantity;
+        trade.timestamp = timestamp;
+
+        resting_order->remaining_quantity -= quantity;
+        resting_order->status = resting_order->remaining_quantity == 0 ? OrderStatus::Filled : OrderStatus::PartiallyFilled;
+        snapshot = *resting_order;
+
+        if (snapshot.remaining_quantity == 0) {
+            book_.cancel_order(id);
+        }
+
+        return ExecutionResult{true, {}, snapshot, {trade}};
+    }
+
     ExecutionResult modify_order(OrderId id,
                                  std::optional<Price> new_price,
                                  Quantity new_quantity,

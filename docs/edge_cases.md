@@ -40,6 +40,14 @@ Cancelling an active resting order removes only its unfilled quantity. If that o
 
 Filled orders are no longer active in the book. A cancel request for a filled or unknown order is rejected with no state change.
 
+## External Execute
+
+An `external_execute` event reduces a named resting order by the supplied quantity at the supplied execution price. The named order remains the maker in the trade record. The aggressor side is unknown at this schema boundary, so the missing taker order ID is recorded as `0`.
+
+If the named order is missing or already closed, the event is rejected with no state change. If the supplied quantity is less than or equal to zero, the event is rejected. If the supplied execution price is less than or equal to zero, the event is rejected. If the supplied quantity is larger than the named order's remaining quantity, the event is rejected with no state change.
+
+A partial external execution leaves the order resting with reduced remaining quantity and partially filled status. A full external execution removes the order from the book and returns filled status for the event result.
+
 ## Modify Price
 
 A price change is implemented as cancel and reinsert with the supplied timestamp. The order loses time priority because changing price is economically a new quote at that price.

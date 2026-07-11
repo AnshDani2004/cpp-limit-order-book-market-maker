@@ -1,0 +1,13 @@
+metric,value
+market_replay_trades,57
+external_replay_trades,57
+market_trade_quantity,11941
+external_trade_quantity,11941
+trade_count_match,true
+trade_quantity_match,true
+paired_trade_rows_compared,57
+changed_price_or_quantity_rows,0
+changed_full_trade_rows,57
+market_book_rows,35
+external_book_rows,35
+book_state_match,true
