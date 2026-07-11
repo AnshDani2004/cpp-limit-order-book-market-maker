@@ -23,6 +23,13 @@ struct Args {
     std::string regime{"all"};
     std::optional<std::uint64_t> seed_override{};
     std::optional<double> fill_decay_override{};
+    bool risk_controls{false};
+    lob::Quantity inventory_cap{20000};
+    double soft_start_fraction{0.50};
+    double soft_penalty_max_skew_ticks{20.0};
+    bool terminal_liquidation{false};
+    double terminal_inventory_penalty_per_unit{0.50};
+    double risk_denominator_floor{1.0};
     std::filesystem::path output_dir{"benchmarks/results/stage3_naive_latest"};
 };
 
@@ -78,6 +85,20 @@ Args parse_args(int argc, char** argv) {
             args.seed_override = parse_u64(require_value());
         } else if (argument == "--fill-decay") {
             args.fill_decay_override = parse_double(require_value());
+        } else if (argument == "--risk-controls") {
+            args.risk_controls = true;
+        } else if (argument == "--inventory-cap") {
+            args.inventory_cap = static_cast<lob::Quantity>(parse_u64(require_value()));
+        } else if (argument == "--soft-start-fraction") {
+            args.soft_start_fraction = parse_double(require_value());
+        } else if (argument == "--soft-penalty-max-skew-ticks") {
+            args.soft_penalty_max_skew_ticks = parse_double(require_value());
+        } else if (argument == "--terminal-liquidation") {
+            args.terminal_liquidation = true;
+        } else if (argument == "--terminal-inventory-penalty-per-unit") {
+            args.terminal_inventory_penalty_per_unit = parse_double(require_value());
+        } else if (argument == "--risk-denominator-floor") {
+            args.risk_denominator_floor = parse_double(require_value());
         } else if (argument == "--output-dir") {
             args.output_dir = require_value();
         } else {
@@ -93,6 +114,21 @@ Args parse_args(int argc, char** argv) {
     }
     if (args.fill_decay_override.has_value() && args.strategy == "naive") {
         throw std::runtime_error("--fill-decay requires an Avellaneda Stoikov strategy");
+    }
+    if (args.inventory_cap <= 0) {
+        throw std::runtime_error("--inventory-cap must be positive");
+    }
+    if (args.soft_start_fraction < 0.0 || args.soft_start_fraction >= 1.0) {
+        throw std::runtime_error("--soft-start-fraction must be in [0, 1)");
+    }
+    if (args.soft_penalty_max_skew_ticks < 0.0) {
+        throw std::runtime_error("--soft-penalty-max-skew-ticks must be nonnegative");
+    }
+    if (args.terminal_inventory_penalty_per_unit < 0.0) {
+        throw std::runtime_error("--terminal-inventory-penalty-per-unit must be nonnegative");
+    }
+    if (args.risk_denominator_floor <= 0.0) {
+        throw std::runtime_error("--risk-denominator-floor must be positive");
     }
     return args;
 }
@@ -155,6 +191,14 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     output << "curve_sample_stride," << args.curve_sample_stride << '\n';
     output << "quote_size,10\n";
     output << "refresh_cadence,10\n";
+    output << "risk_controls_enabled," << (args.risk_controls ? "true" : "false") << '\n';
+    output << "inventory_cap," << args.inventory_cap << '\n';
+    output << "soft_start_fraction," << args.soft_start_fraction << '\n';
+    output << "soft_penalty_max_skew_ticks," << args.soft_penalty_max_skew_ticks << '\n';
+    output << "terminal_liquidation," << (args.terminal_liquidation ? "true" : "false") << '\n';
+    output << "terminal_inventory_penalty_per_unit," << args.terminal_inventory_penalty_per_unit << '\n';
+    output << "risk_adjusted_pnl_formula,(net_pnl_after_fees - terminal_inventory_penalty) / max(maximum_drawdown, risk_denominator_floor)\n";
+    output << "risk_denominator_floor," << args.risk_denominator_floor << '\n';
     if (args.strategy == "naive") {
         output << "naive_half_spread_ticks,5\n";
         output << "naive_full_spread_ticks,10\n";
@@ -187,7 +231,10 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
            << "fill_rate,gross_spread_capture,inventory_pnl,"
            << "inventory_pnl_from_marks,inventory_pnl_mark_error,gross_identity_error,"
            << "net_identity_error,adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,"
-           << "inventory_variance,final_inventory,maker_fills,taker_fills,"
+           << "terminal_liquidation_cost,terminal_inventory_penalty,risk_adjusted_pnl,"
+           << "inventory_variance,pre_liquidation_inventory,final_inventory,"
+           << "terminal_liquidation_quantity,terminal_liquidation_residual_inventory,"
+           << "maker_fills,taker_fills,passive_taker_fills,terminal_liquidation_trades,"
            << "market_maker_buy_fills,market_maker_sell_fills,market_maker_filled_quantity,"
            << "market_maker_buy_quantity,market_maker_sell_quantity,market_maker_posted_quantity,"
            << "external_limit_buy_orders,external_limit_sell_orders,external_market_buy_orders,"
@@ -198,7 +245,8 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
            << "average_external_limit_buy_offset,average_external_limit_sell_offset,"
            << "average_external_price_modify_buy_offset,average_external_price_modify_sell_offset,"
            << "external_rejects,quote_refreshes,symmetric_quote_refreshes,bid_clip_events,"
-           << "ask_clip_events,average_bid_distance,average_ask_distance,"
+           << "ask_clip_events,hard_cap_bid_blocks,hard_cap_ask_blocks,"
+           << "average_bid_distance,average_ask_distance,"
            << "average_abs_quote_asymmetry,max_abs_quote_asymmetry,"
            << "reconciliation_passed\n";
     for (const auto& result : results) {
@@ -220,10 +268,18 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
                << summary.fee_pnl << ','
                << summary.net_pnl_after_fees << ','
                << summary.maximum_drawdown << ','
+               << summary.terminal_liquidation_cost << ','
+               << summary.terminal_inventory_penalty << ','
+               << summary.risk_adjusted_pnl << ','
                << summary.inventory_variance << ','
+               << summary.pre_liquidation_inventory << ','
                << summary.final_inventory << ','
+               << summary.terminal_liquidation_quantity << ','
+               << summary.terminal_liquidation_residual_inventory << ','
                << summary.maker_fills << ','
                << summary.taker_fills << ','
+               << summary.passive_taker_fills << ','
+               << summary.terminal_liquidation_trades << ','
                << summary.market_maker_buy_fills << ','
                << summary.market_maker_sell_fills << ','
                << summary.market_maker_filled_quantity << ','
@@ -251,6 +307,8 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
                << summary.symmetric_quote_refreshes << ','
                << summary.bid_clip_events << ','
                << summary.ask_clip_events << ','
+               << summary.hard_cap_bid_blocks << ','
+               << summary.hard_cap_ask_blocks << ','
                << summary.average_bid_distance << ','
                << summary.average_ask_distance << ','
                << summary.average_abs_quote_asymmetry << ','
@@ -313,6 +371,52 @@ void write_adverse_selection_split(const std::filesystem::path& path,
     }
 }
 
+void write_terminal_liquidation_levels(const std::filesystem::path& path,
+                                       const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write terminal liquidation levels");
+    }
+
+    output << std::setprecision(12);
+    output << "strategy,regime,event_index,side,price,displayed_quantity_before,"
+           << "filled_quantity,liquidation_cost\n";
+    for (const auto& result : results) {
+        for (const auto& level : result.terminal_liquidation_levels) {
+            output << level.strategy_name << ','
+                   << level.regime_name << ','
+                   << level.event_index << ','
+                   << lob::to_string(level.side) << ','
+                   << level.price << ','
+                   << level.displayed_quantity_before << ','
+                   << level.filled_quantity << ','
+                   << level.liquidation_cost << '\n';
+        }
+    }
+}
+
+void write_terminal_liquidation_trades(const std::filesystem::path& path,
+                                       const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write terminal liquidation trades");
+    }
+
+    output << std::setprecision(12);
+    output << "strategy,regime,event_index,side,price,quantity,liquidation_cost\n";
+    for (const auto& result : results) {
+        for (const auto& trade : result.terminal_liquidation_trades) {
+            output << trade.strategy_name << ','
+                   << trade.regime_name << ','
+                   << trade.event_index << ','
+                   << lob::to_string(trade.side) << ','
+                   << trade.price << ','
+                   << trade.quantity << ','
+                   << trade.liquidation_cost << '\n';
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -326,6 +430,14 @@ int main(int argc, char** argv) {
             config.regime = regime;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
+            config.risk_controls.enabled = args.risk_controls;
+            config.risk_controls.inventory_cap = args.inventory_cap;
+            config.risk_controls.soft_start_fraction = args.soft_start_fraction;
+            config.risk_controls.soft_penalty_max_skew_ticks = args.soft_penalty_max_skew_ticks;
+            config.risk_controls.terminal_liquidation = args.terminal_liquidation;
+            config.risk_controls.terminal_inventory_penalty_per_unit =
+                args.terminal_inventory_penalty_per_unit;
+            config.risk_controls.risk_denominator_floor = args.risk_denominator_floor;
             if (args.strategy == "avellaneda-stoikov" && args.fill_decay_override.has_value()) {
                 config.avellaneda_stoikov.fill_decay = *args.fill_decay_override;
             }
@@ -345,6 +457,8 @@ int main(int argc, char** argv) {
         write_summary(args.output_dir / "summary.csv", results);
         write_curve(args.output_dir / "equity_curve.csv", results);
         write_adverse_selection_split(args.output_dir / "adverse_selection_split.csv", results);
+        write_terminal_liquidation_levels(args.output_dir / "terminal_liquidation_levels.csv", results);
+        write_terminal_liquidation_trades(args.output_dir / "terminal_liquidation_trades.csv", results);
 
         std::cout << (args.output_dir / "summary.csv") << '\n';
         for (const auto& result : results) {

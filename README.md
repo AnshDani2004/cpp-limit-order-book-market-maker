@@ -10,6 +10,8 @@ Stage 3 adds naive symmetric and Avellaneda Stoikov market maker simulations wit
 
 Stage 4A replays a bounded public Nasdaq TotalView ITCH sample through the matching engine. Stage 4B fits a regular session QQQ fill decay curve, validates that the decay effect is statistically robust, and compares the calibrated AS parameter against the original hand chosen AS value. The calibrated result depends on the tick to cent bridge between real QQQ data and the synthetic simulator. See [docs/stage4b_strategy_comparison.md](docs/stage4b_strategy_comparison.md).
 
+Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, terminal inventory penalty, and risk adjusted PnL. With a 20000 unit cap, terminal liquidation closes all controlled runs to zero final inventory. The raw net PnL and risk adjusted PnL rankings match Stage 3: naive wins low volatility, while Avellaneda Stoikov wins high volatility and trending. See [docs/stage4c_results.md](docs/stage4c_results.md).
+
 ## What Stage 1 Proves
 
 1. Modern C++ structure with RAII, value semantics, const correctness, and CMake.
@@ -128,6 +130,19 @@ one tick equals 20 cents: calibrated AS loses in low and high volatility, wins i
 
 The full attribution table is checked in at `benchmarks/results/stage4b_strategy_comparison/metrics_table.csv`, and the unit sensitivity table is checked in at `benchmarks/results/stage4b_strategy_comparison/tick_size_sensitivity.csv`.
 
+## Stage 4C Risk Control Result
+
+Measured comparison:
+
+```text
+low volatility risk adjusted PnL 3.79145721962 naive, 3.65709628448 Avellaneda Stoikov
+high volatility risk adjusted PnL 0.448401096106 naive, 2.18741584269 Avellaneda Stoikov
+trending risk adjusted PnL 0.8467416267 naive, 1.9505626349 Avellaneda Stoikov
+```
+
+The full table is checked in at `benchmarks/results/stage4c_risk_controlled_comparison/metrics_table.csv`. The terminal liquidation price level evidence is checked in at `benchmarks/results/stage4c_risk_controlled_comparison/naive_terminal_liquidation_levels.csv` and `benchmarks/results/stage4c_risk_controlled_comparison/avellaneda_stoikov_terminal_liquidation_levels.csv`.
+The per trade terminal liquidation trace is checked in beside those files, and the controlled runs report `passive_taker_fills` as zero in every regime.
+
 ## Build And Test
 
 ```bash
@@ -171,4 +186,4 @@ See [docs/design.md](docs/design.md) for the detailed design rationale.
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, Stage 4A, and Stage 4B are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, and Stage 4C are complete once local tests pass and CI is green on `main`.

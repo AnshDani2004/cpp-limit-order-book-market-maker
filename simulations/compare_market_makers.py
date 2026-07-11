@@ -25,11 +25,21 @@ METRICS = [
     ("adverse_selection_cost", "Adverse selection cost"),
     ("fee_pnl", "Fee PnL"),
     ("net_pnl_after_fees", "Net PnL after fees"),
+    ("terminal_liquidation_cost", "Terminal liquidation cost"),
+    ("terminal_inventory_penalty", "Terminal inventory penalty"),
+    ("risk_adjusted_pnl", "Risk adjusted PnL"),
     ("maximum_drawdown", "Maximum drawdown"),
     ("inventory_variance", "Inventory variance"),
+    ("pre_liquidation_inventory", "Pre liquidation inventory"),
     ("final_inventory", "Final inventory"),
+    ("terminal_liquidation_quantity", "Terminal liquidation quantity"),
+    ("terminal_liquidation_residual_inventory", "Terminal liquidation residual inventory"),
     ("maker_fills", "Maker fills"),
     ("taker_fills", "Taker fills"),
+    ("passive_taker_fills", "Passive taker fills"),
+    ("terminal_liquidation_trades", "Terminal liquidation trades"),
+    ("hard_cap_bid_blocks", "Hard cap bid blocks"),
+    ("hard_cap_ask_blocks", "Hard cap ask blocks"),
 ]
 
 
@@ -232,12 +242,39 @@ def main():
     as_adverse_split = as_dir / "adverse_selection_split.csv"
     if as_adverse_split.exists():
         shutil.copyfile(as_adverse_split, output_dir / "avellaneda_stoikov_adverse_selection_split.csv")
+    naive_liquidation = naive_dir / "terminal_liquidation_levels.csv"
+    if naive_liquidation.exists():
+        shutil.copyfile(naive_liquidation, output_dir / "naive_terminal_liquidation_levels.csv")
+    naive_liquidation_trades = naive_dir / "terminal_liquidation_trades.csv"
+    if naive_liquidation_trades.exists():
+        shutil.copyfile(naive_liquidation_trades, output_dir / "naive_terminal_liquidation_trades.csv")
+    as_liquidation = as_dir / "terminal_liquidation_levels.csv"
+    if as_liquidation.exists():
+        shutil.copyfile(as_liquidation, output_dir / "avellaneda_stoikov_terminal_liquidation_levels.csv")
+    as_liquidation_trades = as_dir / "terminal_liquidation_trades.csv"
+    if as_liquidation_trades.exists():
+        shutil.copyfile(
+            as_liquidation_trades,
+            output_dir / "avellaneda_stoikov_terminal_liquidation_trades.csv",
+        )
     if calibrated_dir is not None:
         calibrated_split = calibrated_dir / "adverse_selection_split.csv"
         if calibrated_split.exists():
             shutil.copyfile(
                 calibrated_split,
                 output_dir / "avellaneda_stoikov_calibrated_adverse_selection_split.csv",
+            )
+        calibrated_liquidation = calibrated_dir / "terminal_liquidation_levels.csv"
+        if calibrated_liquidation.exists():
+            shutil.copyfile(
+                calibrated_liquidation,
+                output_dir / "avellaneda_stoikov_calibrated_terminal_liquidation_levels.csv",
+            )
+        calibrated_liquidation_trades = calibrated_dir / "terminal_liquidation_trades.csv"
+        if calibrated_liquidation_trades.exists():
+            shutil.copyfile(
+                calibrated_liquidation_trades,
+                output_dir / "avellaneda_stoikov_calibrated_terminal_liquidation_trades.csv",
             )
 
     curves = read_curve(naive_dir / "equity_curve.csv") + read_curve(as_dir / "equity_curve.csv")
@@ -267,9 +304,29 @@ def main():
     copied_split = output_dir / "avellaneda_stoikov_adverse_selection_split.csv"
     if copied_split.exists():
         print(copied_split.resolve())
+    copied_naive_liquidation = output_dir / "naive_terminal_liquidation_levels.csv"
+    if copied_naive_liquidation.exists():
+        print(copied_naive_liquidation.resolve())
+    copied_naive_liquidation_trades = output_dir / "naive_terminal_liquidation_trades.csv"
+    if copied_naive_liquidation_trades.exists():
+        print(copied_naive_liquidation_trades.resolve())
+    copied_as_liquidation = output_dir / "avellaneda_stoikov_terminal_liquidation_levels.csv"
+    if copied_as_liquidation.exists():
+        print(copied_as_liquidation.resolve())
+    copied_as_liquidation_trades = output_dir / "avellaneda_stoikov_terminal_liquidation_trades.csv"
+    if copied_as_liquidation_trades.exists():
+        print(copied_as_liquidation_trades.resolve())
     copied_calibrated_split = output_dir / "avellaneda_stoikov_calibrated_adverse_selection_split.csv"
     if copied_calibrated_split.exists():
         print(copied_calibrated_split.resolve())
+    copied_calibrated_liquidation = output_dir / "avellaneda_stoikov_calibrated_terminal_liquidation_levels.csv"
+    if copied_calibrated_liquidation.exists():
+        print(copied_calibrated_liquidation.resolve())
+    copied_calibrated_liquidation_trades = (
+        output_dir / "avellaneda_stoikov_calibrated_terminal_liquidation_trades.csv"
+    )
+    if copied_calibrated_liquidation_trades.exists():
+        print(copied_calibrated_liquidation_trades.resolve())
 
 
 if __name__ == "__main__":

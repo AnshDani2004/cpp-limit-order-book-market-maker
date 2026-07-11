@@ -23,11 +23,22 @@ struct AvellanedaStoikovConfig {
     std::size_t refresh_cadence{10};
 };
 
+struct RiskControlConfig {
+    bool enabled{false};
+    Quantity inventory_cap{20000};
+    double soft_start_fraction{0.50};
+    double soft_penalty_max_skew_ticks{20.0};
+    bool terminal_liquidation{false};
+    double terminal_inventory_penalty_per_unit{0.50};
+    double risk_denominator_floor{1.0};
+};
+
 struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
     NaiveSymmetricConfig naive{};
     AvellanedaStoikovConfig avellaneda_stoikov{};
     AvellanedaStoikovConfig calibrated_avellaneda_stoikov{0.002, 0.63274456291, 10, 10};
+    RiskControlConfig risk_controls{};
     std::size_t markout_horizon{50};
     std::size_t curve_sample_stride{100};
 };
@@ -49,11 +60,19 @@ struct MarketMakerSummary {
     double adverse_selection_cost{};
     double fee_pnl{};
     double net_pnl_after_fees{};
+    double terminal_liquidation_cost{};
+    double terminal_inventory_penalty{};
+    double risk_adjusted_pnl{};
     double maximum_drawdown{};
     double inventory_variance{};
+    Quantity pre_liquidation_inventory{};
     Quantity final_inventory{};
+    Quantity terminal_liquidation_quantity{};
+    Quantity terminal_liquidation_residual_inventory{};
     std::size_t maker_fills{};
     std::size_t taker_fills{};
+    std::size_t passive_taker_fills{};
+    std::size_t terminal_liquidation_trades{};
     std::size_t market_maker_buy_fills{};
     std::size_t market_maker_sell_fills{};
     Quantity market_maker_filled_quantity{};
@@ -81,6 +100,8 @@ struct MarketMakerSummary {
     std::size_t symmetric_quote_refreshes{};
     std::size_t bid_clip_events{};
     std::size_t ask_clip_events{};
+    std::size_t hard_cap_bid_blocks{};
+    std::size_t hard_cap_ask_blocks{};
     double average_bid_distance{};
     double average_ask_distance{};
     double average_abs_quote_asymmetry{};
@@ -115,11 +136,44 @@ struct MarketMakerAdverseSelectionSplit {
     double total_adverse_selection_cost{};
 };
 
+struct TerminalLiquidationLevel {
+    std::string strategy_name{};
+    std::string regime_name{};
+    std::size_t event_index{};
+    FillSide side{FillSide::Sell};
+    Price price{};
+    Quantity displayed_quantity_before{};
+    Quantity filled_quantity{};
+    double liquidation_cost{};
+};
+
+struct TerminalLiquidationTrade {
+    std::string strategy_name{};
+    std::string regime_name{};
+    std::size_t event_index{};
+    FillSide side{FillSide::Sell};
+    Price price{};
+    Quantity quantity{};
+    double liquidation_cost{};
+};
+
 struct MarketMakerRunResult {
     MarketMakerSummary summary{};
     std::vector<MarketMakerCurvePoint> curve{};
     std::vector<MarketMakerAdverseSelectionSplit> adverse_selection_split{};
+    std::vector<TerminalLiquidationLevel> terminal_liquidation_levels{};
+    std::vector<TerminalLiquidationTrade> terminal_liquidation_trades{};
 };
+
+double risk_control_soft_skew_ticks(const RiskControlConfig& risk_controls, Quantity inventory);
+bool risk_control_allows_bid(const RiskControlConfig& risk_controls, Quantity inventory, Quantity quote_size);
+bool risk_control_allows_ask(const RiskControlConfig& risk_controls, Quantity inventory, Quantity quote_size);
+double terminal_liquidation_cost(FillSide side, double reference_mid, double fill_price, Quantity quantity);
+double terminal_inventory_penalty(const RiskControlConfig& risk_controls, Quantity terminal_inventory);
+double risk_adjusted_pnl(double net_pnl_after_fees,
+                         double terminal_inventory_penalty,
+                         double maximum_drawdown,
+                         double denominator_floor);
 
 MarketMakerRunResult run_naive_symmetric_strategy(const MarketMakerSimulationConfig& config);
 MarketMakerRunResult run_avellaneda_stoikov_strategy(const MarketMakerSimulationConfig& config);

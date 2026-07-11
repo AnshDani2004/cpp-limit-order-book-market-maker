@@ -1,0 +1,36 @@
+strategy,regime,event_index,side,price,displayed_quantity_before,filled_quantity,liquidation_cost
+naive symmetric,low volatility,200000,sell,100444,6095,6095,109393.149405
+naive symmetric,low volatility,200000,sell,100443,6398,1357,25712.4559053
+naive symmetric,high volatility,200000,sell,100441,8,8,-85.3334249032
+naive symmetric,high volatility,200000,sell,100440,341,341,-3296.3372365
+naive symmetric,high volatility,200000,sell,100439,215,215,-1863.33579427
+naive symmetric,high volatility,200000,sell,100438,306,306,-2346.00350255
+naive symmetric,high volatility,200000,sell,100437,490,490,-3266.67227532
+naive symmetric,high volatility,200000,sell,100436,168,168,-952.001922968
+naive symmetric,high volatility,200000,sell,100435,664,664,-3098.67426697
+naive symmetric,high volatility,200000,sell,100434,661,661,-2423.67423263
+naive symmetric,high volatility,200000,sell,100433,299,299,-797.336755758
+naive symmetric,high volatility,200000,sell,100432,462,462,-770.005288161
+naive symmetric,high volatility,200000,sell,100431,500,500,-333.339056451
+naive symmetric,high volatility,200000,sell,100430,367,367,122.329132565
+naive symmetric,high volatility,200000,sell,100429,359,359,478.662557468
+naive symmetric,high volatility,200000,sell,100428,387,387,902.995570307
+naive symmetric,high volatility,200000,sell,100427,329,329,1096.66290086
+naive symmetric,high volatility,200000,sell,100426,213,213,922.997561952
+naive symmetric,high volatility,200000,sell,100425,132,132,703.998489097
+naive symmetric,high volatility,200000,sell,100424,189,175,1108.33133024
+naive symmetric,trending,200000,sell,100555,38,38,848.127514575
+naive symmetric,trending,200000,sell,100554,734,734,17116.2525184
+naive symmetric,trending,200000,sell,100553,1154,1154,28064.2934689
+naive symmetric,trending,200000,sell,100552,499,499,12634.2534151
+naive symmetric,trending,200000,sell,100551,1492,1492,39268.1645196
+naive symmetric,trending,200000,sell,100550,1162,1162,31744.8466299
+naive symmetric,trending,200000,sell,100549,1925,1925,54514.3543567
+naive symmetric,trending,200000,sell,100548,1203,1203,35270.9315798
+naive symmetric,trending,200000,sell,100547,1123,1123,34048.3999702
+naive symmetric,trending,200000,sell,100546,1647,1647,51582.6320133
+naive symmetric,trending,200000,sell,100545,1845,1845,59628.8227471
+naive symmetric,trending,200000,sell,100544,921,921,30686.9326559
+naive symmetric,trending,200000,sell,100543,1659,1659,56935.4617547
+naive symmetric,trending,200000,sell,100542,1050,1050,37085.1023764
+naive symmetric,trending,200000,sell,100541,1286,934,33922.0815424

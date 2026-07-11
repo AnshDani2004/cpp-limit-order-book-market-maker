@@ -1,0 +1,22 @@
+strategy,regime,event_index,side,price,displayed_quantity_before,filled_quantity,liquidation_cost
+avellaneda stoikov,low volatility,200000,sell,100444,6380,6380,114508.333586
+avellaneda stoikov,low volatility,200000,sell,100443,6434,1036,19630.1431967
+avellaneda stoikov,high volatility,200000,sell,100440,238,238,-2300.66939087
+avellaneda stoikov,high volatility,200000,sell,100439,215,215,-1863.33579427
+avellaneda stoikov,high volatility,200000,sell,100438,306,306,-2346.00350255
+avellaneda stoikov,high volatility,200000,sell,100437,490,420,-2800.00480742
+avellaneda stoikov,trending,200000,sell,100555,74,74,1651.61673891
+avellaneda stoikov,trending,200000,sell,100554,734,734,17116.2525184
+avellaneda stoikov,trending,200000,sell,100553,1154,1154,28064.2934689
+avellaneda stoikov,trending,200000,sell,100552,518,518,13115.3171724
+avellaneda stoikov,trending,200000,sell,100551,1492,1492,39268.1645196
+avellaneda stoikov,trending,200000,sell,100550,1162,1162,31744.8466299
+avellaneda stoikov,trending,200000,sell,100549,1925,1925,54514.3543567
+avellaneda stoikov,trending,200000,sell,100548,1203,1203,35270.9315798
+avellaneda stoikov,trending,200000,sell,100547,1123,1123,34048.3999702
+avellaneda stoikov,trending,200000,sell,100546,1647,1647,51582.6320133
+avellaneda stoikov,trending,200000,sell,100545,1845,1845,59628.8227471
+avellaneda stoikov,trending,200000,sell,100544,921,921,30686.9326559
+avellaneda stoikov,trending,200000,sell,100543,1659,1659,56935.4617547
+avellaneda stoikov,trending,200000,sell,100542,1032,1032,36449.3577642
+avellaneda stoikov,trending,200000,sell,100541,1149,822,29854.337289

@@ -29,6 +29,13 @@ def parse_args():
     parser.add_argument("--regime", default="all", choices=["all", "low-volatility", "high-volatility", "trending"])
     parser.add_argument("--seed", type=int)
     parser.add_argument("--fill-decay", type=float)
+    parser.add_argument("--risk-controls", action="store_true")
+    parser.add_argument("--inventory-cap", type=int, default=20_000)
+    parser.add_argument("--soft-start-fraction", type=float, default=0.50)
+    parser.add_argument("--soft-penalty-max-skew-ticks", type=float, default=20.0)
+    parser.add_argument("--terminal-liquidation", action="store_true")
+    parser.add_argument("--terminal-inventory-penalty-per-unit", type=float, default=0.50)
+    parser.add_argument("--risk-denominator-floor", type=float, default=1.0)
     parser.add_argument("--build-dir", default="build/stage3_market_maker")
     parser.add_argument("--output-dir", default="benchmarks/results/stage3_naive_latest")
     parser.add_argument("--skip-build", action="store_true")
@@ -294,6 +301,15 @@ def main():
         command.extend(["--seed", str(args.seed)])
     if args.fill_decay is not None:
         command.extend(["--fill-decay", f"{args.fill_decay:.12g}"])
+    if args.risk_controls:
+        command.append("--risk-controls")
+    command.extend(["--inventory-cap", str(args.inventory_cap)])
+    command.extend(["--soft-start-fraction", f"{args.soft_start_fraction:.12g}"])
+    command.extend(["--soft-penalty-max-skew-ticks", f"{args.soft_penalty_max_skew_ticks:.12g}"])
+    if args.terminal_liquidation:
+        command.append("--terminal-liquidation")
+    command.extend(["--terminal-inventory-penalty-per-unit", f"{args.terminal_inventory_penalty_per_unit:.12g}"])
+    command.extend(["--risk-denominator-floor", f"{args.risk_denominator_floor:.12g}"])
     run(command, root)
 
     curve = read_curve(output_dir / "equity_curve.csv")

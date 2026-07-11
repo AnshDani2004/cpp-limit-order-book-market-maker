@@ -4,6 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <cstddef>
+#include <cstdlib>
 #include <stdexcept>
 #include <utility>
 
@@ -33,11 +34,19 @@ void check_matching_summary(const lob::MarketMakerSummary& left, const lob::Mark
     CHECK(left.adverse_selection_cost == Catch::Approx(right.adverse_selection_cost));
     CHECK(left.fee_pnl == Catch::Approx(right.fee_pnl));
     CHECK(left.net_pnl_after_fees == Catch::Approx(right.net_pnl_after_fees));
+    CHECK(left.terminal_liquidation_cost == Catch::Approx(right.terminal_liquidation_cost));
+    CHECK(left.terminal_inventory_penalty == Catch::Approx(right.terminal_inventory_penalty));
+    CHECK(left.risk_adjusted_pnl == Catch::Approx(right.risk_adjusted_pnl));
     CHECK(left.maximum_drawdown == Catch::Approx(right.maximum_drawdown));
     CHECK(left.inventory_variance == Catch::Approx(right.inventory_variance));
+    CHECK(left.pre_liquidation_inventory == right.pre_liquidation_inventory);
     CHECK(left.final_inventory == right.final_inventory);
+    CHECK(left.terminal_liquidation_quantity == right.terminal_liquidation_quantity);
+    CHECK(left.terminal_liquidation_residual_inventory == right.terminal_liquidation_residual_inventory);
     CHECK(left.maker_fills == right.maker_fills);
     CHECK(left.taker_fills == right.taker_fills);
+    CHECK(left.passive_taker_fills == right.passive_taker_fills);
+    CHECK(left.terminal_liquidation_trades == right.terminal_liquidation_trades);
     CHECK(left.market_maker_buy_fills == right.market_maker_buy_fills);
     CHECK(left.market_maker_sell_fills == right.market_maker_sell_fills);
     CHECK(left.market_maker_filled_quantity == right.market_maker_filled_quantity);
@@ -67,6 +76,8 @@ void check_matching_summary(const lob::MarketMakerSummary& left, const lob::Mark
     CHECK(left.symmetric_quote_refreshes == right.symmetric_quote_refreshes);
     CHECK(left.bid_clip_events == right.bid_clip_events);
     CHECK(left.ask_clip_events == right.ask_clip_events);
+    CHECK(left.hard_cap_bid_blocks == right.hard_cap_bid_blocks);
+    CHECK(left.hard_cap_ask_blocks == right.hard_cap_ask_blocks);
     CHECK(left.average_bid_distance == Catch::Approx(right.average_bid_distance));
     CHECK(left.average_ask_distance == Catch::Approx(right.average_ask_distance));
     CHECK(left.average_abs_quote_asymmetry == Catch::Approx(right.average_abs_quote_asymmetry));
@@ -94,6 +105,94 @@ void check_matching_adverse_selection_split(const std::vector<lob::MarketMakerAd
 }
 
 }  // namespace
+
+TEST_CASE("risk controls block only the side that would exceed the hard cap") {
+    lob::RiskControlConfig controls;
+    controls.enabled = true;
+    controls.inventory_cap = 100;
+
+    CHECK(lob::risk_control_allows_bid(controls, 90, 10));
+    CHECK_FALSE(lob::risk_control_allows_bid(controls, 91, 10));
+    CHECK(lob::risk_control_allows_ask(controls, -90, 10));
+    CHECK_FALSE(lob::risk_control_allows_ask(controls, -91, 10));
+
+    controls.enabled = false;
+    CHECK(lob::risk_control_allows_bid(controls, 1000, 10));
+    CHECK(lob::risk_control_allows_ask(controls, -1000, 10));
+}
+
+TEST_CASE("risk controls add soft quote skew before the hard cap") {
+    lob::RiskControlConfig controls;
+    controls.enabled = true;
+    controls.inventory_cap = 100;
+    controls.soft_start_fraction = 0.50;
+    controls.soft_penalty_max_skew_ticks = 20.0;
+
+    CHECK(lob::risk_control_soft_skew_ticks(controls, 50) == Catch::Approx(0.0));
+    CHECK(lob::risk_control_soft_skew_ticks(controls, 75) == Catch::Approx(5.0));
+    CHECK(lob::risk_control_soft_skew_ticks(controls, -75) == Catch::Approx(-5.0));
+    CHECK(lob::risk_control_soft_skew_ticks(controls, 100) == Catch::Approx(20.0));
+}
+
+TEST_CASE("terminal liquidation cost penalty and risk adjusted PnL are explicit") {
+    lob::RiskControlConfig controls;
+    controls.enabled = true;
+    controls.terminal_inventory_penalty_per_unit = 0.50;
+    controls.risk_denominator_floor = 1.0;
+
+    CHECK(lob::terminal_liquidation_cost(lob::FillSide::Sell, 100.0, 98.0, 10) == Catch::Approx(20.0));
+    CHECK(lob::terminal_liquidation_cost(lob::FillSide::Buy, 100.0, 103.0, 10) == Catch::Approx(30.0));
+    CHECK(lob::terminal_liquidation_cost(lob::FillSide::Sell, 100.0, 101.0, 10) == Catch::Approx(-10.0));
+    CHECK(lob::terminal_inventory_penalty(controls, -30) == Catch::Approx(15.0));
+    CHECK(lob::risk_adjusted_pnl(100.0, 15.0, 20.0, controls.risk_denominator_floor) == Catch::Approx(4.25));
+    CHECK(lob::risk_adjusted_pnl(100.0, 15.0, 0.0, controls.risk_denominator_floor) == Catch::Approx(85.0));
+}
+
+TEST_CASE("risk controlled terminal liquidation closes residual inventory") {
+    auto regime = lob::default_regimes(5000).front();
+    auto config = make_config(regime);
+    config.risk_controls.enabled = true;
+    config.risk_controls.inventory_cap = 500;
+    config.risk_controls.soft_start_fraction = 0.50;
+    config.risk_controls.soft_penalty_max_skew_ticks = 20.0;
+    config.risk_controls.terminal_liquidation = true;
+    config.risk_controls.terminal_inventory_penalty_per_unit = 0.50;
+
+    const auto result = lob::run_naive_symmetric_strategy(config);
+
+    CHECK(result.summary.reconciliation_passed);
+    CHECK(result.summary.pre_liquidation_inventory != 0);
+    CHECK(result.summary.terminal_liquidation_quantity ==
+          static_cast<lob::Quantity>(std::abs(result.summary.pre_liquidation_inventory)));
+    CHECK(result.summary.final_inventory == 0);
+    CHECK(result.summary.terminal_liquidation_residual_inventory == 0);
+    CHECK(result.summary.taker_fills > 0);
+    CHECK(result.summary.passive_taker_fills == 0);
+    CHECK(result.summary.terminal_liquidation_trades == result.summary.taker_fills);
+    CHECK(result.terminal_liquidation_trades.size() == result.summary.terminal_liquidation_trades);
+    CHECK(result.summary.terminal_inventory_penalty ==
+          Catch::Approx(0.50 * static_cast<double>(std::abs(result.summary.pre_liquidation_inventory))));
+
+    lob::Quantity ladder_quantity = 0;
+    double ladder_cost = 0.0;
+    for (const auto& level : result.terminal_liquidation_levels) {
+        CHECK(level.displayed_quantity_before >= level.filled_quantity);
+        ladder_quantity += level.filled_quantity;
+        ladder_cost += level.liquidation_cost;
+    }
+    CHECK_FALSE(result.terminal_liquidation_levels.empty());
+    CHECK(ladder_quantity == result.summary.terminal_liquidation_quantity);
+    CHECK(ladder_cost == Catch::Approx(result.summary.terminal_liquidation_cost));
+
+    lob::Quantity trade_quantity = 0;
+    double trade_cost = 0.0;
+    for (const auto& trade : result.terminal_liquidation_trades) {
+        trade_quantity += trade.quantity;
+        trade_cost += trade.liquidation_cost;
+    }
+    CHECK(trade_quantity == result.summary.terminal_liquidation_quantity);
+    CHECK(trade_cost == Catch::Approx(result.summary.terminal_liquidation_cost));
+}
 
 TEST_CASE("naive symmetric strategy reconciles in every Stage 3 regime") {
     const auto regimes = lob::default_regimes(2000);
