@@ -1,0 +1,15 @@
+field,value
+benchmark,orderbook_benchmark
+book,map
+flow_profile,itch_calibrated
+flat_min_price,1
+flat_max_price,200000
+seed,42
+warmup_events,20000
+measured_events,1000000
+requested_limit_share,0.47573
+requested_market_share,0.00458826
+requested_cancel_share,0.472028
+requested_modify_share,0.0476535
+quantity_distribution,Stage 4A QQQ bounded prefix bucket counts 45 15 34 410 5799 6120 with 1001 plus sampled 1001 to observed max 3000
+market_order_source,Stage 4A external_execute events mapped to synthetic taker flow

@@ -1,0 +1,29 @@
+field,value
+strategy,avellaneda stoikov
+regime,all
+events,200000
+flow_profile,itch_calibrated
+markout_horizon,50
+curve_sample_stride,100
+quote_size,10
+refresh_cadence,10
+risk_controls_enabled,false
+inventory_cap,20000
+soft_start_fraction,0.5
+soft_penalty_max_skew_ticks,20
+terminal_liquidation,false
+terminal_inventory_penalty_per_unit,0.5
+risk_adjusted_pnl_formula,(net_pnl_after_fees - terminal_inventory_penalty) / max(maximum_drawdown, risk_denominator_floor)
+risk_denominator_floor,1
+risk_aversion,0.002
+fill_decay,0.25
+volatility_source,regime volatility per event
+time_horizon,full regime run
+reconciliation_tolerance_ticks,0.00001
+external_limit_order_share,5910 / 12423
+external_market_order_share,57 / 12423
+external_cancel_share,5864 / 12423
+external_modify_share,592 / 12423
+external_quantity_distribution,Stage 4A QQQ bounded prefix bucket counts 45 15 34 410 5799 6120 with 1001 plus sampled 1001 to observed max 3000
+external_market_order_source,Stage 4A external_execute events mapped to synthetic taker flow
+external_limit_offset_distribution,uniform integer 8 to 80 ticks from reference mid

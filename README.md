@@ -14,6 +14,8 @@ Stage 4C adds inventory caps, soft quote skew, explicit terminal liquidation, te
 
 Stage 4D adds a fixed range `FlatOrderBook` behind the same matching logic as the map book. The Stage 1 matching tests now run against both engines. On one paired one million event Stage 2 benchmark stream, the flat book processed 5,332,518 events per second versus 4,618,931 for the map book. Follow up reconciliation showed the exact speedup is run length and host noise sensitive, so this is evidence that the flat book can outperform the map book on this stream, not a universal array book speedup claim. See [docs/stage4d_flat_order_book.md](docs/stage4d_flat_order_book.md).
 
+Stage 5A corrects ITCH execution replay semantics by using direct named order execution instead of synthetic market orders for unknown aggressors. Stage 5B adds an ITCH calibrated synthetic flow profile beside the original hand chosen flow. Under the calibrated profile, the market maker fill rate drops from roughly 43 to 50 percent to roughly 1.5 to 1.8 percent because the Stage 4A input had only 57 external executions across 12,423 translated events. See [docs/stage5b_itch_calibrated_flow.md](docs/stage5b_itch_calibrated_flow.md).
+
 ## What Stage 1 Proves
 
 1. Modern C++ structure with RAII, value semantics, const correctness, and CMake.

@@ -23,6 +23,7 @@ struct Args {
     std::string regime{"all"};
     std::optional<std::uint64_t> seed_override{};
     std::optional<double> fill_decay_override{};
+    lob::ExternalFlowProfile flow_profile{lob::ExternalFlowProfile::HandChosen};
     bool risk_controls{false};
     lob::Quantity inventory_cap{20000};
     double soft_start_fraction{0.50};
@@ -85,6 +86,15 @@ Args parse_args(int argc, char** argv) {
             args.seed_override = parse_u64(require_value());
         } else if (argument == "--fill-decay") {
             args.fill_decay_override = parse_double(require_value());
+        } else if (argument == "--flow-profile") {
+            const auto value = require_value();
+            if (value == "hand-chosen") {
+                args.flow_profile = lob::ExternalFlowProfile::HandChosen;
+            } else if (value == "itch-calibrated") {
+                args.flow_profile = lob::ExternalFlowProfile::ItchCalibrated;
+            } else {
+                throw std::runtime_error("unknown flow profile: " + value);
+            }
         } else if (argument == "--risk-controls") {
             args.risk_controls = true;
         } else if (argument == "--inventory-cap") {
@@ -187,6 +197,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         output << "seed_override," << *args.seed_override << '\n';
     }
     output << "events," << args.events << '\n';
+    output << "flow_profile," << lob::external_flow_profile_name(args.flow_profile) << '\n';
     output << "markout_horizon," << args.markout_horizon << '\n';
     output << "curve_sample_stride," << args.curve_sample_stride << '\n';
     output << "quote_size,10\n";
@@ -212,11 +223,20 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         }
     }
     output << "reconciliation_tolerance_ticks,0.00001\n";
-    output << "external_limit_order_share,0.55\n";
-    output << "external_market_order_share,0.25\n";
-    output << "external_cancel_share,0.10\n";
-    output << "external_modify_share,0.10\n";
-    output << "external_quantity_distribution,uniform integer 1 to 100\n";
+    if (args.flow_profile == lob::ExternalFlowProfile::HandChosen) {
+        output << "external_limit_order_share,0.55\n";
+        output << "external_market_order_share,0.25\n";
+        output << "external_cancel_share,0.10\n";
+        output << "external_modify_share,0.10\n";
+        output << "external_quantity_distribution,uniform integer 1 to 100\n";
+    } else {
+        output << "external_limit_order_share,5910 / 12423\n";
+        output << "external_market_order_share,57 / 12423\n";
+        output << "external_cancel_share,5864 / 12423\n";
+        output << "external_modify_share,592 / 12423\n";
+        output << "external_quantity_distribution,Stage 4A QQQ bounded prefix bucket counts 45 15 34 410 5799 6120 with 1001 plus sampled 1001 to observed max 3000\n";
+        output << "external_market_order_source,Stage 4A external_execute events mapped to synthetic taker flow\n";
+    }
     output << "external_limit_offset_distribution,uniform integer 8 to 80 ticks from reference mid\n";
 }
 
@@ -227,7 +247,7 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
     }
 
     output << std::setprecision(12);
-    output << "strategy,regime,seed,events,initial_reference_mid,final_reference_mid,"
+    output << "strategy,regime,external_flow_profile,seed,events,initial_reference_mid,final_reference_mid,"
            << "fill_rate,gross_spread_capture,inventory_pnl,"
            << "inventory_pnl_from_marks,inventory_pnl_mark_error,gross_identity_error,"
            << "net_identity_error,adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,"
@@ -253,6 +273,7 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
         const auto& summary = result.summary;
         output << summary.strategy_name << ','
                << summary.regime_name << ','
+               << summary.external_flow_profile << ','
                << summary.seed << ','
                << summary.events << ','
                << summary.initial_reference_mid << ','
@@ -428,6 +449,7 @@ int main(int argc, char** argv) {
         for (const auto& regime : selected_regimes(args)) {
             lob::MarketMakerSimulationConfig config;
             config.regime = regime;
+            config.external_flow_profile = args.flow_profile;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
             config.risk_controls.enabled = args.risk_controls;

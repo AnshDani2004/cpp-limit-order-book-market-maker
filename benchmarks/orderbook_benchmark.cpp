@@ -29,6 +29,36 @@ enum class BenchmarkAction {
     Modify
 };
 
+enum class FlowProfile {
+    HandChosen,
+    ItchCalibrated
+};
+
+struct FlowProfileSpec {
+    const char* name;
+    int limit_weight;
+    int market_weight;
+    int cancel_weight;
+    int modify_weight;
+};
+
+constexpr FlowProfileSpec kHandChosenFlow{"hand_chosen", 60, 10, 20, 10};
+constexpr FlowProfileSpec kItchCalibratedFlow{"itch_calibrated", 5910, 57, 5864, 592};
+
+const FlowProfileSpec& flow_profile_spec(FlowProfile profile) {
+    switch (profile) {
+        case FlowProfile::HandChosen:
+            return kHandChosenFlow;
+        case FlowProfile::ItchCalibrated:
+            return kItchCalibratedFlow;
+    }
+    return kHandChosenFlow;
+}
+
+int total_weight(const FlowProfileSpec& spec) {
+    return spec.limit_weight + spec.market_weight + spec.cancel_weight + spec.modify_weight;
+}
+
 struct BenchmarkEvent {
     BenchmarkAction action{BenchmarkAction::Limit};
     lob::Timestamp timestamp{};
@@ -86,6 +116,7 @@ struct Config {
     std::size_t warmup{20'000};
     std::uint64_t seed{42};
     std::string book{"map"};
+    FlowProfile flow_profile{FlowProfile::HandChosen};
     lob::Price min_price{1};
     lob::Price max_price{200000};
     std::filesystem::path output_dir{"build/benchmark_results"};
@@ -170,6 +201,15 @@ Config parse_args(int argc, char** argv) {
             config.book = require_value();
             if (config.book != "map" && config.book != "flat") {
                 throw std::runtime_error("unknown book type: " + config.book);
+            }
+        } else if (argument == "--flow-profile") {
+            const auto value = require_value();
+            if (value == "hand-chosen") {
+                config.flow_profile = FlowProfile::HandChosen;
+            } else if (value == "itch-calibrated") {
+                config.flow_profile = FlowProfile::ItchCalibrated;
+            } else {
+                throw std::runtime_error("unknown flow profile: " + value);
             }
         } else if (argument == "--min-price") {
             config.min_price = static_cast<lob::Price>(parse_u64(require_value()));
@@ -374,7 +414,8 @@ lob::ExecutionResult apply_event(Engine& engine, const BenchmarkEvent& event) {
 
 class FlowGenerator {
 public:
-    explicit FlowGenerator(std::uint64_t seed) : rng_(seed) {}
+    explicit FlowGenerator(std::uint64_t seed, FlowProfile profile)
+        : profile_kind_(profile), profile_(flow_profile_spec(profile)), rng_(seed) {}
 
     GeneratedFlow generate(std::size_t warmup_count, std::size_t measured_count) {
         GeneratedFlow flow;
@@ -401,16 +442,18 @@ private:
     BenchmarkEvent make_measured_event() {
         update_reference_price();
 
-        std::uniform_int_distribution<int> distribution(1, 100);
+        std::uniform_int_distribution<int> distribution(1, total_weight(profile_));
         const auto draw = distribution(rng_);
+        const auto market_threshold = profile_.limit_weight + profile_.market_weight;
+        const auto cancel_threshold = market_threshold + profile_.cancel_weight;
 
-        if (draw <= 60 || active_.empty()) {
+        if (draw <= profile_.limit_weight || active_.empty()) {
             return make_limit_event();
         }
-        if (draw <= 70) {
+        if (draw <= market_threshold) {
             return make_market_event();
         }
-        if (draw <= 90) {
+        if (draw <= cancel_threshold) {
             return make_cancel_event();
         }
         return make_modify_event();
@@ -505,6 +548,32 @@ private:
     }
 
     lob::Quantity random_quantity() {
+        if (profile_kind_ == FlowProfile::ItchCalibrated) {
+            std::uniform_int_distribution<int> bucket_distribution(1, 12423);
+            const auto draw = bucket_distribution(rng_);
+            if (draw <= 45) {
+                std::uniform_int_distribution<lob::Quantity> distribution(1, 10);
+                return distribution(rng_);
+            }
+            if (draw <= 60) {
+                std::uniform_int_distribution<lob::Quantity> distribution(11, 50);
+                return distribution(rng_);
+            }
+            if (draw <= 94) {
+                std::uniform_int_distribution<lob::Quantity> distribution(51, 100);
+                return distribution(rng_);
+            }
+            if (draw <= 504) {
+                std::uniform_int_distribution<lob::Quantity> distribution(101, 500);
+                return distribution(rng_);
+            }
+            if (draw <= 6303) {
+                std::uniform_int_distribution<lob::Quantity> distribution(501, 1000);
+                return distribution(rng_);
+            }
+            std::uniform_int_distribution<lob::Quantity> distribution(1001, 3000);
+            return distribution(rng_);
+        }
         std::uniform_int_distribution<lob::Quantity> distribution(1, 100);
         return distribution(rng_);
     }
@@ -527,6 +596,8 @@ private:
         }
     }
 
+    FlowProfile profile_kind_{FlowProfile::HandChosen};
+    const FlowProfileSpec& profile_;
     std::mt19937_64 rng_;
     lob::MatchingEngine simulation_engine_{};
     ActiveIndex active_{};
@@ -734,6 +805,7 @@ void write_summary(const std::filesystem::path& path,
     output << "metric,value\n";
     output << "seed," << config.seed << '\n';
     output << "book," << config.book << '\n';
+    output << "flow_profile," << flow_profile_spec(config.flow_profile).name << '\n';
     output << "flat_min_price," << config.min_price << '\n';
     output << "flat_max_price," << config.max_price << '\n';
     output << "warmup_events," << config.warmup << '\n';
@@ -810,15 +882,24 @@ void write_run_config(const std::filesystem::path& path, const Config& config) {
     output << "field,value\n";
     output << "benchmark,orderbook_benchmark\n";
     output << "book," << config.book << '\n';
+    output << "flow_profile," << flow_profile_spec(config.flow_profile).name << '\n';
     output << "flat_min_price," << config.min_price << '\n';
     output << "flat_max_price," << config.max_price << '\n';
     output << "seed," << config.seed << '\n';
     output << "warmup_events," << config.warmup << '\n';
     output << "measured_events," << config.events << '\n';
-    output << "requested_limit_share,0.60\n";
-    output << "requested_market_share,0.10\n";
-    output << "requested_cancel_share,0.20\n";
-    output << "requested_modify_share,0.10\n";
+    const auto& profile = flow_profile_spec(config.flow_profile);
+    const auto denominator = static_cast<double>(total_weight(profile));
+    output << "requested_limit_share," << static_cast<double>(profile.limit_weight) / denominator << '\n';
+    output << "requested_market_share," << static_cast<double>(profile.market_weight) / denominator << '\n';
+    output << "requested_cancel_share," << static_cast<double>(profile.cancel_weight) / denominator << '\n';
+    output << "requested_modify_share," << static_cast<double>(profile.modify_weight) / denominator << '\n';
+    if (config.flow_profile == FlowProfile::ItchCalibrated) {
+        output << "quantity_distribution,Stage 4A QQQ bounded prefix bucket counts 45 15 34 410 5799 6120 with 1001 plus sampled 1001 to observed max 3000\n";
+        output << "market_order_source,Stage 4A external_execute events mapped to synthetic taker flow\n";
+    } else {
+        output << "quantity_distribution,uniform integer 1 to 100\n";
+    }
 }
 
 }  // namespace
@@ -828,7 +909,7 @@ int main(int argc, char** argv) {
         const auto config = parse_args(argc, argv);
         std::filesystem::create_directories(config.output_dir);
 
-        FlowGenerator generator(config.seed);
+        FlowGenerator generator(config.seed, config.flow_profile);
         const auto flow = generator.generate(config.warmup, config.events);
         const auto range_support = count_range_support(flow, config);
         if (config.book == "flat" && range_support.unsupported_events > 0) {

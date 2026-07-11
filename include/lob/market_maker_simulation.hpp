@@ -10,6 +10,11 @@
 
 namespace lob {
 
+enum class ExternalFlowProfile {
+    HandChosen,
+    ItchCalibrated
+};
+
 struct NaiveSymmetricConfig {
     Price half_spread_ticks{5};
     Quantity quote_size{10};
@@ -35,6 +40,7 @@ struct RiskControlConfig {
 
 struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
+    ExternalFlowProfile external_flow_profile{ExternalFlowProfile::HandChosen};
     NaiveSymmetricConfig naive{};
     AvellanedaStoikovConfig avellaneda_stoikov{};
     AvellanedaStoikovConfig calibrated_avellaneda_stoikov{0.002, 0.63274456291, 10, 10};
@@ -46,6 +52,7 @@ struct MarketMakerSimulationConfig {
 struct MarketMakerSummary {
     std::string strategy_name{};
     std::string regime_name{};
+    std::string external_flow_profile{};
     std::uint64_t seed{};
     std::size_t events{};
     double initial_reference_mid{};
@@ -165,6 +172,7 @@ struct MarketMakerRunResult {
     std::vector<TerminalLiquidationTrade> terminal_liquidation_trades{};
 };
 
+std::string external_flow_profile_name(ExternalFlowProfile profile);
 double risk_control_soft_skew_ticks(const RiskControlConfig& risk_controls, Quantity inventory);
 bool risk_control_allows_bid(const RiskControlConfig& risk_controls, Quantity inventory, Quantity quote_size);
 bool risk_control_allows_ask(const RiskControlConfig& risk_controls, Quantity inventory, Quantity quote_size);

@@ -20,6 +20,7 @@ lob::MarketMakerSimulationConfig make_config(lob::RegimeConfig regime) {
 void check_matching_summary(const lob::MarketMakerSummary& left, const lob::MarketMakerSummary& right) {
     CHECK(left.strategy_name == right.strategy_name);
     CHECK(left.regime_name == right.regime_name);
+    CHECK(left.external_flow_profile == right.external_flow_profile);
     CHECK(left.seed == right.seed);
     CHECK(left.events == right.events);
     CHECK(left.initial_reference_mid == Catch::Approx(right.initial_reference_mid));
@@ -266,6 +267,40 @@ TEST_CASE("calibrated avellaneda stoikov validates its configured fill decay") {
     config.calibrated_avellaneda_stoikov.fill_decay = 0.0;
 
     CHECK_THROWS_AS(lob::run_calibrated_avellaneda_stoikov_strategy(config), std::invalid_argument);
+}
+
+TEST_CASE("ITCH calibrated external flow keeps Stage 4A mix beside the hand chosen profile") {
+    auto regime = lob::default_regimes(8000).front();
+
+    auto hand_config = make_config(regime);
+    const auto hand = lob::run_naive_symmetric_strategy(hand_config);
+
+    auto calibrated_config = make_config(regime);
+    calibrated_config.external_flow_profile = lob::ExternalFlowProfile::ItchCalibrated;
+    const auto calibrated = lob::run_naive_symmetric_strategy(calibrated_config);
+
+    const auto hand_market_orders =
+        hand.summary.external_market_buy_orders + hand.summary.external_market_sell_orders;
+    const auto calibrated_market_orders =
+        calibrated.summary.external_market_buy_orders + calibrated.summary.external_market_sell_orders;
+    const auto hand_limit_orders =
+        hand.summary.external_limit_buy_orders + hand.summary.external_limit_sell_orders;
+    const auto calibrated_limit_orders =
+        calibrated.summary.external_limit_buy_orders + calibrated.summary.external_limit_sell_orders;
+    const auto hand_limit_quantity =
+        hand.summary.external_limit_buy_quantity + hand.summary.external_limit_sell_quantity;
+    const auto calibrated_limit_quantity =
+        calibrated.summary.external_limit_buy_quantity + calibrated.summary.external_limit_sell_quantity;
+
+    REQUIRE(hand_limit_orders > 0);
+    REQUIRE(calibrated_limit_orders > 0);
+    CHECK(hand.summary.external_flow_profile == "hand_chosen");
+    CHECK(calibrated.summary.external_flow_profile == "itch_calibrated");
+    CHECK(lob::external_flow_profile_name(lob::ExternalFlowProfile::ItchCalibrated) == "itch_calibrated");
+    CHECK(calibrated.summary.reconciliation_passed);
+    CHECK(calibrated_market_orders * 10 < hand_market_orders);
+    CHECK(static_cast<double>(calibrated_limit_quantity) / static_cast<double>(calibrated_limit_orders) >
+          10.0 * static_cast<double>(hand_limit_quantity) / static_cast<double>(hand_limit_orders));
 }
 
 TEST_CASE("avellaneda stoikov adverse selection split reconciles to maker fill totals") {

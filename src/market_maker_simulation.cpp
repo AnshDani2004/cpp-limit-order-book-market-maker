@@ -24,6 +24,31 @@ constexpr const char* kMarketMakerOwner = "market_maker";
 constexpr OrderId kMarketMakerOrderIdStart = 1'000'000'000'000ULL;
 constexpr double kRunReconciliationTolerance = 1e-5;
 
+struct ExternalFlowProfileSpec {
+    const char* name;
+    int limit_weight;
+    int market_weight;
+    int cancel_weight;
+    int modify_weight;
+};
+
+constexpr ExternalFlowProfileSpec kHandChosenExternalFlow{"hand_chosen", 55, 25, 10, 10};
+constexpr ExternalFlowProfileSpec kItchCalibratedExternalFlow{"itch_calibrated", 5910, 57, 5864, 592};
+
+const ExternalFlowProfileSpec& external_flow_profile_spec(ExternalFlowProfile profile) {
+    switch (profile) {
+        case ExternalFlowProfile::HandChosen:
+            return kHandChosenExternalFlow;
+        case ExternalFlowProfile::ItchCalibrated:
+            return kItchCalibratedExternalFlow;
+    }
+    return kHandChosenExternalFlow;
+}
+
+int total_weight(const ExternalFlowProfileSpec& spec) {
+    return spec.limit_weight + spec.market_weight + spec.cancel_weight + spec.modify_weight;
+}
+
 enum class StrategyKind {
     NaiveSymmetric,
     AvellanedaStoikov,
@@ -221,7 +246,16 @@ void sync_after_external_result(MatchingEngine& engine,
 class ExternalFlowGenerator {
 public:
     ExternalFlowGenerator(const RegimeConfig& regime, const std::vector<double>& reference_path)
-        : regime_(regime), reference_path_(reference_path), rng_(regime.seed ^ 0x9e3779b97f4a7c15ULL) {}
+        : ExternalFlowGenerator(regime, reference_path, ExternalFlowProfile::HandChosen) {}
+
+    ExternalFlowGenerator(const RegimeConfig& regime,
+                          const std::vector<double>& reference_path,
+                          ExternalFlowProfile profile)
+        : regime_(regime),
+          reference_path_(reference_path),
+          profile_kind_(profile),
+          profile_(external_flow_profile_spec(profile)),
+          rng_(regime.seed ^ 0x9e3779b97f4a7c15ULL) {}
 
     GeneratedExternalFlow generate() {
         GeneratedExternalFlow flow;
@@ -239,16 +273,18 @@ public:
 
 private:
     ExternalEvent make_event(std::size_t event_index) {
-        std::uniform_int_distribution<int> distribution(1, 100);
+        std::uniform_int_distribution<int> distribution(1, total_weight(profile_));
         const auto draw = distribution(rng_);
+        const auto market_threshold = profile_.limit_weight + profile_.market_weight;
+        const auto cancel_threshold = market_threshold + profile_.cancel_weight;
 
-        if (draw <= 55 || active_.empty()) {
+        if (draw <= profile_.limit_weight || active_.empty()) {
             return make_limit_event(event_index);
         }
-        if (draw <= 80) {
+        if (draw <= market_threshold) {
             return make_market_event();
         }
-        if (draw <= 90) {
+        if (draw <= cancel_threshold) {
             return make_cancel_event();
         }
         return make_modify_event(event_index);
@@ -357,6 +393,32 @@ private:
     }
 
     Quantity random_quantity() {
+        if (profile_kind_ == ExternalFlowProfile::ItchCalibrated) {
+            std::uniform_int_distribution<int> bucket_distribution(1, 12423);
+            const auto draw = bucket_distribution(rng_);
+            if (draw <= 45) {
+                std::uniform_int_distribution<Quantity> distribution(1, 10);
+                return distribution(rng_);
+            }
+            if (draw <= 60) {
+                std::uniform_int_distribution<Quantity> distribution(11, 50);
+                return distribution(rng_);
+            }
+            if (draw <= 94) {
+                std::uniform_int_distribution<Quantity> distribution(51, 100);
+                return distribution(rng_);
+            }
+            if (draw <= 504) {
+                std::uniform_int_distribution<Quantity> distribution(101, 500);
+                return distribution(rng_);
+            }
+            if (draw <= 6303) {
+                std::uniform_int_distribution<Quantity> distribution(501, 1000);
+                return distribution(rng_);
+            }
+            std::uniform_int_distribution<Quantity> distribution(1001, 3000);
+            return distribution(rng_);
+        }
         std::uniform_int_distribution<Quantity> distribution(1, 100);
         return distribution(rng_);
     }
@@ -370,6 +432,8 @@ private:
 
     const RegimeConfig& regime_;
     const std::vector<double>& reference_path_;
+    ExternalFlowProfile profile_kind_{ExternalFlowProfile::HandChosen};
+    const ExternalFlowProfileSpec& profile_;
     std::mt19937_64 rng_;
     MatchingEngine generation_engine_{};
     ActiveExternalIndex active_{};
@@ -1011,7 +1075,8 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     }
 
     const auto reference_path = generate_reference_path(config.regime);
-    auto external_flow = ExternalFlowGenerator(config.regime, reference_path).generate();
+    auto external_flow =
+        ExternalFlowGenerator(config.regime, reference_path, config.external_flow_profile).generate();
     const auto& external_events = external_flow.events;
 
     MatchingEngine engine;
@@ -1023,6 +1088,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     MarketMakerRunResult result;
     result.summary.strategy_name = strategy_name(kind);
     result.summary.regime_name = config.regime.name;
+    result.summary.external_flow_profile = external_flow_profile_name(config.external_flow_profile);
     result.summary.seed = config.regime.seed;
     result.summary.events = config.regime.run_length;
     result.summary.initial_reference_mid = reference_path.front();
@@ -1217,6 +1283,10 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
 }
 
 }  // namespace
+
+std::string external_flow_profile_name(ExternalFlowProfile profile) {
+    return external_flow_profile_spec(profile).name;
+}
 
 double risk_control_soft_skew_ticks(const RiskControlConfig& risk_controls, Quantity inventory) {
     if (!risk_controls.enabled || inventory == 0 || risk_controls.soft_penalty_max_skew_ticks == 0.0) {

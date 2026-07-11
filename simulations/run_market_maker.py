@@ -29,6 +29,7 @@ def parse_args():
     parser.add_argument("--regime", default="all", choices=["all", "low-volatility", "high-volatility", "trending"])
     parser.add_argument("--seed", type=int)
     parser.add_argument("--fill-decay", type=float)
+    parser.add_argument("--flow-profile", default="hand-chosen", choices=["hand-chosen", "itch-calibrated"])
     parser.add_argument("--risk-controls", action="store_true")
     parser.add_argument("--inventory-cap", type=int, default=20_000)
     parser.add_argument("--soft-start-fraction", type=float, default=0.50)
@@ -292,6 +293,8 @@ def main():
         str(args.markout_horizon),
         "--curve-sample-stride",
         str(args.curve_sample_stride),
+        "--flow-profile",
+        args.flow_profile,
         "--regime",
         args.regime,
         "--output-dir",
