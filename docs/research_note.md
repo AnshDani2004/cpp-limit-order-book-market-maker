@@ -22,6 +22,8 @@ Stage 5C adds a 30 seed statistical pass for hand chosen and ITCH calibrated flo
 
 Stage 5D adds queue position diagnostics for market maker quotes. Deterministic tests confirm that market maker quotes use the same FIFO price level priority as external orders. The one-seed diagnostic shows queue depth is a real fill filter, but the ITCH calibrated fill-rate collapse is still dominated by sparse execution flow: even front-of-queue ITCH calibrated quotes fill around 1.8 to 2.0 percent versus roughly 72 to 74 percent for front-of-queue hand chosen quotes. See [stage5d_queue_position.md](stage5d_queue_position.md).
 
+The follow-up fill-rate diagnostic extension reruns the mechanism question as a focused ten-seed paired pass and adds artifact validation. The final checked result remains sparse execution dominance, not queue burial: physical first-in-queue placement does not materially rescue ITCH calibrated fill rates, and increasing external execution intensity raises fills monotonically. See [fill_rate_queue_diagnostics.md](fill_rate_queue_diagnostics.md).
+
 ## What Stage 1 Proves
 
 1. Modern C++ structure with RAII, value semantics, const correctness, and CMake.
@@ -408,6 +410,8 @@ The execution-intensity sweep remains monotone: naive low-volatility fill rate m
 
 The strategy result remains limited. In the full fill-rate diagnostic, Avellaneda Stoikov does not show broad PnL or fill-rate dominance; under the normal ITCH-calibrated baseline, AS minus naive has mean net PnL delta `-13.93`, mean risk-adjusted PnL delta `-0.06`, and mean fill-rate delta `0.00020`. The main finding is mechanism attribution: sparse execution flow is still the dominant observed fill-rate constraint, while queue position and strategy choice are secondary in this diagnostic.
 
+The artifact validator is `python3 scripts/validate_fill_rate_artifacts.py`. It checks schemas, full-mode coverage, same-seed pairing, the physical zero-queue invariant, fill decomposition reconciliation, execution opportunity reconciliation, no-fill reason coverage, PnL identities, headline mechanism monotonicity, and stale or overclaim wording. The validator exits nonzero on failure and is included in CTest.
+
 ## Build And Test
 
 ```bash
@@ -441,7 +445,7 @@ timestamp,buy_order_id,sell_order_id,maker_order_id,taker_order_id,price,quantit
 
 ## Current Stage Status
 
-Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, Stage 4D, Stage 5A, Stage 5B, Stage 5C, and Stage 5D are complete once local tests pass and CI is green on `main`.
+Stage 1, Stage 2, Stage 3, Stage 4A, Stage 4B, Stage 4C, Stage 4D, Stage 5A, Stage 5B, Stage 5C, Stage 5D, the follow-up fill-rate diagnostic extension, and the fill-rate artifact validator are complete once local tests pass and CI is green on `main`.
 
 ## Limitations
 
@@ -451,6 +455,6 @@ The ITCH replay is a bounded public QQQ sample prefix, not a full-day market rec
 
 The synthetic regimes are controlled experiments for mechanism testing, not live trading evidence.
 
-The Stage 5D queue diagnostic is one-seed, not a confidence-interval result.
+The Stage 5D queue diagnostic is one-seed. The follow-up fill-rate extension is a focused ten-seed mechanism pass, not a 30-seed strategy-confidence result.
 
 The large PnL numbers in the market maker simulations are a property of the toy environment allowing large unhedged inventory positions. They should not be interpreted as deployable market making skill.

@@ -6,7 +6,7 @@ This is a systems-focused market microstructure project: a deterministic C++ lim
 
 ## What This Project Proves
 
-The project is built around reproducible claims. Each stage adds measured behavior, limitations, tests where possible, and checked artifacts under `benchmarks/results`. Stage 1 through Stage 5D are complete on `main`; the full narrative is in [docs/research_note.md](docs/research_note.md).
+The project is built around reproducible claims. Each stage adds measured behavior, limitations, tests where possible, and checked artifacts under `benchmarks/results`. The matching engine, benchmark harness, ITCH replay path, market-making simulator, Stage 5D queue-position diagnostic, follow-up fill-rate diagnostic extension, and artifact validator are complete on `main`; the full narrative is in [docs/research_note.md](docs/research_note.md).
 
 ## Headline Results
 
@@ -46,11 +46,13 @@ Stage 4A ITCH replay:
 python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage4a_itch_replay
 ```
 
-Stage 5C paired statistics, Stage 5D queue diagnostics, and the fill-rate diagnostic extension are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
+Stage 5C paired statistics and Stage 5D queue diagnostics are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
 
-Fill-rate artifact validation:
+Fill-rate diagnostic extension and artifact validation:
 
 ```bash
+python3 scripts/generate_fill_rate_diagnostics.py --quick
+python3 scripts/generate_fill_rate_diagnostics.py --full
 python3 scripts/validate_fill_rate_artifacts.py
 ```
 
@@ -68,14 +70,14 @@ python3 scripts/validate_fill_rate_artifacts.py
 
 The fill-rate diagnostic extension records market-maker quote lifecycles and per-market-event execution opportunities, then decomposes fills by flow profile, queue position, quote lifetime, and strategy. It compares hand-chosen and ITCH-calibrated flow with paired naive versus Avellaneda Stoikov runs plus controls for a derived zero-initial-queue subset, a physical first-in-queue scenario, increased execution intensity, and requote frequency.
 
-The current result is technical and limited: under the checked ten-seed diagnostic, sparse execution flow dominates the ITCH-calibrated fill-rate collapse. Physical first-in-queue placement does not materially rescue fills, while increasing execution intensity and slowing requotes move fill rates in the expected direction. Stage 5C remains the stronger strategy-comparison pass.
+The current result is technical and limited: under the checked ten-seed diagnostic, sparse execution flow dominates the ITCH-calibrated fill-rate collapse. Physical first-in-queue placement does not materially rescue fills, while increasing execution intensity and slowing requotes move fill rates in the expected direction. The artifact validator independently checks the generated fill-rate artifacts. Stage 5C remains the stronger 30-seed strategy-comparison pass.
 
 ## Limitations
 
 - One-instrument simulator.
 - Bounded ITCH sample, not full-day market reconstruction.
 - Synthetic regimes are controlled experiments, not live trading evidence.
-- Stage 5D queue diagnostic is one-seed, not a confidence-interval result.
+- Stage 5D queue diagnostic is one-seed, while the follow-up fill-rate extension is a focused ten-seed mechanism pass rather than a confidence-interval strategy result.
 
 ## Repository Map
 
