@@ -1,0 +1,901 @@
+scenario,flow_type,strategy_name,regime,metric,sample_count,mean,stddev,median,p05,p95,ci95_low,ci95_high
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.5305,0.0473761543395,0.5305,0.497,0.564,0.46484,0.59616
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.5153,0.0459619407771,0.5153,0.4828,0.5478,0.4516,0.579
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,average_quote_lifetime,2,6.558,0.353553390593,6.558,6.308,6.808,6.068,7.048
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,53.935,18.0877914628,53.935,41.145,66.725,28.8666,79.0034
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,556.5,64.346717088,556.5,511,602,467.32,645.68
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,559,55.1543289326,559,520,598,482.56,635.44
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,12.5,2.12132034356,12.5,11,14,9.56,15.44
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,659,31.1126983722,659,637,681,615.88,702.12
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,0,0,0,0,0,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.5345,0.0205060966544,0.5345,0.52,0.549,0.50608,0.56292
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.51985,0.0201525432638,0.51985,0.5056,0.5341,0.49192,0.54778
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,average_quote_lifetime,2,6.5075,0.202939646201,6.5075,6.364,6.651,6.22624,6.78876
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,average_initial_queue_ahead,2,67.497,14.3627529395,67.497,57.341,77.653,47.59124,87.40276
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,maker_eligible_execution_events,2,560,24.0416305603,560,543,577,526.68,593.32
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,maker_reached_by_execution_events,2,555,21.2132034356,555,540,570,525.6,584.4
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,8.5,2.12132034356,8.5,7,10,5.56,11.44
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,690.5,6.36396103068,690.5,686,695,681.68,699.32
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.5285,0.04171930009,0.5285,0.499,0.558,0.47068,0.58632
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.51325,0.0413657466994,0.51325,0.484,0.5425,0.45592,0.57058
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,average_quote_lifetime,2,6.584,0.33375440072,6.584,6.348,6.82,6.12144,7.04656
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,average_initial_queue_ahead,2,57.115,19.7113086324,57.115,43.177,71.053,29.79652,84.43348
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,maker_eligible_execution_events,2,555.5,55.8614357137,555.5,516,595,478.08,632.92
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,maker_reached_by_execution_events,2,556.5,50.2045814642,556.5,521,592,486.92,626.08
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,13,0,13,13,13,13,13
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,661,24.0416305603,661,644,678,627.68,694.32
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,average_initial_queue_ahead,2,0.004,0.00565685424949,0.004,0,0.008,-0.00384,0.01184
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,fill_rate_by_quote_count,2,0.532,0.0197989898732,0.532,0.518,0.546,0.50456,0.55944
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,fill_rate_by_submitted_size,2,0.51735,0.0194454364826,0.51735,0.5036,0.5311,0.4904,0.5443
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,average_quote_lifetime,2,6.5325,0.197282791951,6.5325,6.393,6.672,6.25908,6.80592
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,average_initial_queue_ahead,2,70.897,14.680950991,70.897,60.516,81.278,50.55024,91.24376
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,maker_eligible_execution_events,2,561.5,28.9913780286,561.5,541,582,521.32,601.68
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,maker_reached_by_execution_events,2,552.5,20.5060966544,552.5,538,567,524.08,580.92
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,maker_missed_due_to_queue_events,2,13.5,6.36396103068,13.5,9,18,4.68,22.32
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,688,9.89949493661,688,681,695,674.28,701.72
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.532,0.0410121933088,0.532,0.503,0.561,0.47516,0.58884
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.5163,0.0403050865276,0.5163,0.4878,0.5448,0.46044,0.57216
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,average_quote_lifetime,2,6.5595,0.333047293939,6.5595,6.324,6.795,6.09792,7.02108
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,58.41,19.9545533651,58.41,44.3,72.52,30.7544,86.0656
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,561,62.2253967444,561,517,605,474.76,647.24
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,560.5,50.2045814642,560.5,525,596,490.92,630.08
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,15,4.24264068712,15,12,18,9.12,20.88
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,655,28.2842712475,655,635,675,615.8,694.2
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,0,0,0,0,0,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.5345,0.0205060966544,0.5345,0.52,0.549,0.50608,0.56292
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.51985,0.0201525432638,0.51985,0.5056,0.5341,0.49192,0.54778
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,average_quote_lifetime,2,6.5075,0.202939646201,6.5075,6.364,6.651,6.22624,6.78876
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,average_initial_queue_ahead,2,70.5365,13.4696770748,70.5365,61.012,80.061,51.86848,89.20452
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,maker_eligible_execution_events,2,560,24.0416305603,560,543,577,526.68,593.32
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,maker_reached_by_execution_events,2,555,21.2132034356,555,540,570,525.6,584.4
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,8.5,2.12132034356,8.5,7,10,5.56,11.44
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,690.5,6.36396103068,690.5,686,695,681.68,699.32
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.5285,0.04171930009,0.5285,0.499,0.558,0.47068,0.58632
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.51325,0.0413657466994,0.51325,0.484,0.5425,0.45592,0.57058
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,average_quote_lifetime,2,6.584,0.33375440072,6.584,6.348,6.82,6.12144,7.04656
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,average_initial_queue_ahead,2,57.115,19.7113086324,57.115,43.177,71.053,29.79652,84.43348
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,maker_eligible_execution_events,2,555.5,55.8614357137,555.5,516,595,478.08,632.92
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,maker_reached_by_execution_events,2,556.5,50.2045814642,556.5,521,592,486.92,626.08
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,13,0,13,13,13,13,13
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,661,24.0416305603,661,644,678,627.68,694.32
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,average_initial_queue_ahead,2,0.004,0.00565685424949,0.004,0,0.008,-0.00384,0.01184
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,fill_rate_by_quote_count,2,0.532,0.0197989898732,0.532,0.518,0.546,0.50456,0.55944
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,fill_rate_by_submitted_size,2,0.51735,0.0194454364826,0.51735,0.5036,0.5311,0.4904,0.5443
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,average_quote_lifetime,2,6.5325,0.197282791951,6.5325,6.393,6.672,6.25908,6.80592
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,average_initial_queue_ahead,2,70.897,14.680950991,70.897,60.516,81.278,50.55024,91.24376
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,maker_eligible_execution_events,2,561.5,28.9913780286,561.5,541,582,521.32,601.68
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,maker_reached_by_execution_events,2,552.5,20.5060966544,552.5,538,567,524.08,580.92
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,maker_missed_due_to_queue_events,2,13.5,6.36396103068,13.5,9,18,4.68,22.32
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,688,9.89949493661,688,681,695,674.28,701.72
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.5315,0.0431335136524,0.5315,0.501,0.562,0.47172,0.59128
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.5157,0.0425678282274,0.5157,0.4856,0.5458,0.456704,0.574696
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,average_quote_lifetime,2,6.5655,0.344361002438,6.5655,6.322,6.809,6.08824,7.04276
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,57.635,17.6762553161,57.635,45.136,70.134,33.13696,82.13304
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,561.5,62.9325035256,561.5,517,606,474.28,648.72
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,560,50.9116882454,560,524,596,489.44,630.56
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,16.5,3.53553390593,16.5,14,19,11.6,21.4
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,654,28.2842712475,654,634,674,614.8,693.2
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,0,0,0,0,0,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.5345,0.0205060966544,0.5345,0.52,0.549,0.50608,0.56292
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.51985,0.0201525432638,0.51985,0.5056,0.5341,0.49192,0.54778
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,average_quote_lifetime,2,6.5075,0.202939646201,6.5075,6.364,6.651,6.22624,6.78876
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,average_initial_queue_ahead,2,69.409,13.8974766774,69.409,59.582,79.236,50.14808,88.66992
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,maker_eligible_execution_events,2,560,24.0416305603,560,543,577,526.68,593.32
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,maker_reached_by_execution_events,2,555,21.2132034356,555,540,570,525.6,584.4
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,8.5,2.12132034356,8.5,7,10,5.56,11.44
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,690.5,6.36396103068,690.5,686,695,681.68,699.32
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.5285,0.04171930009,0.5285,0.499,0.558,0.47068,0.58632
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.51325,0.0413657466994,0.51325,0.484,0.5425,0.45592,0.57058
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,average_quote_lifetime,2,6.584,0.33375440072,6.584,6.348,6.82,6.12144,7.04656
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,average_initial_queue_ahead,2,57.115,19.7113086324,57.115,43.177,71.053,29.79652,84.43348
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,maker_eligible_execution_events,2,555.5,55.8614357137,555.5,516,595,478.08,632.92
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,maker_reached_by_execution_events,2,556.5,50.2045814642,556.5,521,592,486.92,626.08
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,13,0,13,13,13,13,13
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,661,24.0416305603,661,644,678,627.68,694.32
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,average_initial_queue_ahead,2,0.004,0.00565685424949,0.004,0,0.008,-0.00384,0.01184
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+hand_chosen_flow,hand_chosen,naive symmetric,trending,fill_rate_by_quote_count,2,0.532,0.0197989898732,0.532,0.518,0.546,0.50456,0.55944
+hand_chosen_flow,hand_chosen,naive symmetric,trending,fill_rate_by_submitted_size,2,0.51735,0.0194454364826,0.51735,0.5036,0.5311,0.4904,0.5443
+hand_chosen_flow,hand_chosen,naive symmetric,trending,average_quote_lifetime,2,6.5325,0.197282791951,6.5325,6.393,6.672,6.25908,6.80592
+hand_chosen_flow,hand_chosen,naive symmetric,trending,average_initial_queue_ahead,2,70.897,14.680950991,70.897,60.516,81.278,50.55024,91.24376
+hand_chosen_flow,hand_chosen,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+hand_chosen_flow,hand_chosen,naive symmetric,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+hand_chosen_flow,hand_chosen,naive symmetric,trending,maker_eligible_execution_events,2,561.5,28.9913780286,561.5,541,582,521.32,601.68
+hand_chosen_flow,hand_chosen,naive symmetric,trending,maker_reached_by_execution_events,2,552.5,20.5060966544,552.5,538,567,524.08,580.92
+hand_chosen_flow,hand_chosen,naive symmetric,trending,maker_missed_due_to_queue_events,2,13.5,6.36396103068,13.5,9,18,4.68,22.32
+hand_chosen_flow,hand_chosen,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,688,9.89949493661,688,681,695,674.28,701.72
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.1905,0.0176776695297,0.1905,0.178,0.203,0.166,0.215
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.19005,0.0170412734266,0.19005,0.178,0.2021,0.166432,0.213668
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,8.8685,0.123743686708,8.8685,8.781,8.956,8.697,9.04
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,31.1895,19.1802714397,31.1895,17.627,44.752,4.607,57.772
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.99,0.0141421356237,0.99,0.98,1,0.9704,1.0096
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,224.5,2.12132034356,224.5,223,226,221.56,227.44
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,185,24.0416305603,185,168,202,151.68,218.32
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,190.5,17.6776695297,190.5,178,203,166,215
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,1.5,0.707106781187,1.5,1,2,0.52,2.48
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,30.5,19.091883092,30.5,17,44,4.04,56.96
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.1975,0.0148492424049,0.1975,0.187,0.208,0.17692,0.21808
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.1975,0.0148492424049,0.1975,0.187,0.208,0.17692,0.21808
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,8.9015,0.112429978209,8.9015,8.822,8.981,8.74568,9.05732
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,10.51,3.65291363161,10.51,7.927,13.093,5.44732,15.57268
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,222.5,13.4350288425,222.5,213,232,203.88,241.12
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,197.5,14.8492424049,197.5,187,208,176.92,218.08
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,197.5,14.8492424049,197.5,187,208,176.92,218.08
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,1.5,0.707106781187,1.5,1,2,0.52,2.48
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,23,0,23,23,23,23,23
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.1855,0.0219203102168,0.1855,0.17,0.201,0.15512,0.21588
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.1846,0.0219203102168,0.1846,0.1691,0.2001,0.15422,0.21498
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,8.939,0.0466690475583,8.939,8.906,8.972,8.87432,9.00368
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,9.995,1.33501760288,9.995,9.051,10.939,8.14476,11.84524
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,202.5,19.091883092,202.5,189,216,176.04,228.96
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,185,24.0416305603,185,168,202,151.68,218.32
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,186,22.627416998,186,170,202,154.64,217.36
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,13,2.82842712475,13,11,15,9.08,16.92
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.189,0.0197989898732,0.189,0.175,0.203,0.16156,0.21644
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.18855,0.0191625937702,0.18855,0.175,0.2021,0.161992,0.215108
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,8.8755,0.133643181644,8.8755,8.781,8.97,8.69028,9.06072
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,26.398,23.1648181517,26.398,10.018,42.778,-5.7068,58.5028
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.99,0.0141421356237,0.99,0.98,1,0.9704,1.0096
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,224.5,2.12132034356,224.5,223,226,221.56,227.44
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,182.5,26.1629509039,182.5,164,201,146.24,218.76
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,189,19.7989898732,189,175,203,161.56,216.44
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,1,1.41421356237,1,0,2,-0.96,2.96
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,32.5,20.5060966544,32.5,18,47,4.08,60.92
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.197,0.0141421356237,0.197,0.187,0.207,0.1774,0.2166
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.197,0.0141421356237,0.197,0.187,0.207,0.1774,0.2166
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,8.904,0.108894444303,8.904,8.827,8.981,8.75308,9.05492
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,14.601,5.43906536089,14.601,10.755,18.447,7.06284,22.13916
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,222.5,13.4350288425,222.5,213,232,203.88,241.12
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,196.5,13.4350288425,196.5,187,206,177.88,215.12
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,197,14.1421356237,197,187,207,177.4,216.6
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,1.5,0.707106781187,1.5,1,2,0.52,2.48
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,23.5,0.707106781187,23.5,23,24,22.52,24.48
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.185,0.0212132034356,0.185,0.17,0.2,0.1556,0.2144
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.1841,0.0212132034356,0.1841,0.1691,0.1991,0.1547,0.2135
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,8.9435,0.0403050865276,8.9435,8.915,8.972,8.88764,8.99936
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,10.0595,5.27289526731,10.0595,6.331,13.788,2.75164,17.36736
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,202.5,19.091883092,202.5,189,216,176.04,228.96
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,184,22.627416998,184,168,200,152.64,215.36
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,185.5,21.9203102168,185.5,170,201,155.12,215.88
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,13.5,2.12132034356,13.5,12,15,10.56,16.44
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.04,0.00141421356237,0.04,0.039,0.041,0.03804,0.04196
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.04,0.00141421356237,0.04,0.039,0.041,0.03804,0.04196
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.7685,0.019091883092,9.7685,9.755,9.782,9.74204,9.79496
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,95.841,70.9595797056,95.841,45.665,146.017,-2.50396,194.18596
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9375,0.0459619407771,0.9375,0.905,0.97,0.8738,1.0012
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,53,8.48528137424,53,47,59,41.24,64.76
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,37.5,0.707106781187,37.5,37,38,36.52,38.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,40,1.41421356237,40,39,41,38.04,41.96
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,12.5,9.19238815543,12.5,6,19,-0.24,25.24
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.0445,0.00636396103068,0.0445,0.04,0.049,0.03568,0.05332
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.0445,0.00636396103068,0.0445,0.04,0.049,0.03568,0.05332
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.7215,0.0374766594029,9.7215,9.695,9.748,9.66956,9.77344
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,38.0765,5.08339064995,38.0765,34.482,41.671,31.03128,45.12172
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,48,5.65685424949,48,44,52,40.16,55.84
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,43.5,6.36396103068,43.5,39,48,34.68,52.32
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,44.5,6.36396103068,44.5,40,49,35.68,53.32
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,0,3,3,3,3,3
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.042,0.00141421356237,0.042,0.041,0.043,0.04004,0.04396
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.042,0.00141421356237,0.042,0.041,0.043,0.04004,0.04396
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.772,0.00707106781187,9.772,9.767,9.777,9.7622,9.7818
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,39.419,5.09682567879,39.419,35.815,43.023,32.35516,46.48284
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.994,0,0.994,0.994,0.994,0.994,0.994
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,45.5,0.707106781187,45.5,45,46,44.52,46.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,42.5,0.707106781187,42.5,42,43,41.52,43.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,42.5,0.707106781187,42.5,42,43,41.52,43.48
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,3,0,3,3,3,3,3
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.04,0.00141421356237,0.04,0.039,0.041,0.03804,0.04196
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.04,0.00141421356237,0.04,0.039,0.041,0.03804,0.04196
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.7685,0.019091883092,9.7685,9.755,9.782,9.74204,9.79496
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,97.901,66.9686690326,97.901,50.547,145.255,5.08716,190.71484
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9375,0.0459619407771,0.9375,0.905,0.97,0.8738,1.0012
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,53,8.48528137424,53,47,59,41.24,64.76
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,37,0,37,37,37,37,37
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,40,1.41421356237,40,39,41,38.04,41.96
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,12.5,9.19238815543,12.5,6,19,-0.24,25.24
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.0435,0.00494974746831,0.0435,0.04,0.047,0.03664,0.05036
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.0435,0.00494974746831,0.0435,0.04,0.047,0.03664,0.05036
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.731,0.0240416305603,9.731,9.714,9.748,9.69768,9.76432
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,51.52,22.7561104321,51.52,35.429,67.611,19.98164,83.05836
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,48,5.65685424949,48,44,52,40.16,55.84
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,43,7.07106781187,43,38,48,33.2,52.8
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,43.5,4.94974746831,43.5,40,47,36.64,50.36
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,1,1.41421356237,1,0,2,-0.96,2.96
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3.5,0.707106781187,3.5,3,4,2.52,4.48
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.041,0.00141421356237,0.041,0.04,0.042,0.03904,0.04296
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.041,0.00141421356237,0.041,0.04,0.042,0.03904,0.04296
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.778,0.00707106781187,9.778,9.773,9.783,9.7682,9.7878
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,42.738,1.47785317268,42.738,41.693,43.783,40.6898,44.7862
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.994,0,0.994,0.994,0.994,0.994,0.994
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,45.5,0.707106781187,45.5,45,46,44.52,46.48
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,42.5,0.707106781187,42.5,42,43,41.52,43.48
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,41.5,0.707106781187,41.5,41,42,40.52,42.48
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,1,0,1,1,1,1,1
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,3,0,3,3,3,3,3
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0985,0.0106066017178,0.0985,0.091,0.106,0.0838,0.1132
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.09775,0.0108187337522,0.09775,0.0901,0.1054,0.082756,0.112744
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.4865,0.0261629509039,9.4865,9.468,9.505,9.45024,9.52276
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,77.558,60.7701709887,77.558,34.587,120.529,-6.66516,161.78116
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9815,0.0233345237792,0.9815,0.965,0.998,0.94916,1.01384
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,119,28.2842712475,119,99,139,79.8,158.2
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,98,12.7279220614,98,89,107,80.36,115.64
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,98.5,10.6066017178,98.5,91,106,83.8,113.2
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,1.5,2.12132034356,1.5,0,3,-1.44,4.44
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,19,15.5563491861,19,8,30,-2.56,40.56
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.1015,0.00494974746831,0.1015,0.098,0.105,0.09464,0.10836
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.1015,0.00494974746831,0.1015,0.098,0.105,0.09464,0.10836
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.409,0.0678822509939,9.409,9.361,9.457,9.31492,9.50308
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,11.047,1.08328758878,11.047,10.281,11.813,9.54564,12.54836
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,109.5,4.94974746831,109.5,106,113,102.64,116.36
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,101.5,4.94974746831,101.5,98,105,94.64,108.36
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,101.5,4.94974746831,101.5,98,105,94.64,108.36
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,7.5,0.707106781187,7.5,7,8,6.52,8.48
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.0915,0.0162634559673,0.0915,0.08,0.103,0.06896,0.11404
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.09105,0.0156270598642,0.09105,0.08,0.1021,0.069392,0.112708
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.5,0.0905096679919,9.5,9.436,9.564,9.37456,9.62544
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,42.4855,19.4164451046,42.4855,28.756,56.215,15.57568,69.39532
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,100.5,17.6776695297,100.5,88,113,76,125
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,91.5,16.2634559673,91.5,80,103,68.96,114.04
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,92,16.9705627485,92,80,104,68.48,115.52
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,8,1.41421356237,8,7,9,6.04,9.96
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0975,0.00919238815543,0.0975,0.091,0.104,0.08476,0.11024
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.09675,0.00940452018978,0.09675,0.0901,0.1034,0.083716,0.109784
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.4905,0.0205060966544,9.4905,9.476,9.505,9.46208,9.51892
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,71.8645,68.6225917938,71.8645,23.341,120.388,-23.24156,166.97056
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9815,0.0233345237792,0.9815,0.965,0.998,0.94916,1.01384
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,119,28.2842712475,119,99,139,79.8,158.2
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,96.5,10.6066017178,96.5,89,104,81.8,111.2
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,97.5,9.19238815543,97.5,91,104,84.76,110.24
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,1.5,2.12132034356,1.5,0,3,-1.44,4.44
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,20,16.9705627485,20,8,32,-3.52,43.52
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.101,0.00424264068712,0.101,0.098,0.104,0.09512,0.10688
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.101,0.00424264068712,0.101,0.098,0.104,0.09512,0.10688
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.4095,0.0671751442127,9.4095,9.362,9.457,9.3164,9.5026
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,18.1855,6.18930565573,18.1855,13.809,22.562,9.60756,26.76344
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,109.5,4.94974746831,109.5,106,113,102.64,116.36
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,100.5,6.36396103068,100.5,96,105,91.68,109.32
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,101,4.24264068712,101,98,104,95.12,106.88
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,7.5,0.707106781187,7.5,7,8,6.52,8.48
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.0915,0.0162634559673,0.0915,0.08,0.103,0.06896,0.11404
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.09105,0.0156270598642,0.09105,0.08,0.1021,0.069392,0.112708
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.5,0.0905096679919,9.5,9.436,9.564,9.37456,9.62544
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,36.5975,13.6096842175,36.5975,26.974,46.221,17.73544,55.45956
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,100.5,17.6776695297,100.5,88,113,76,125
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,90.5,16.2634559673,90.5,79,102,67.96,113.04
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,92,16.9705627485,92,80,104,68.48,115.52
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,8.5,0.707106781187,8.5,8,9,7.52,9.48
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.5315,0.0431335136524,0.5315,0.501,0.562,0.47172,0.59128
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.5157,0.0425678282274,0.5157,0.4856,0.5458,0.456704,0.574696
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,average_quote_lifetime,2,6.5655,0.344361002438,6.5655,6.322,6.809,6.08824,7.04276
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,57.635,17.6762553161,57.635,45.136,70.134,33.13696,82.13304
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,561.5,62.9325035256,561.5,517,606,474.28,648.72
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,560,50.9116882454,560,524,596,489.44,630.56
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,16.5,3.53553390593,16.5,14,19,11.6,21.4
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,654,28.2842712475,654,634,674,614.8,693.2
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,0,0,0,0,0,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.5345,0.0205060966544,0.5345,0.52,0.549,0.50608,0.56292
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.51985,0.0201525432638,0.51985,0.5056,0.5341,0.49192,0.54778
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,average_quote_lifetime,2,6.5075,0.202939646201,6.5075,6.364,6.651,6.22624,6.78876
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,average_initial_queue_ahead,2,69.409,13.8974766774,69.409,59.582,79.236,50.14808,88.66992
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,maker_eligible_execution_events,2,560,24.0416305603,560,543,577,526.68,593.32
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,maker_reached_by_execution_events,2,555,21.2132034356,555,540,570,525.6,584.4
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,8.5,2.12132034356,8.5,7,10,5.56,11.44
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,690.5,6.36396103068,690.5,686,695,681.68,699.32
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.5285,0.04171930009,0.5285,0.499,0.558,0.47068,0.58632
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.51325,0.0413657466994,0.51325,0.484,0.5425,0.45592,0.57058
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,average_quote_lifetime,2,6.584,0.33375440072,6.584,6.348,6.82,6.12144,7.04656
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,average_initial_queue_ahead,2,57.115,19.7113086324,57.115,43.177,71.053,29.79652,84.43348
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.888,0.0565685424949,0.888,0.848,0.928,0.8096,0.9664
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,external_execution_events_count,2,1231,25.4558441227,1231,1213,1249,1195.72,1266.28
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,maker_eligible_execution_events,2,555.5,55.8614357137,555.5,516,595,478.08,632.92
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,maker_reached_by_execution_events,2,556.5,50.2045814642,556.5,521,592,486.92,626.08
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,13,0,13,13,13,13,13
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,661,24.0416305603,661,644,678,627.68,694.32
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.751,0.00848528137424,0.751,0.745,0.757,0.73924,0.76276
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.73405,0.0120915259583,0.73405,0.7255,0.7426,0.717292,0.750808
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,average_quote_lifetime,2,5.097,0.17253405461,5.097,4.975,5.219,4.85788,5.33612
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,average_initial_queue_ahead,2,0.004,0.00565685424949,0.004,0,0.008,-0.00384,0.01184
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,external_execution_events_count,2,1293,14.1421356237,1293,1283,1303,1273.4,1312.6
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,maker_eligible_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,maker_reached_by_execution_events,2,789.5,12.0208152802,789.5,781,798,772.84,806.16
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,502.5,0.707106781187,502.5,502,503,501.52,503.48
+inventory_cap_5000,hand_chosen,naive symmetric,trending,fill_rate_by_quote_count,2,0.532,0.0197989898732,0.532,0.518,0.546,0.50456,0.55944
+inventory_cap_5000,hand_chosen,naive symmetric,trending,fill_rate_by_submitted_size,2,0.51735,0.0194454364826,0.51735,0.5036,0.5311,0.4904,0.5443
+inventory_cap_5000,hand_chosen,naive symmetric,trending,average_quote_lifetime,2,6.5325,0.197282791951,6.5325,6.393,6.672,6.25908,6.80592
+inventory_cap_5000,hand_chosen,naive symmetric,trending,average_initial_queue_ahead,2,70.897,14.680950991,70.897,60.516,81.278,50.55024,91.24376
+inventory_cap_5000,hand_chosen,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.8305,0.0106066017178,0.8305,0.823,0.838,0.8158,0.8452
+inventory_cap_5000,hand_chosen,naive symmetric,trending,external_execution_events_count,2,1254,16.9705627485,1254,1242,1266,1230.48,1277.52
+inventory_cap_5000,hand_chosen,naive symmetric,trending,maker_eligible_execution_events,2,561.5,28.9913780286,561.5,541,582,521.32,601.68
+inventory_cap_5000,hand_chosen,naive symmetric,trending,maker_reached_by_execution_events,2,552.5,20.5060966544,552.5,538,567,524.08,580.92
+inventory_cap_5000,hand_chosen,naive symmetric,trending,maker_missed_due_to_queue_events,2,13.5,6.36396103068,13.5,9,18,4.68,22.32
+inventory_cap_5000,hand_chosen,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,688,9.89949493661,688,681,695,674.28,701.72
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,102.4645,84.918574673,102.4645,42.418,162.511,-15.22664,220.15564
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,64.751,38.5132779441,64.751,37.518,91.984,11.37432,118.12768
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,49.886,4.6004367184,49.886,46.633,53.139,43.51012,56.26188
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,21.5,3.53553390593,21.5,19,24,16.6,26.4
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,126.365,83.6889159806,126.365,67.188,185.542,10.37808,242.35192
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,92.179,63.92669566,92.179,46.976,137.382,3.58112,180.77688
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,57.933,5.6865527343,57.933,53.912,61.954,50.05184,65.81416
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,21,2.82842712475,21,19,23,17.08,24.92
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,98.9005,84.9157462459,98.9005,38.856,158.945,-18.78672,216.58772
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,64.508,38.7932922295,64.508,37.077,91.939,10.74324,118.27276
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,49.8815,4.60680067943,49.8815,46.624,53.139,43.4968,56.2662
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,21,2.82842712475,21,19,23,17.08,24.92
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22,1.41421356237,22,21,23,20.04,23.96
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,1,1.41421356237,1,0,2,-0.96,2.96
+quote_size_1,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_1,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_1,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_1,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,126.329,83.6507322144,126.329,67.179,185.479,10.395,242.263
+quote_size_1,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+quote_size_1,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_1,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+quote_size_1,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_1,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_1,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_1,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_1,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_1,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_1,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,92.1205,63.8566920886,92.1205,46.967,137.274,3.61964,180.62136
+quote_size_1,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_1,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_1,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_1,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_1,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_1,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+quote_size_1,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_1,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_1,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_1,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,57.9195,5.70564461739,57.9195,53.885,61.954,50.01188,65.82712
+quote_size_1,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_1,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_1,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,20.5,2.12132034356,20.5,19,22,17.56,23.44
+quote_size_1,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22,1.41421356237,22,21,23,20.04,23.96
+quote_size_1,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_1,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,1,1.41421356237,1,0,2,-0.96,2.96
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,102.4645,84.918574673,102.4645,42.418,162.511,-15.22664,220.15564
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,64.751,38.5132779441,64.751,37.518,91.984,11.37432,118.12768
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,49.886,4.6004367184,49.886,46.633,53.139,43.51012,56.26188
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,21.5,3.53553390593,21.5,19,24,16.6,26.4
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_10,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_10,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_10,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_10,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,126.365,83.6889159806,126.365,67.188,185.542,10.37808,242.35192
+quote_size_10,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9535,0.0403050865276,0.9535,0.925,0.982,0.89764,1.00936
+quote_size_10,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_10,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,18,2.82842712475,18,16,20,14.08,21.92
+quote_size_10,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_10,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_10,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_10,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_10,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_10,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_10,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,92.179,63.92669566,92.179,46.976,137.382,3.58112,180.77688
+quote_size_10,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_10,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_10,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_10,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_10,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_10,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+quote_size_10,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_10,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_10,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_10,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,57.933,5.6865527343,57.933,53.912,61.954,50.05184,65.81416
+quote_size_10,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_10,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_10,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,21,2.82842712475,21,19,23,17.08,24.92
+quote_size_10,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+quote_size_10,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_10,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.01943,0.00222031529293,0.01943,0.01786,0.021,0.0163528,0.0225072
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,115.1125,99.690035332,115.1125,44.621,185.604,-23.05084,253.27584
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9525,0.0388908729653,0.9525,0.925,0.98,0.8986,1.0064
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,17.5,3.53553390593,17.5,15,20,12.6,22.4
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.020805,0.00168998520704,0.020805,0.01961,0.022,0.0184628,0.0231472
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,66.874,38.477922605,66.874,39.666,94.082,13.54632,120.20168
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.021795,0.00112429978209,0.021795,0.021,0.02259,0.0202368,0.0233532
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,50.882,7.27047192416,50.882,45.741,56.023,40.80564,60.95836
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,21.5,3.53553390593,21.5,19,24,16.6,26.4
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+quote_size_100,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0195,0.00212132034356,0.0195,0.018,0.021,0.01656,0.02244
+quote_size_100,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.01943,0.00222031529293,0.01943,0.01786,0.021,0.0163528,0.0225072
+quote_size_100,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,9.89,0.0367695526217,9.89,9.864,9.916,9.83904,9.94096
+quote_size_100,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,126.8325,84.2171247461,126.8325,67.282,186.383,10.11352,243.55148
+quote_size_100,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9525,0.0388908729653,0.9525,0.925,0.98,0.8986,1.0064
+quote_size_100,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+quote_size_100,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,17.5,3.53553390593,17.5,15,20,12.6,22.4
+quote_size_100,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+quote_size_100,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_100,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,5,4.24264068712,5,2,8,-0.88,10.88
+quote_size_100,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.021,0.00141421356237,0.021,0.02,0.022,0.01904,0.02296
+quote_size_100,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.020805,0.00168998520704,0.020805,0.01961,0.022,0.0184628,0.0231472
+quote_size_100,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,9.887,0.0197989898732,9.887,9.873,9.901,9.85956,9.91444
+quote_size_100,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,92.764,64.6267313733,92.764,47.066,138.462,3.19592,182.33208
+quote_size_100,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+quote_size_100,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+quote_size_100,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_100,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+quote_size_100,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_100,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+quote_size_100,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.022,0.00141421356237,0.022,0.021,0.023,0.02004,0.02396
+quote_size_100,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.021795,0.00112429978209,0.021795,0.021,0.02259,0.0202368,0.0233532
+quote_size_100,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,9.8795,0.019091883092,9.8795,9.866,9.893,9.85304,9.90596
+quote_size_100,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,58.5135,6.12566604542,58.5135,54.182,62.845,50.02376,67.00324
+quote_size_100,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.997,0.00141421356237,0.997,0.996,0.998,0.99504,0.99896
+quote_size_100,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+quote_size_100,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,21,2.82842712475,21,19,23,17.08,24.92
+quote_size_100,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+quote_size_100,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+quote_size_100,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.00975,0.00106066017178,0.00975,0.009,0.0105,0.00828,0.01122
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.00975,0.00106066017178,0.00975,0.009,0.0105,0.00828,0.01122
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,4.97,0.00424264068712,4.97,4.967,4.973,4.96412,4.97588
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,105.575,87.7583155063,105.575,43.5205,167.6295,-16.05182,227.20182
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9515,0.0403050865276,0.9515,0.923,0.98,0.89564,1.00736
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,19,2.82842712475,19,17,21,15.08,22.92
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,4.5,3.53553390593,4.5,2,7,-0.4,9.4
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.0105,0.000707106781187,0.0105,0.01,0.011,0.00952,0.01148
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.0105,0.000707106781187,0.0105,0.01,0.011,0.00952,0.01148
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,4.9685,0.00636396103068,4.9685,4.964,4.973,4.95968,4.97732
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,68.62375,44.3529192965,68.62375,37.2615,99.986,7.15374,130.09376
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.011,0.000707106781187,0.011,0.0105,0.0115,0.01002,0.01198
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.011,0.000707106781187,0.011,0.0105,0.0115,0.01002,0.01198
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,4.971,0.000707106781186,4.971,4.9705,4.9715,4.97002,4.97198
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,47.72275,3.03879139215,47.72275,45.574,49.8715,43.5112,51.9343
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,0.99725,0.000353553390593,0.99725,0.997,0.9975,0.99676,0.99774
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,21,4.24264068712,21,18,24,15.12,26.88
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.00975,0.00106066017178,0.00975,0.009,0.0105,0.00828,0.01122
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.00975,0.00106066017178,0.00975,0.009,0.0105,0.00828,0.01122
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,4.97,0.00424264068712,4.97,4.967,4.973,4.96412,4.97588
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,117.54025,84.5399189917,117.54025,57.7615,177.319,0.3739,234.7066
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9515,0.0403050865276,0.9515,0.923,0.98,0.89564,1.00736
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,19,2.82842712475,19,17,21,15.08,22.92
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,19.5,2.12132034356,19.5,18,21,16.56,22.44
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,4.5,3.53553390593,4.5,2,7,-0.4,9.4
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.0105,0.000707106781187,0.0105,0.01,0.011,0.00952,0.01148
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.0105,0.000707106781187,0.0105,0.01,0.011,0.00952,0.01148
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,4.9685,0.00636396103068,4.9685,4.964,4.973,4.95968,4.97732
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,93.70075,62.4258615169,93.70075,49.559,137.8425,7.18292,180.21858
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21.5,2.12132034356,21.5,20,23,18.56,24.44
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,2.5,2.12132034356,2.5,1,4,-0.44,5.44
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.011,0.000707106781187,0.011,0.0105,0.0115,0.01002,0.01198
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.011,0.000707106781187,0.011,0.0105,0.0115,0.01002,0.01198
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,4.971,0.000707106781186,4.971,4.9705,4.9715,4.97002,4.97198
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,59.48475,11.6329672107,59.48475,51.259,67.7105,43.36228,75.60722
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,0.99725,0.000353553390593,0.99725,0.997,0.9975,0.99676,0.99774
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,21,4.24264068712,21,18,24,15.12,26.88
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22.5,2.12132034356,22.5,21,24,19.56,25.44
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,2,0.0475,0.00353553390593,0.0475,0.045,0.05,0.0426,0.0524
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,2,0.0475,0.00353553390593,0.0475,0.045,0.05,0.0426,0.0524
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,2,24.42125,0.146724657096,24.42125,24.3175,24.525,24.2179,24.6246
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,2,86.64625,51.6912734717,86.64625,50.095,123.1975,15.0058,158.2867
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,2,0.9525,0.0494974746831,0.9525,0.9175,0.9875,0.8839,1.0211
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,2,16.5,2.12132034356,16.5,15,18,13.56,19.44
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,2,17.5,3.53553390593,17.5,15,20,12.6,22.4
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,7,2.82842712475,7,5,9,3.08,10.92
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,2,0.0525,0.00353553390593,0.0525,0.05,0.055,0.0476,0.0574
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,2,0.0525,0.00353553390593,0.0525,0.05,0.055,0.0476,0.0574
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,2,24.2325,0.123743686708,24.2325,24.145,24.32,24.061,24.404
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,2,88.365,67.7090098325,88.365,40.4875,136.2425,-5.4749,182.2049
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,2,0.055,0.00707106781187,0.055,0.05,0.06,0.0452,0.0648
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,2,0.055,0.00707106781187,0.055,0.05,0.06,0.0452,0.0648
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,2,24.24,0.120208152802,24.24,24.155,24.325,24.0734,24.4066
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,2,47.89125,13.5004362198,47.89125,38.345,57.4375,29.1806,66.6019
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,2,22,4.24264068712,22,19,25,16.12,27.88
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,2,22.5,3.53553390593,22.5,20,25,17.6,27.4
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,2,0.0475,0.00353553390593,0.0475,0.045,0.05,0.0426,0.0524
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,2,0.0475,0.00353553390593,0.0475,0.045,0.05,0.0426,0.0524
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,2,24.42125,0.146724657096,24.42125,24.3175,24.525,24.2179,24.6246
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,2,130.76625,61.4917734589,130.76625,87.285,174.2475,45.543,215.9895
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,2,0.9525,0.0494974746831,0.9525,0.9175,0.9875,0.8839,1.0211
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,2,24.5,6.36396103068,24.5,20,29,15.68,33.32
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,2,16.5,2.12132034356,16.5,15,18,13.56,19.44
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,2,17.5,3.53553390593,17.5,15,20,12.6,22.4
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,2,7,2.82842712475,7,5,9,3.08,10.92
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,2,0.0525,0.00353553390593,0.0525,0.05,0.055,0.0476,0.0574
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,2,0.0525,0.00353553390593,0.0525,0.05,0.055,0.0476,0.0574
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,2,24.2325,0.123743686708,24.2325,24.145,24.32,24.061,24.404
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,2,101.0775,84.4285496737,101.0775,41.3775,160.7775,-15.9345,218.0895
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,2,24,0,24,24,24,24,24
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,2,21,1.41421356237,21,20,22,19.04,22.96
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,2,3,1.41421356237,3,2,4,1.04,4.96
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,2,0.055,0.00707106781187,0.055,0.05,0.06,0.0452,0.0648
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,2,0.055,0.00707106781187,0.055,0.05,0.06,0.0452,0.0648
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,average_quote_lifetime,2,24.24,0.120208152802,24.24,24.155,24.325,24.0734,24.4066
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,2,63.56375,11.350831605,63.56375,55.5375,71.59,47.8323,79.2952
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,2,1,0,1,1,1,1,1
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,external_execution_events_count,2,23,2.82842712475,23,21,25,19.08,26.92
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,2,21,4.24264068712,21,18,24,15.12,26.88
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,2,22.5,3.53553390593,22.5,20,25,17.6,27.4
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,2,0,0,0,0,0,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,2,0.5,0.707106781187,0.5,0,1,-0.48,1.48
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_quote_count,8,0.7037873292,0.0199591297022,0.708096590909,0.668984700974,0.721568627451,0.68995635796,0.71761830044
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,8,0.683522314204,0.0199423011753,0.687411221591,0.650486787204,0.701683937824,0.669703004539,0.69734162387
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,average_quote_lifetime,8,5.43342111619,0.195247453842,5.40963553934,5.24444444444,5.69958275382,5.29812153354,5.56872069884
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,8,0.851884771406,0.0636434286365,0.853330242621,0.789772727273,0.911917098446,0.807782125438,0.895987417373
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_quote_count,8,0.751,0.0064142698059,0.751,0.745,0.757,0.746555137797,0.755444862203
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,8,0.73405,0.0091403344734,0.73405,0.7255,0.7426,0.727716071361,0.740383928639
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,average_quote_lifetime,8,5.097,0.130423486053,5.097,4.975,5.219,5.00662113521,5.18737886479
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,8,1,0,1,1,1,1,1
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,fill_rate_by_quote_count,8,0.725433108026,0.00592801774273,0.725433108026,0.719887955182,0.73097826087,0.721325201312,0.72954101474
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,fill_rate_by_submitted_size,8,0.705226791804,0.00588712784657,0.705226791804,0.699719887955,0.710733695652,0.701147220342,0.709306363265
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,average_quote_lifetime,8,5.25731297954,0.102230842693,5.25731297954,5.16168478261,5.35294117647,5.18647061987,5.32815533921
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,percent_quotes_submitted_at_best,8,0.772894212033,0.0147427400753,0.772894212033,0.759103641457,0.786684782609,0.762678014382,0.783110409684
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,fill_rate_by_quote_count,8,0.703688715342,0.0147403005398,0.703688715342,0.689900426743,0.717477003942,0.693474208203,0.713903222482
+zero_queue_control,hand_chosen,naive symmetric,high volatility,fill_rate_by_submitted_size,8,0.683996500824,0.0152822336391,0.683996500824,0.669701280228,0.698291721419,0.673406453206,0.694586548441
+zero_queue_control,hand_chosen,naive symmetric,high volatility,average_quote_lifetime,8,5.42312185621,0.174187928933,5.42312185621,5.26018396846,5.58605974395,5.30241577977,5.54382793264
+zero_queue_control,hand_chosen,naive symmetric,high volatility,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,percent_quotes_submitted_at_best,8,0.850058786915,0.0647681991603,0.850058786915,0.789473684211,0.910643889619,0.80517671474,0.89494085909
+zero_queue_control,hand_chosen,naive symmetric,high volatility,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,fill_rate_by_quote_count,8,0.750878378379,0.00628425082348,0.750878378379,0.745,0.756756756757,0.746523614734,0.755233142023
+zero_queue_control,hand_chosen,naive symmetric,low volatility,fill_rate_by_submitted_size,8,0.733921171171,0.00900261066207,0.733921171171,0.7255,0.742342342342,0.727682680264,0.740159662078
+zero_queue_control,hand_chosen,naive symmetric,low volatility,average_quote_lifetime,8,5.09498548549,0.132577092658,5.09498548549,4.97097097097,5.219,5.00311424746,5.18685672351
+zero_queue_control,hand_chosen,naive symmetric,low volatility,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,percent_quotes_submitted_at_best,8,1,0,1,1,1,1,1
+zero_queue_control,hand_chosen,naive symmetric,low volatility,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,fill_rate_by_quote_count,8,0.724644060012,0.00677154555079,0.724644060012,0.718309859155,0.73097826087,0.71995161835,0.729336501675
+zero_queue_control,hand_chosen,naive symmetric,trending,fill_rate_by_submitted_size,8,0.704380932333,0.00679138965685,0.704380932333,0.698028169014,0.710733695652,0.699674739407,0.709087125259
+zero_queue_control,hand_chosen,naive symmetric,trending,average_quote_lifetime,8,5.26967429578,0.121255672607,5.26967429577,5.15625,5.38309859155,5.18564840158,5.35370018997
+zero_queue_control,hand_chosen,naive symmetric,trending,average_initial_queue_ahead,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,percent_quotes_submitted_at_best,8,0.772215630741,0.0154681739906,0.772215630741,0.757746478873,0.786684782609,0.761496733034,0.782934528448
+zero_queue_control,hand_chosen,naive symmetric,trending,external_execution_events_count,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,maker_eligible_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,maker_reached_by_execution_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,maker_missed_due_to_queue_events,8,0,0,0,0,0,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,8,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_quote_count,18,0.053518735389,0.0579081513634,0.0240015360983,0.0119453924915,0.18153526971,0.0267665343325,0.0802709364455
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,fill_rate_by_submitted_size,18,0.0533723943085,0.0576972340246,0.0240015360983,0.0119453924915,0.18153526971,0.0267176320912,0.0800271565257
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,average_quote_lifetime,18,10.7756291414,5.19690303013,9.8445614805,4.97207859359,24.2991689751,8.37478243052,13.1764758523
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,percent_quotes_submitted_at_best,18,0.958709310733,0.0323541238661,0.9753093754,0.92243767313,0.997955010225,0.943762468081,0.973656153385
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_quote_count,18,0.0553325443307,0.0583715228259,0.0233545647558,0.011771000535,0.187939698492,0.02836627658,0.0822988120814
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,fill_rate_by_submitted_size,18,0.0553103448771,0.0583856269308,0.0233545647558,0.011771000535,0.187939698492,0.0283375613624,0.0822831283919
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,average_quote_lifetime,18,10.7455792046,5.12717556099,9.86518046709,4.97233606557,24.118556701,8.37694494102,13.1142134682
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,percent_quotes_submitted_at_best,18,1,0,1,1,1,1,1
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_quote_count,18,0.0529985980752,0.0546020846716,0.0219215279473,0.0114583333333,0.171026156942,0.0277737219076,0.0782234742429
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,fill_rate_by_submitted_size,18,0.0528464069256,0.0542922320644,0.0219215279473,0.0114583333333,0.170120724346,0.0277646753594,0.0779281384918
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,average_quote_lifetime,18,10.7662612486,5.13404719559,9.86645962733,4.97054263566,24.1570680628,8.39445245183,13.1380700454
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,percent_quotes_submitted_at_best,18,0.99812785951,0.0018723496347,0.997929606625,0.993827160494,1,0.99726287811,0.998992840911
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,fill_rate_by_quote_count,18,0.052947020116,0.0576542480685,0.0242495519714,0.0119931467733,0.179460580913,0.0263121163974,0.0795819238347
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,fill_rate_by_submitted_size,18,0.0528010895562,0.057443067848,0.0242495519714,0.0119931467733,0.179460580913,0.026263746122,0.0793384329904
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,average_quote_lifetime,18,10.7780774521,5.19857272237,9.84295528247,4.97393117831,24.3246376812,8.37645938278,13.1796955214
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,percent_quotes_submitted_at_best,18,0.95819913424,0.0327596075185,0.975227365668,0.91884057971,0.997965412004,0.943064967698,0.973333300781
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,fill_rate_by_quote_count,18,0.0553147662471,0.0581393580184,0.0239390642002,0.0119630233823,0.18668012109,0.0284557531655,0.0821737793287
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,fill_rate_by_submitted_size,18,0.055292406426,0.0581535537638,0.0239390642002,0.0119630233823,0.18668012109,0.0284268352445,0.0821579776074
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,average_quote_lifetime,18,10.7453210146,5.12639832681,9.86180631121,4.97207859359,24.121761658,8.37704581492,13.1135962143
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,percent_quotes_submitted_at_best,18,1,0,1,1,1,1,1
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,fill_rate_by_quote_count,18,0.0532375291984,0.0546562424774,0.0229885057471,0.0114882506527,0.170854271357,0.0279876334009,0.0784874249958
+zero_queue_control,itch_calibrated,naive symmetric,trending,fill_rate_by_submitted_size,18,0.0530615372641,0.0543591769912,0.0229885057471,0.0114882506527,0.169949748744,0.0279488787196,0.0781741958086
+zero_queue_control,itch_calibrated,naive symmetric,trending,average_quote_lifetime,18,10.7653916842,5.12886543768,9.86415882968,4.97012578616,24.1335078534,8.39597673739,13.1348066309
+zero_queue_control,itch_calibrated,naive symmetric,trending,average_initial_queue_ahead,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,percent_quotes_submitted_at_best,18,0.99811562106,0.00187630693285,0.997910135841,0.99379524302,1,0.997248811481,0.998982430639
+zero_queue_control,itch_calibrated,naive symmetric,trending,external_execution_events_count,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,maker_eligible_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,maker_reached_by_execution_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,maker_missed_due_to_queue_events,18,0,0,0,0,0,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,maker_missed_due_to_quote_not_at_touched_price,18,0,0,0,0,0,0,0

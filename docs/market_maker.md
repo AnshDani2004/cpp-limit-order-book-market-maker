@@ -204,4 +204,4 @@ The same seed and regime path must be used for both strategies in a comparison.
 
 If the inventory aware strategy underperforms the naive strategy in any regime, the README must say so directly and explain the measured reason from the attribution table.
 
-No resume bullet or README headline may use Stage 3 numbers until the result CSVs, plots, and reproduction command are checked in and CI is green.
+No top-level summary may use Stage 3 numbers until the result CSVs, plots, and reproduction command are checked in and CI is green.

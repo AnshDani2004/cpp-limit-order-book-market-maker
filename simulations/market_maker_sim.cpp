@@ -24,6 +24,10 @@ struct Args {
     std::optional<std::uint64_t> seed_override{};
     std::optional<double> fill_decay_override{};
     lob::ExternalFlowProfile flow_profile{lob::ExternalFlowProfile::HandChosen};
+    lob::Quantity quote_size{10};
+    std::size_t refresh_cadence{10};
+    double risk_aversion{0.002};
+    double external_market_intensity_multiplier{1.0};
     bool risk_controls{false};
     lob::Quantity inventory_cap{20000};
     double soft_start_fraction{0.50};
@@ -95,6 +99,14 @@ Args parse_args(int argc, char** argv) {
             } else {
                 throw std::runtime_error("unknown flow profile: " + value);
             }
+        } else if (argument == "--quote-size") {
+            args.quote_size = static_cast<lob::Quantity>(parse_u64(require_value()));
+        } else if (argument == "--refresh-cadence") {
+            args.refresh_cadence = static_cast<std::size_t>(parse_u64(require_value()));
+        } else if (argument == "--risk-aversion") {
+            args.risk_aversion = parse_double(require_value());
+        } else if (argument == "--external-market-intensity-multiplier") {
+            args.external_market_intensity_multiplier = parse_double(require_value());
         } else if (argument == "--risk-controls") {
             args.risk_controls = true;
         } else if (argument == "--inventory-cap") {
@@ -124,6 +136,18 @@ Args parse_args(int argc, char** argv) {
     }
     if (args.fill_decay_override.has_value() && args.strategy == "naive") {
         throw std::runtime_error("--fill-decay requires an Avellaneda Stoikov strategy");
+    }
+    if (args.quote_size <= 0) {
+        throw std::runtime_error("--quote-size must be positive");
+    }
+    if (args.refresh_cadence == 0) {
+        throw std::runtime_error("--refresh-cadence must be positive");
+    }
+    if (args.risk_aversion <= 0.0) {
+        throw std::runtime_error("--risk-aversion must be positive");
+    }
+    if (args.external_market_intensity_multiplier <= 0.0) {
+        throw std::runtime_error("--external-market-intensity-multiplier must be positive");
     }
     if (args.inventory_cap <= 0) {
         throw std::runtime_error("--inventory-cap must be positive");
@@ -200,8 +224,9 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     output << "flow_profile," << lob::external_flow_profile_name(args.flow_profile) << '\n';
     output << "markout_horizon," << args.markout_horizon << '\n';
     output << "curve_sample_stride," << args.curve_sample_stride << '\n';
-    output << "quote_size,10\n";
-    output << "refresh_cadence,10\n";
+    output << "quote_size," << args.quote_size << '\n';
+    output << "refresh_cadence," << args.refresh_cadence << '\n';
+    output << "external_market_intensity_multiplier," << args.external_market_intensity_multiplier << '\n';
     output << "risk_controls_enabled," << (args.risk_controls ? "true" : "false") << '\n';
     output << "inventory_cap," << args.inventory_cap << '\n';
     output << "soft_start_fraction," << args.soft_start_fraction << '\n';
@@ -214,7 +239,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
         output << "naive_half_spread_ticks,5\n";
         output << "naive_full_spread_ticks,10\n";
     } else {
-        output << "risk_aversion,0.002\n";
+        output << "risk_aversion," << args.risk_aversion << '\n';
         output << "fill_decay," << selected_fill_decay(args) << '\n';
         output << "volatility_source,regime volatility per event\n";
         output << "time_horizon,full regime run\n";
@@ -509,6 +534,50 @@ void write_quote_fill_outcomes(const std::filesystem::path& path,
     }
 }
 
+void write_execution_opportunities(const std::filesystem::path& path,
+                                   const std::vector<lob::MarketMakerRunResult>& results) {
+    std::ofstream output(path);
+    if (!output) {
+        throw std::runtime_error("could not write execution opportunities");
+    }
+
+    output << std::setprecision(12);
+    output << "event_index,strategy,regime,risk_mode,flow_profile,seed,aggressive_side,"
+           << "execution_price,execution_size,best_bid_before,best_ask_before,"
+           << "displayed_depth_at_touched_level,market_maker_quote_present_at_touched_level,"
+           << "market_maker_queue_quantity,market_maker_size_at_touched_level,"
+           << "size_executed_before_reaching_market_maker,maker_fill_size_from_event,"
+           << "no_fill_reason\n";
+    for (const auto& result : results) {
+        for (const auto& opportunity : result.execution_opportunities) {
+            output << opportunity.event_index << ','
+                   << opportunity.strategy_name << ','
+                   << opportunity.regime_name << ','
+                   << opportunity.risk_mode << ','
+                   << opportunity.external_flow_profile << ','
+                   << opportunity.seed << ','
+                   << lob::to_string(opportunity.aggressive_side) << ','
+                   << opportunity.execution_price << ','
+                   << opportunity.execution_size << ',';
+            if (opportunity.best_bid_before.has_value()) {
+                output << *opportunity.best_bid_before;
+            }
+            output << ',';
+            if (opportunity.best_ask_before.has_value()) {
+                output << *opportunity.best_ask_before;
+            }
+            output << ','
+                   << opportunity.displayed_depth_at_touched_level << ','
+                   << (opportunity.market_maker_quote_present_at_touched_level ? "true" : "false") << ','
+                   << opportunity.market_maker_queue_quantity_ahead << ','
+                   << opportunity.market_maker_size_at_touched_level << ','
+                   << opportunity.size_executed_before_reaching_market_maker << ','
+                   << opportunity.maker_fill_size_from_event << ','
+                   << opportunity.no_fill_reason << '\n';
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -521,8 +590,17 @@ int main(int argc, char** argv) {
             lob::MarketMakerSimulationConfig config;
             config.regime = regime;
             config.external_flow_profile = args.flow_profile;
+            config.external_market_intensity_multiplier = args.external_market_intensity_multiplier;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
+            config.naive.quote_size = args.quote_size;
+            config.naive.refresh_cadence = args.refresh_cadence;
+            config.avellaneda_stoikov.quote_size = args.quote_size;
+            config.avellaneda_stoikov.refresh_cadence = args.refresh_cadence;
+            config.avellaneda_stoikov.risk_aversion = args.risk_aversion;
+            config.calibrated_avellaneda_stoikov.quote_size = args.quote_size;
+            config.calibrated_avellaneda_stoikov.refresh_cadence = args.refresh_cadence;
+            config.calibrated_avellaneda_stoikov.risk_aversion = args.risk_aversion;
             config.risk_controls.enabled = args.risk_controls;
             config.risk_controls.inventory_cap = args.inventory_cap;
             config.risk_controls.soft_start_fraction = args.soft_start_fraction;
@@ -554,6 +632,7 @@ int main(int argc, char** argv) {
         write_terminal_liquidation_trades(args.output_dir / "terminal_liquidation_trades.csv", results);
         write_quote_queue_events(args.output_dir / "quote_queue_events.csv", results);
         write_quote_fill_outcomes(args.output_dir / "quote_fill_outcomes.csv", results);
+        write_execution_opportunities(args.output_dir / "execution_opportunities.csv", results);
 
         std::cout << (args.output_dir / "summary.csv") << '\n';
         for (const auto& result : results) {

@@ -87,7 +87,7 @@ def main() -> int:
     parser.add_argument(
         "paths",
         nargs="*",
-        default=["README.md", "docs/research_note.md"],
+        default=["README.md", "docs/research_note.md", "docs/fill_rate_queue_diagnostics.md"],
         help="Markdown files to check, relative to the repository root.",
     )
     args = parser.parse_args()

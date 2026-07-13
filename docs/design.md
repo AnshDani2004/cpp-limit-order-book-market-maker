@@ -2,7 +2,7 @@
 
 ## Goal
 
-Stage 1 builds the matching engine foundation for a one instrument order book. The priority is correctness, deterministic behavior, and a design that can be explained under interview questioning.
+Stage 1 builds the matching engine foundation for a one instrument order book. The priority is correctness, deterministic behavior, and a design that can be explained directly from the code and tests.
 
 ## Why C++
 

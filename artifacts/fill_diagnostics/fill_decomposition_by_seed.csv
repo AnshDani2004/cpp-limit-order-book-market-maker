@@ -1,0 +1,313 @@
+scenario,flow_type,strategy_name,regime,seed,seed_index,quotes_submitted,quotes_canceled_or_replaced,quotes_filled,partial_fills,full_fills,fill_rate_by_quote_count,fill_rate_by_submitted_size,average_quote_lifetime,median_quote_lifetime,average_initial_queue_ahead,median_initial_queue_ahead,percent_quotes_submitted_at_best,percent_quote_lifetime_spent_at_best,external_execution_events_count,external_executed_volume,external_executed_volume_at_maker_quoted_price,maker_eligible_execution_events,maker_reached_by_execution_events,maker_missed_due_to_queue_events,maker_missed_due_to_no_opposite_flow,maker_missed_due_to_quote_not_at_touched_price,maker_missed_due_to_cancellation_or_replacement_before_execution,hard_cap_bid_blocks,hard_cap_ask_blocks
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,3002,0,1000,502,497,24,473,0.497,0.4828,6.808,10,66.725,0,0.848,0.848,1213,60806,26124,511,520,11,0,681,502,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,high volatility,4002,1,1000,435,564,26,538,0.564,0.5478,6.308,8,41.145,0,0.928,0.928,1249,63958,30966,602,598,14,0,637,435,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,3003,0,1000,450,549,32,517,0.549,0.5341,6.364,8,57.341,0,0.838,0.838,1266,62785,27568,577,570,10,0,686,450,0,0
+as_risk_aversion_high,hand_chosen,avellaneda stoikov,trending,4003,1,1000,479,520,30,490,0.52,0.5056,6.651,9,77.653,0,0.823,0.823,1242,63693,27817,543,540,7,0,695,479,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,3002,0,1000,500,499,25,474,0.499,0.484,6.82,10,71.053,0,0.848,0.848,1213,60806,26328,516,521,13,0,678,500,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,high volatility,4002,1,1000,441,558,25,533,0.558,0.5425,6.348,8,43.177,0,0.928,0.928,1249,63958,30591,595,592,13,0,644,441,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0.008,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,3003,0,1000,453,546,32,514,0.546,0.5311,6.393,8,60.516,0,0.838,0.838,1266,62785,27737,582,567,18,0,681,453,0,0
+as_risk_aversion_high,hand_chosen,naive symmetric,trending,4003,1,1000,481,518,30,488,0.518,0.5036,6.672,9,81.278,0,0.823,0.823,1242,63693,27687,541,538,9,0,695,481,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,3002,0,1000,496,503,27,476,0.503,0.4878,6.795,9,72.52,0,0.848,0.848,1213,60806,26356,517,525,12,0,675,496,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,high volatility,4002,1,1000,438,561,26,535,0.561,0.5448,6.324,8,44.3,0,0.928,0.928,1249,63958,31038,605,596,18,0,635,438,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,3003,0,1000,450,549,32,517,0.549,0.5341,6.364,8,61.012,0,0.838,0.838,1266,62785,27568,577,570,10,0,686,450,0,0
+as_risk_aversion_low,hand_chosen,avellaneda stoikov,trending,4003,1,1000,479,520,30,490,0.52,0.5056,6.651,9,80.061,0,0.823,0.823,1242,63693,27817,543,540,7,0,695,479,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,3002,0,1000,500,499,25,474,0.499,0.484,6.82,10,71.053,0,0.848,0.848,1213,60806,26328,516,521,13,0,678,500,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,high volatility,4002,1,1000,441,558,25,533,0.558,0.5425,6.348,8,43.177,0,0.928,0.928,1249,63958,30591,595,592,13,0,644,441,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0.008,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,3003,0,1000,453,546,32,514,0.546,0.5311,6.393,8,60.516,0,0.838,0.838,1266,62785,27737,582,567,18,0,681,453,0,0
+as_risk_aversion_low,hand_chosen,naive symmetric,trending,4003,1,1000,481,518,30,488,0.518,0.5036,6.672,9,81.278,0,0.823,0.823,1242,63693,27687,541,538,9,0,695,481,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,3002,0,1000,498,501,29,472,0.501,0.4856,6.809,9,70.134,0,0.848,0.848,1213,60806,26354,517,524,14,0,674,498,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,high volatility,4002,1,1000,437,562,26,536,0.562,0.5458,6.322,8,45.136,0,0.928,0.928,1249,63958,31041,606,596,19,0,634,437,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,3003,0,1000,450,549,32,517,0.549,0.5341,6.364,8,59.582,0,0.838,0.838,1266,62785,27568,577,570,10,0,686,450,0,0
+hand_chosen_flow,hand_chosen,avellaneda stoikov,trending,4003,1,1000,479,520,30,490,0.52,0.5056,6.651,9,79.236,0,0.823,0.823,1242,63693,27817,543,540,7,0,695,479,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,3002,0,1000,500,499,25,474,0.499,0.484,6.82,10,71.053,0,0.848,0.848,1213,60806,26328,516,521,13,0,678,500,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,high volatility,4002,1,1000,441,558,25,533,0.558,0.5425,6.348,8,43.177,0,0.928,0.928,1249,63958,30591,595,592,13,0,644,441,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,1,502,254,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0.008,0,1,1,1303,65187,40823,798,798,0,1,503,242,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,trending,3003,0,1000,453,546,32,514,0.546,0.5311,6.393,8,60.516,0,0.838,0.838,1266,62785,27737,582,567,18,0,681,453,0,0
+hand_chosen_flow,hand_chosen,naive symmetric,trending,4003,1,1000,481,518,30,488,0.518,0.5036,6.672,9,81.278,0,0.823,0.823,1242,63693,27687,541,538,9,0,695,481,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,796,203,1,202,0.203,0.2021,8.781,10,17.627,0,1,1,223,296360,272354,202,203,1,1,17,796,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,820,178,0,178,0.178,0.178,8.956,10,44.752,0,0.98,0.98,226,299589,233916,168,178,2,1,44,820,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,791,208,0,208,0.208,0.208,8.822,10,13.093,0,1,1,232,314090,275235,208,208,1,1,23,791,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,811,187,0,187,0.187,0.187,8.981,10,7.927,0,1,1,213,281894,242653,187,187,2,2,23,811,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,797,201,1,200,0.201,0.2001,8.906,10,10.939,0,1,1,216,277961,260198,202,202,1,2,11,797,0,0
+increased_execution_intensity_10x,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,828,170,1,169,0.17,0.1691,8.972,10,9.051,0,1,1,189,256261,224843,168,170,0,2,15,828,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,3002,0,1000,796,203,1,202,0.203,0.2021,8.781,10,10.018,0,1,1,223,296360,271494,201,203,0,1,18,796,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,high volatility,4002,1,1000,823,175,0,175,0.175,0.175,8.97,10,42.778,0,0.98,0.98,226,299589,226683,164,175,2,1,47,823,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,3001,0,1000,792,207,0,207,0.207,0.207,8.827,10,18.447,0,1,1,232,314090,272870,206,207,1,1,24,792,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,low volatility,4001,1,1000,811,187,0,187,0.187,0.187,8.981,10,10.755,0,1,1,213,281894,242653,187,187,2,2,23,811,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,3003,0,1000,798,200,1,199,0.2,0.1991,8.915,10,13.788,0,1,1,216,277961,258310,200,201,1,2,12,798,0,0
+increased_execution_intensity_10x,itch_calibrated,naive symmetric,trending,4003,1,1000,828,170,1,169,0.17,0.1691,8.972,10,6.331,0,1,1,189,256261,224843,168,170,0,2,15,828,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,957,41,0,41,0.041,0.041,9.755,10,45.665,0,0.97,0.97,47,56660,45775,38,41,0,2,6,957,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,959,39,0,39,0.039,0.039,9.782,10,146.017,0,0.905,0.905,59,69623,43156,37,39,1,2,19,959,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,958,40,0,40,0.04,0.04,9.748,10,34.482,0,1,1,44,64429,59072,39,40,1,1,3,958,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,949,49,0,49,0.049,0.049,9.695,10,41.671,0,1,1,52,75540,69114,48,49,0,2,3,949,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,958,41,0,41,0.041,0.041,9.767,10,43.023,0,0.994,0.994,45,60863,57206,42,42,0,1,3,958,0,0
+increased_execution_intensity_2x,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,955,43,0,43,0.043,0.043,9.777,10,35.815,0,0.994,0.994,46,66312,60648,43,43,0,2,3,955,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,3002,0,1000,957,41,0,41,0.041,0.041,9.755,10,50.547,0,0.97,0.97,47,56660,44491,37,41,0,2,6,957,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,high volatility,4002,1,1000,959,39,0,39,0.039,0.039,9.782,10,145.255,0,0.905,0.905,59,69623,43156,37,39,1,2,19,959,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,3001,0,1000,958,40,0,40,0.04,0.04,9.748,10,35.429,0,1,1,44,64429,58516,38,40,0,2,4,958,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,low volatility,4001,1,1000,951,47,0,47,0.047,0.047,9.714,10,67.611,0,1,1,52,75540,69114,48,47,2,1,3,951,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,3003,0,1000,959,40,0,40,0.04,0.04,9.773,10,43.783,0,0.994,0.994,45,60863,57206,42,41,1,1,3,959,0,0
+increased_execution_intensity_2x,itch_calibrated,naive symmetric,trending,4003,1,1000,956,42,0,42,0.042,0.042,9.783,10,41.693,0,0.994,0.994,46,66312,60648,43,42,1,2,3,956,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,907,91,1,90,0.091,0.0901,9.505,10,34.587,0,0.998,0.998,99,129215,119476,89,91,0,2,8,907,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,892,106,1,105,0.106,0.1054,9.468,10,120.529,0,0.965,0.965,139,184305,143441,107,106,3,1,30,892,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,894,105,0,105,0.105,0.105,9.361,10,11.813,0,1,1,113,159944,145828,105,105,0,1,7,894,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,900,98,0,98,0.098,0.098,9.457,10,10.281,0,1,1,106,144379,135330,98,98,0,2,8,900,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,895,103,1,102,0.103,0.1021,9.436,10,28.756,0,1,1,113,149127,137581,103,104,0,2,9,895,0,0
+increased_execution_intensity_5x,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,918,80,0,80,0.08,0.08,9.564,10,56.215,0,1,1,88,120177,106687,80,80,1,2,7,918,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,3002,0,1000,907,91,1,90,0.091,0.0901,9.505,10,23.341,0,0.998,0.998,99,129215,119476,89,91,0,2,8,907,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,high volatility,4002,1,1000,894,104,1,103,0.104,0.1034,9.476,10,120.388,0,0.965,0.965,139,184305,140448,104,104,3,1,32,894,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,3001,0,1000,895,104,0,104,0.104,0.104,9.362,10,22.562,0,1,1,113,159944,145828,105,104,1,1,7,895,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,low volatility,4001,1,1000,900,98,0,98,0.098,0.098,9.457,10,13.809,0,1,1,106,144379,132852,96,98,0,2,8,900,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,3003,0,1000,895,103,1,102,0.103,0.1021,9.436,10,26.974,0,1,1,113,149127,135054,102,104,0,2,9,895,0,0
+increased_execution_intensity_5x,itch_calibrated,naive symmetric,trending,4003,1,1000,918,80,0,80,0.08,0.08,9.564,10,46.221,0,1,1,88,120177,106054,79,80,0,2,8,918,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,3002,0,1000,499,501,29,472,0.501,0.4856,6.809,9,70.134,0,0.848,0.848,1213,60806,26354,517,524,14,0,674,499,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,high volatility,4002,1,1000,438,562,26,536,0.562,0.5458,6.322,8,45.136,0,0.928,0.928,1249,63958,31041,606,596,19,0,634,438,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,255,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,0,502,255,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,243,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,1303,65187,40823,798,798,0,0,503,243,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,3003,0,1000,451,549,32,517,0.549,0.5341,6.364,8,59.582,0,0.838,0.838,1266,62785,27568,577,570,10,0,686,451,0,0
+inventory_cap_5000,hand_chosen,avellaneda stoikov,trending,4003,1,1000,480,520,30,490,0.52,0.5056,6.651,9,79.236,0,0.823,0.823,1242,63693,27817,543,540,7,0,695,480,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,3002,0,1000,501,499,25,474,0.499,0.484,6.82,10,71.053,0,0.848,0.848,1213,60806,26328,516,521,13,0,678,501,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,high volatility,4002,1,1000,442,558,25,533,0.558,0.5425,6.348,8,43.177,0,0.928,0.928,1249,63958,30591,595,592,13,0,644,442,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,3001,0,1000,255,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,1283,63711,38854,781,781,0,0,502,255,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,low volatility,4001,1,1000,243,757,30,727,0.757,0.7426,4.975,4,0.008,0,1,1,1303,65187,40823,798,798,0,0,503,243,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,trending,3003,0,1000,454,546,32,514,0.546,0.5311,6.393,8,60.516,0,0.838,0.838,1266,62785,27737,582,567,18,0,681,454,0,0
+inventory_cap_5000,hand_chosen,naive symmetric,trending,4003,1,1000,482,518,30,488,0.518,0.5036,6.672,9,81.278,0,0.823,0.823,1242,63693,27687,541,538,9,0,695,482,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,42.418,0,0.982,0.982,20,24277,21226,16,18,0,1,2,981,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,162.511,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,37.518,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,91.984,0,1,1,24,36378,34951,23,22,1,1,1,976,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,46.633,0,0.998,0.998,25,34205,33440,24,24,0,2,1,975,0,0
+itch_calibrated_flow,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,53.139,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,67.188,0,0.982,0.982,20,24277,21226,16,18,0,0,2,981,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,185.542,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,46.976,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,137.382,0,1,1,24,36378,34258,22,22,0,1,2,976,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,53.912,0,0.998,0.998,25,34205,32643,23,24,0,2,1,975,0,0
+itch_calibrated_flow,itch_calibrated,naive symmetric,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,61.954,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,38.856,0,0.982,0.982,20,24277,21226,16,18,0,1,2,981,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,158.945,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,37.077,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,91.939,0,1,1,24,36378,34951,23,22,1,1,1,976,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,46.624,0,0.998,0.998,25,34205,31915,23,23,0,2,2,975,0,0
+quote_size_1,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,53.139,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_1,itch_calibrated,naive symmetric,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,67.179,0,0.982,0.982,20,24277,21226,16,18,0,0,2,981,0,0
+quote_size_1,itch_calibrated,naive symmetric,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,185.479,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_1,itch_calibrated,naive symmetric,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,46.967,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_1,itch_calibrated,naive symmetric,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,137.274,0,1,1,24,36378,34258,22,22,0,1,2,976,0,0
+quote_size_1,itch_calibrated,naive symmetric,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,53.885,0,0.998,0.998,25,34205,31118,22,23,0,2,2,975,0,0
+quote_size_1,itch_calibrated,naive symmetric,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,61.954,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,42.418,0,0.982,0.982,20,24277,21226,16,18,0,1,2,981,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,162.511,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,37.518,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,91.984,0,1,1,24,36378,34951,23,22,1,1,1,976,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,46.633,0,0.998,0.998,25,34205,33440,24,24,0,2,1,975,0,0
+quote_size_10,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,53.139,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_10,itch_calibrated,naive symmetric,high volatility,3002,0,1000,981,18,0,18,0.018,0.018,9.916,10,67.188,0,0.982,0.982,20,24277,21226,16,18,0,0,2,981,0,0
+quote_size_10,itch_calibrated,naive symmetric,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,185.542,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_10,itch_calibrated,naive symmetric,low volatility,3001,0,1000,978,20,0,20,0.02,0.02,9.901,10,46.976,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_10,itch_calibrated,naive symmetric,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,137.382,0,1,1,24,36378,34258,22,22,0,1,2,976,0,0
+quote_size_10,itch_calibrated,naive symmetric,trending,3003,0,1000,975,23,0,23,0.023,0.023,9.866,10,53.912,0,0.998,0.998,25,34205,32643,23,24,0,2,1,975,0,0
+quote_size_10,itch_calibrated,naive symmetric,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,61.954,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1000,981,18,1,17,0.018,0.01786,9.916,10,44.621,0,0.98,0.98,20,24277,20251,15,18,0,1,2,981,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,185.604,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1000,978,20,1,19,0.02,0.01961,9.901,10,39.666,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,94.082,0,1,1,24,36378,34951,23,22,1,1,1,976,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,3003,0,1000,975,23,1,22,0.023,0.02259,9.866,10,45.741,0,0.998,0.998,25,34205,33440,24,24,0,2,1,975,0,0
+quote_size_100,itch_calibrated,avellaneda stoikov,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,56.023,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+quote_size_100,itch_calibrated,naive symmetric,high volatility,3002,0,1000,981,18,1,17,0.018,0.01786,9.916,10,67.282,0,0.98,0.98,20,24277,20251,15,18,0,0,2,981,0,0
+quote_size_100,itch_calibrated,naive symmetric,high volatility,4002,1,1000,977,21,0,21,0.021,0.021,9.864,10,186.383,0,0.925,0.925,29,36004,25924,20,21,0,1,8,977,0,0
+quote_size_100,itch_calibrated,naive symmetric,low volatility,3001,0,1000,978,20,1,19,0.02,0.01961,9.901,10,47.066,0,1,1,24,37659,31274,20,20,0,2,4,978,0,0
+quote_size_100,itch_calibrated,naive symmetric,low volatility,4001,1,1000,976,22,0,22,0.022,0.022,9.873,10,138.462,0,1,1,24,36378,34258,22,22,0,1,2,976,0,0
+quote_size_100,itch_calibrated,naive symmetric,trending,3003,0,1000,975,23,1,22,0.023,0.02259,9.866,10,54.182,0,0.998,0.998,25,34205,32643,23,24,0,2,1,975,0,0
+quote_size_100,itch_calibrated,naive symmetric,trending,4003,1,1000,977,21,0,21,0.021,0.021,9.893,10,62.845,0,0.996,0.996,21,28661,25042,19,21,0,2,0,977,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,3002,0,2000,1981,18,0,18,0.009,0.009,4.973,5,43.5205,0,0.98,0.98,20,24277,22126,17,18,0,1,2,1981,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,high volatility,4002,1,2000,1977,21,0,21,0.0105,0.0105,4.967,5,167.6295,0,0.923,0.923,29,36004,26517,21,21,1,2,7,1977,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,3001,0,2000,1978,20,0,20,0.01,0.01,4.973,5,37.2615,0,1,1,24,37659,31274,20,20,0,2,4,1978,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,low volatility,4001,1,2000,1976,22,0,22,0.011,0.011,4.964,5,99.986,0,1,1,24,36378,34951,23,22,1,1,1,1976,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,3003,0,2000,1975,23,0,23,0.0115,0.0115,4.9705,5,49.8715,0,0.9975,0.9975,25,34205,33440,24,24,0,2,1,1975,0,0
+requote_frequency_fast_5,itch_calibrated,avellaneda stoikov,trending,4003,1,2000,1977,21,0,21,0.0105,0.0105,4.9715,5,45.574,0,0.997,0.997,21,28661,24274,18,21,0,2,0,1977,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,3002,0,2000,1981,18,0,18,0.009,0.009,4.973,5,57.7615,0,0.98,0.98,20,24277,22126,17,18,0,1,2,1981,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,high volatility,4002,1,2000,1977,21,0,21,0.0105,0.0105,4.967,5,177.319,0,0.923,0.923,29,36004,26517,21,21,1,1,7,1977,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,3001,0,2000,1978,20,0,20,0.01,0.01,4.973,5,49.559,0,1,1,24,37659,31274,20,20,0,2,4,1978,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,low volatility,4001,1,2000,1976,22,0,22,0.011,0.011,4.964,5,137.8425,0,1,1,24,36378,34951,23,22,1,1,1,1976,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,3003,0,2000,1975,23,0,23,0.0115,0.0115,4.9705,5,51.259,0,0.9975,0.9975,25,34205,33440,24,24,0,2,1,1975,0,0
+requote_frequency_fast_5,itch_calibrated,naive symmetric,trending,4003,1,2000,1977,21,0,21,0.0105,0.0105,4.9715,5,67.7105,0,0.997,0.997,21,28661,24274,18,21,0,2,0,1977,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,3002,0,400,381,18,0,18,0.045,0.045,24.525,25,50.095,0,0.9875,0.9875,20,24277,20366,15,15,0,1,5,381,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,high volatility,4002,1,400,378,20,0,20,0.05,0.05,24.3175,25,123.1975,0,0.9175,0.9175,29,36004,23576,18,20,0,2,9,378,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,3001,0,400,378,20,0,20,0.05,0.05,24.145,25,40.4875,0,1,1,24,37659,33451,20,20,0,2,4,378,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,low volatility,4001,1,400,376,22,0,22,0.055,0.055,24.32,25,136.2425,0,1,1,24,36378,34258,22,22,0,1,2,376,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,3003,0,400,374,24,0,24,0.06,0.06,24.155,25,57.4375,0,1,1,25,34205,34205,25,25,0,2,0,374,0,0
+requote_frequency_slow_25,itch_calibrated,avellaneda stoikov,trending,4003,1,400,378,20,0,20,0.05,0.05,24.325,25,38.345,0,1,1,21,28661,25042,19,20,1,2,0,378,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,3002,0,400,381,18,0,18,0.045,0.045,24.525,25,87.285,0,0.9875,0.9875,20,24277,20366,15,15,0,1,5,381,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,high volatility,4002,1,400,378,20,0,20,0.05,0.05,24.3175,25,174.2475,0,0.9175,0.9175,29,36004,23576,18,20,0,2,9,378,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,3001,0,400,378,20,0,20,0.05,0.05,24.145,25,41.3775,0,1,1,24,37659,33451,20,20,0,2,4,378,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,low volatility,4001,1,400,376,22,0,22,0.055,0.055,24.32,25,160.7775,0,1,1,24,36378,34258,22,22,0,1,2,376,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,3003,0,400,374,24,0,24,0.06,0.06,24.155,25,55.5375,0,1,1,25,34205,33408,24,25,0,2,0,374,0,0
+requote_frequency_slow_25,itch_calibrated,naive symmetric,trending,4003,1,400,378,20,0,20,0.05,0.05,24.325,25,71.59,0,1,1,21,28661,23978,18,20,0,1,1,378,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,3002,0,719,238,481,23,458,0.668984700974,0.650486787204,5.69958275382,6,0,0,0.795549374131,0.795549374131,0,0,0,0,0,0,0,0,238,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,4002,1,772,215,557,25,532,0.721502590674,0.701683937824,5.26813471503,5,0,0,0.911917098446,0.911917098446,0,0,0,0,0,0,0,0,215,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.16168478261,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,4003,1,714,200,514,30,484,0.719887955182,0.699719887955,5.35294117647,5,0,0,0.759103641457,0.759103641457,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,3002,0,703,218,485,24,461,0.689900426743,0.669701280228,5.58605974395,5,0,0,0.789473684211,0.789473684211,0,0,0,0,0,0,0,0,218,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,4002,1,761,215,546,24,522,0.717477003942,0.698291721419,5.26018396846,5,0,0,0.910643889619,0.910643889619,0,0,0,0,0,0,0,0,215,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,4001,1,999,242,756,30,726,0.756756756757,0.742342342342,4.97097097097,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.15625,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,4003,1,710,200,510,30,480,0.718309859155,0.698028169014,5.38309859155,5,0,0,0.757746478873,0.757746478873,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,3002,0,704,213,491,26,465,0.697443181818,0.675994318182,5.55113636364,5,0,0,0.789772727273,0.789772727273,0,0,0,0,0,0,0,0,213,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,4002,1,768,216,552,25,527,0.71875,0.698828125,5.26302083333,5,0,0,0.911458333333,0.911458333333,0,0,0,0,0,0,0,0,216,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.16168478261,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,4003,1,714,200,514,30,484,0.719887955182,0.699719887955,5.35294117647,5,0,0,0.759103641457,0.759103641457,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,3002,0,703,218,485,24,461,0.689900426743,0.669701280228,5.58605974395,5,0,0,0.789473684211,0.789473684211,0,0,0,0,0,0,0,0,218,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,4002,1,761,215,546,24,522,0.717477003942,0.698291721419,5.26018396846,5,0,0,0.910643889619,0.910643889619,0,0,0,0,0,0,0,0,215,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,4001,1,999,242,756,30,726,0.756756756757,0.742342342342,4.97097097097,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.15625,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,4003,1,710,200,510,30,480,0.718309859155,0.698028169014,5.38309859155,5,0,0,0.757746478873,0.757746478873,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,3002,0,707,219,488,26,462,0.690240452617,0.669024045262,5.59830268741,5,0,0,0.792079207921,0.792079207921,0,0,0,0,0,0,0,0,219,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,4002,1,765,213,552,25,527,0.721568627451,0.701568627451,5.24444444444,5,0,0,0.911111111111,0.911111111111,0,0,0,0,0,0,0,0,213,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,242,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.16168478261,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,4003,1,714,200,514,30,484,0.719887955182,0.699719887955,5.35294117647,5,0,0,0.759103641457,0.759103641457,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,3002,0,703,218,485,24,461,0.689900426743,0.669701280228,5.58605974395,5,0,0,0.789473684211,0.789473684211,0,0,0,0,0,0,0,0,218,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,4002,1,761,215,546,24,522,0.717477003942,0.698291721419,5.26018396846,5,0,0,0.910643889619,0.910643889619,0,0,0,0,0,0,0,0,215,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,3001,0,1000,254,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,1,0,254,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,4001,1,999,242,756,30,726,0.756756756757,0.742342342342,4.97097097097,4,0,0,1,1,0,0,0,0,0,0,1,0,242,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.15625,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,4003,1,710,200,510,30,480,0.718309859155,0.698028169014,5.38309859155,5,0,0,0.757746478873,0.757746478873,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,991,787,203,1,202,0.204843592331,0.203935418769,8.76992936428,10,0,0,1,1,0,0,0,0,0,0,1,0,787,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,964,788,175,0,175,0.18153526971,0.18153526971,8.9398340249,10,0,0,0.979253112033,0.979253112033,0,0,0,0,0,0,1,0,788,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,990,784,205,0,205,0.207070707071,0.207070707071,8.82222222222,10,0,0,1,1,0,0,0,0,0,0,1,0,784,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,995,806,187,0,187,0.187939698492,0.187939698492,8.97587939698,10,0,0,1,1,0,0,0,0,0,0,2,0,806,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,988,788,198,1,197,0.2004048583,0.199493927126,8.90789473684,10,0,0,1,1,0,0,0,0,0,0,2,0,788,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,994,822,170,1,169,0.171026156942,0.170120724346,8.96579476861,10,0,0,1,1,0,0,0,0,0,0,2,0,822,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,995,791,203,1,202,0.204020100503,0.203115577889,8.77487437186,10,0,0,1,1,0,0,0,0,0,0,1,0,791,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,964,790,173,0,173,0.179460580913,0.179460580913,8.94605809129,10,0,0,0.979253112033,0.979253112033,0,0,0,0,0,0,1,0,790,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,986,781,204,0,204,0.206896551724,0.206896551724,8.8215010142,10,0,0,1,1,0,0,0,0,0,0,1,0,781,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,991,804,185,0,185,0.18668012109,0.18668012109,8.98486377397,10,0,0,1,1,0,0,0,0,0,0,2,0,804,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,986,785,199,1,198,0.201825557809,0.200912778905,8.90263691684,10,0,0,1,1,0,0,0,0,0,0,2,0,785,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,995,823,170,1,169,0.170854271357,0.169949748744,8.96683417085,10,0,0,1,1,0,0,0,0,0,0,2,0,823,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,966,924,40,0,40,0.0414078674948,0.0414078674948,9.75569358178,10,0,0,0.971014492754,0.971014492754,0,0,0,0,0,0,2,0,924,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,896,856,38,0,38,0.0424107142857,0.0424107142857,9.76227678571,10,0,0,0.897321428571,0.897321428571,0,0,0,0,0,0,2,0,856,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,977,936,40,0,40,0.0409416581372,0.0409416581372,9.74206755374,10,0,0,1,1,0,0,0,0,0,0,1,0,936,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,958,908,48,0,48,0.0501043841336,0.0501043841336,9.68997912317,10,0,0,1,1,0,0,0,0,0,0,2,0,908,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,960,918,41,0,41,0.0427083333333,0.0427083333333,9.75729166667,10,0,0,0.99375,0.99375,0,0,0,0,0,0,1,0,918,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,972,927,43,0,43,0.0442386831276,0.0442386831276,9.77057613169,10,0,0,0.993827160494,0.993827160494,0,0,0,0,0,0,2,0,927,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,963,920,41,0,41,0.0425752855659,0.0425752855659,9.7455867082,10,0,0,0.970924195223,0.970924195223,0,0,0,0,0,0,2,0,920,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,899,859,38,0,38,0.0422691879867,0.0422691879867,9.76307007786,10,0,0,0.89766407119,0.89766407119,0,0,0,0,0,0,2,0,859,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,975,933,40,0,40,0.0410256410256,0.0410256410256,9.74153846154,10,0,0,1,1,0,0,0,0,0,0,2,0,933,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,932,886,45,0,45,0.0482832618026,0.0482832618026,9.71030042918,10,0,0,1,1,0,0,0,0,0,0,1,0,886,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,962,921,40,0,40,0.04158004158,0.04158004158,9.76403326403,10,0,0,0.993762993763,0.993762993763,0,0,0,0,0,0,1,0,921,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,967,923,42,0,42,0.0434332988625,0.0434332988625,9.77559462254,10,0,0,0.99379524302,0.99379524302,0,0,0,0,0,0,2,0,923,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,978,886,90,1,89,0.0920245398773,0.0911042944785,9.49488752556,10,0,0,0.997955010225,0.997955010225,0,0,0,0,0,0,2,0,886,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,908,803,104,1,103,0.114537444934,0.113876651982,9.42290748899,10,0,0,0.971365638767,0.971365638767,0,0,0,0,0,0,1,0,803,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,993,888,104,0,104,0.104733131923,0.104733131923,9.35750251762,10,0,0,1,1,0,0,0,0,0,0,1,0,888,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,991,893,96,0,96,0.0968718466196,0.0968718466196,9.46014127144,10,0,0,1,1,0,0,0,0,0,0,2,0,893,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,975,872,101,1,100,0.10358974359,0.102666666667,9.42461538462,10,0,0,1,1,0,0,0,0,0,0,2,0,872,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,957,875,80,0,80,0.0835945663532,0.0835945663532,9.54440961338,10,0,0,1,1,0,0,0,0,0,0,2,0,875,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,983,890,91,1,90,0.0925737538149,0.0916581892167,9.49643947101,10,0,0,0.997965412004,0.997965412004,0,0,0,0,0,0,2,0,890,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,909,805,103,1,102,0.113311331133,0.112651265127,9.42794279428,10,0,0,0.971397139714,0.971397139714,0,0,0,0,0,0,1,0,805,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,988,884,103,0,103,0.104251012146,0.104251012146,9.35526315789,10,0,0,1,1,0,0,0,0,0,0,1,0,884,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,984,885,97,0,97,0.0985772357724,0.0985772357724,9.45223577236,10,0,0,1,1,0,0,0,0,0,0,2,0,885,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,976,872,102,1,101,0.104508196721,0.103586065574,9.42418032787,10,0,0,1,1,0,0,0,0,0,0,2,0,872,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,964,883,79,0,79,0.0819502074689,0.0819502074689,9.55809128631,10,0,0,1,1,0,0,0,0,0,0,2,0,883,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,3002,0,707,219,488,26,462,0.690240452617,0.669024045262,5.59830268741,5,0,0,0.792079207921,0.792079207921,0,0,0,0,0,0,0,0,219,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,high volatility,4002,1,765,213,552,25,527,0.721568627451,0.701568627451,5.24444444444,5,0,0,0.911111111111,0.911111111111,0,0,0,0,0,0,0,0,213,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,3001,0,1000,255,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,0,0,255,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,low volatility,4001,1,1000,243,757,30,727,0.757,0.7426,4.975,4,0,0,1,1,0,0,0,0,0,0,0,0,243,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.16168478261,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,avellaneda stoikov,trending,4003,1,714,200,514,30,484,0.719887955182,0.699719887955,5.35294117647,5,0,0,0.759103641457,0.759103641457,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,3002,0,703,218,485,24,461,0.689900426743,0.669701280228,5.58605974395,5,0,0,0.789473684211,0.789473684211,0,0,0,0,0,0,0,0,218,0,0
+zero_queue_control,hand_chosen,naive symmetric,high volatility,4002,1,761,215,546,24,522,0.717477003942,0.698291721419,5.26018396846,5,0,0,0.910643889619,0.910643889619,0,0,0,0,0,0,0,0,215,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,3001,0,1000,255,745,40,705,0.745,0.7255,5.219,5,0,0,1,1,0,0,0,0,0,0,0,0,255,0,0
+zero_queue_control,hand_chosen,naive symmetric,low volatility,4001,1,999,243,756,30,726,0.756756756757,0.742342342342,4.97097097097,4,0,0,1,1,0,0,0,0,0,0,0,0,243,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,3003,0,736,198,538,32,506,0.73097826087,0.710733695652,5.15625,5,0,0,0.786684782609,0.786684782609,0,0,0,0,0,0,0,0,198,0,0
+zero_queue_control,hand_chosen,naive symmetric,trending,4003,1,710,200,510,30,480,0.718309859155,0.698028169014,5.38309859155,5,0,0,0.757746478873,0.757746478873,0,0,0,0,0,0,0,0,200,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,969,950,18,0,18,0.0185758513932,0.0185758513932,9.9133126935,10,0,0,0.981424148607,0.981424148607,0,0,0,0,0,0,1,0,950,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,882,860,21,0,21,0.0238095238095,0.0238095238095,9.84580498866,10,0,0,0.926303854875,0.926303854875,0,0,0,0,0,0,1,0,860,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,977,955,20,0,20,0.0204708290686,0.0204708290686,9.89866939611,10,0,0,1,1,0,0,0,0,0,0,2,0,955,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,942,919,22,0,22,0.0233545647558,0.0233545647558,9.86518046709,10,0,0,1,1,0,0,0,0,0,0,1,0,919,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,966,943,21,0,21,0.0217391304348,0.0217391304348,9.86645962733,10,0,0,0.997929606625,0.997929606625,0,0,0,0,0,0,2,0,943,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,964,941,21,0,21,0.0217842323651,0.0217842323651,9.88900414938,10,0,0,0.997925311203,0.997925311203,0,0,0,0,0,0,2,0,941,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,956,940,16,0,16,0.0167364016736,0.0167364016736,9.92259414226,10,0,0,0.981171548117,0.981171548117,0,0,0,0,0,0,0,0,940,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,868,846,21,0,21,0.0241935483871,0.0241935483871,9.84331797235,10,0,0,0.925115207373,0.925115207373,0,0,0,0,0,0,1,0,846,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,969,947,20,0,20,0.0206398348813,0.0206398348813,9.89783281734,10,0,0,1,1,0,0,0,0,0,0,2,0,947,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,919,896,22,0,22,0.0239390642002,0.0239390642002,9.86180631121,10,0,0,1,1,0,0,0,0,0,0,1,0,896,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,957,933,22,0,22,0.0229885057471,0.0229885057471,9.86415882968,10,0,0,0.997910135841,0.997910135841,0,0,0,0,0,0,2,0,933,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,954,931,21,0,21,0.0220125786164,0.0220125786164,9.88784067086,10,0,0,0.997903563941,0.997903563941,0,0,0,0,0,0,2,0,931,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,970,952,17,0,17,0.0175257731959,0.0175257731959,9.92268041237,10,0,0,0.981443298969,0.981443298969,0,0,0,0,0,0,1,0,952,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,884,862,21,0,21,0.0237556561086,0.0237556561086,9.84615384615,10,0,0,0.926470588235,0.926470588235,0,0,0,0,0,0,1,0,862,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,978,956,20,0,20,0.0204498977505,0.0204498977505,9.89877300613,10,0,0,1,1,0,0,0,0,0,0,2,0,956,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,942,919,22,0,22,0.0233545647558,0.0233545647558,9.86518046709,10,0,0,1,1,0,0,0,0,0,0,1,0,919,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,966,943,21,0,21,0.0217391304348,0.0217391304348,9.86645962733,10,0,0,0.997929606625,0.997929606625,0,0,0,0,0,0,2,0,943,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,964,941,21,0,21,0.0217842323651,0.0217842323651,9.88900414938,10,0,0,0.997925311203,0.997925311203,0,0,0,0,0,0,2,0,941,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,956,940,16,0,16,0.0167364016736,0.0167364016736,9.92259414226,10,0,0,0.981171548117,0.981171548117,0,0,0,0,0,0,0,0,940,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,868,846,21,0,21,0.0241935483871,0.0241935483871,9.84331797235,10,0,0,0.925115207373,0.925115207373,0,0,0,0,0,0,1,0,846,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,969,947,20,0,20,0.0206398348813,0.0206398348813,9.89783281734,10,0,0,1,1,0,0,0,0,0,0,2,0,947,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,919,896,22,0,22,0.0239390642002,0.0239390642002,9.86180631121,10,0,0,1,1,0,0,0,0,0,0,1,0,896,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,957,933,22,0,22,0.0229885057471,0.0229885057471,9.86415882968,10,0,0,0.997910135841,0.997910135841,0,0,0,0,0,0,2,0,933,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,954,931,21,0,21,0.0220125786164,0.0220125786164,9.88784067086,10,0,0,0.997903563941,0.997903563941,0,0,0,0,0,0,2,0,931,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,969,950,18,0,18,0.0185758513932,0.0185758513932,9.9133126935,10,0,0,0.981424148607,0.981424148607,0,0,0,0,0,0,1,0,950,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,882,860,21,0,21,0.0238095238095,0.0238095238095,9.84580498866,10,0,0,0.926303854875,0.926303854875,0,0,0,0,0,0,1,0,860,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,977,955,20,0,20,0.0204708290686,0.0204708290686,9.89866939611,10,0,0,1,1,0,0,0,0,0,0,2,0,955,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,942,919,22,0,22,0.0233545647558,0.0233545647558,9.86518046709,10,0,0,1,1,0,0,0,0,0,0,1,0,919,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,966,943,21,0,21,0.0217391304348,0.0217391304348,9.86645962733,10,0,0,0.997929606625,0.997929606625,0,0,0,0,0,0,2,0,943,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,964,941,21,0,21,0.0217842323651,0.0217842323651,9.88900414938,10,0,0,0.997925311203,0.997925311203,0,0,0,0,0,0,2,0,941,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,956,940,16,0,16,0.0167364016736,0.0167364016736,9.92259414226,10,0,0,0.981171548117,0.981171548117,0,0,0,0,0,0,0,0,940,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,868,846,21,0,21,0.0241935483871,0.0241935483871,9.84331797235,10,0,0,0.925115207373,0.925115207373,0,0,0,0,0,0,1,0,846,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,969,947,20,0,20,0.0206398348813,0.0206398348813,9.89783281734,10,0,0,1,1,0,0,0,0,0,0,2,0,947,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,919,896,22,0,22,0.0239390642002,0.0239390642002,9.86180631121,10,0,0,1,1,0,0,0,0,0,0,1,0,896,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,957,933,22,0,22,0.0229885057471,0.0229885057471,9.86415882968,10,0,0,0.997910135841,0.997910135841,0,0,0,0,0,0,2,0,933,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,954,931,21,0,21,0.0220125786164,0.0220125786164,9.88784067086,10,0,0,0.997903563941,0.997903563941,0,0,0,0,0,0,2,0,931,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,966,947,18,1,17,0.0186335403727,0.0184886128364,9.91304347826,10,0,0,0.979296066253,0.979296066253,0,0,0,0,0,0,1,0,947,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,868,846,21,0,21,0.0241935483871,0.0241935483871,9.84331797235,10,0,0,0.925115207373,0.925115207373,0,0,0,0,0,0,1,0,846,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,976,954,20,1,19,0.0204918032787,0.0200922131148,9.89856557377,10,0,0,1,1,0,0,0,0,0,0,2,0,954,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,942,919,22,0,22,0.0233545647558,0.0233545647558,9.86518046709,10,0,0,1,1,0,0,0,0,0,0,1,0,919,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,967,944,21,0,21,0.0217166494312,0.0217166494312,9.86659772492,10,0,0,0.997931747673,0.997931747673,0,0,0,0,0,0,2,0,944,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,952,929,21,0,21,0.0220588235294,0.0220588235294,9.88760504202,10,0,0,0.997899159664,0.997899159664,0,0,0,0,0,0,2,0,929,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,955,939,16,1,15,0.0167539267016,0.0166073298429,9.92251308901,10,0,0,0.979057591623,0.979057591623,0,0,0,0,0,0,0,0,939,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,864,842,21,0,21,0.0243055555556,0.0243055555556,9.84259259259,10,0,0,0.924768518519,0.924768518519,0,0,0,0,0,0,1,0,842,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,969,947,20,1,19,0.0206398348813,0.0202373581011,9.89783281734,10,0,0,1,1,0,0,0,0,0,0,2,0,947,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,919,896,22,0,22,0.0239390642002,0.0239390642002,9.86180631121,10,0,0,1,1,0,0,0,0,0,0,1,0,896,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,957,933,22,1,21,0.0229885057471,0.0225600835946,9.86415882968,10,0,0,0.997910135841,0.997910135841,0,0,0,0,0,0,2,0,933,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,943,921,20,0,20,0.0212089077413,0.0212089077413,9.89713679745,10,0,0,0.997879109226,0.997879109226,0,0,0,0,0,0,2,0,921,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,1934,1915,18,0,18,0.00930713547053,0.00930713547053,4.97207859359,5,0,0,0.979317476732,0.979317476732,0,0,0,0,0,0,1,0,1915,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,1758,1735,21,0,21,0.0119453924915,0.0119453924915,4.96245733788,5,0,0,0.923208191126,0.923208191126,0,0,0,0,0,0,2,0,1735,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,1952,1930,20,0,20,0.0102459016393,0.0102459016393,4.97233606557,5,0,0,1,1,0,0,0,0,0,0,2,0,1930,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,1869,1846,22,0,22,0.011771000535,0.011771000535,4.96147672552,5,0,0,1,1,0,0,0,0,0,0,1,0,1846,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,1920,1896,22,0,22,0.0114583333333,0.0114583333333,4.96979166667,5,0,0,0.997395833333,0.997395833333,0,0,0,0,0,0,2,0,1896,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,1935,1912,21,0,21,0.0108527131783,0.0108527131783,4.97054263566,5,0,0,0.997932816537,0.997932816537,0,0,0,0,0,0,2,0,1912,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,1918,1900,17,0,17,0.00886339937435,0.00886339937435,4.97393117831,5,0,0,0.979144942649,0.979144942649,0,0,0,0,0,0,1,0,1900,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,1751,1729,21,0,21,0.0119931467733,0.0119931467733,4.962307253,5,0,0,0.922901199315,0.922901199315,0,0,0,0,0,0,1,0,1729,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,1934,1912,20,0,20,0.0103412616339,0.0103412616339,4.97207859359,5,0,0,1,1,0,0,0,0,0,0,2,0,1912,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,1839,1816,22,0,22,0.0119630233823,0.0119630233823,4.96084828711,5,0,0,1,1,0,0,0,0,0,0,1,0,1816,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,1915,1891,22,0,22,0.0114882506527,0.0114882506527,4.96971279373,5,0,0,0.997389033943,0.997389033943,0,0,0,0,0,0,2,0,1891,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,1908,1885,21,0,21,0.0110062893082,0.0110062893082,4.97012578616,5,0,0,0.997903563941,0.997903563941,0,0,0,0,0,0,2,0,1885,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,3002,0,388,370,17,0,17,0.0438144329897,0.0438144329897,24.5386597938,25,0,0,0.987113402062,0.987113402062,0,0,0,0,0,0,1,0,370,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,high volatility,4002,1,361,340,19,0,19,0.0526315789474,0.0526315789474,24.2991689751,25,0,0,0.92243767313,0.92243767313,0,0,0,0,0,0,2,0,340,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,3001,0,388,366,20,0,20,0.0515463917526,0.0515463917526,24.118556701,25,0,0,1,1,0,0,0,0,0,0,2,0,366,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,low volatility,4001,1,370,347,22,0,22,0.0594594594595,0.0594594594595,24.2648648649,25,0,0,1,1,0,0,0,0,0,0,1,0,347,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,3003,0,382,357,23,0,23,0.0602094240838,0.0602094240838,24.1570680628,25,0,0,1,1,0,0,0,0,0,0,2,0,357,0,0
+zero_queue_control,itch_calibrated,avellaneda stoikov,trending,4003,1,388,366,20,0,20,0.0515463917526,0.0515463917526,24.3041237113,25,0,0,1,1,0,0,0,0,0,0,2,0,366,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,3002,0,379,361,17,0,17,0.0448548812665,0.0448548812665,24.5277044855,25,0,0,0.986807387863,0.986807387863,0,0,0,0,0,0,1,0,361,0,0
+zero_queue_control,itch_calibrated,naive symmetric,high volatility,4002,1,345,326,17,0,17,0.0492753623188,0.0492753623188,24.3246376812,25,0,0,0.91884057971,0.91884057971,0,0,0,0,0,0,2,0,326,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,3001,0,386,365,19,0,19,0.0492227979275,0.0492227979275,24.121761658,25,0,0,1,1,0,0,0,0,0,0,2,0,365,0,0
+zero_queue_control,itch_calibrated,naive symmetric,low volatility,4001,1,366,343,22,0,22,0.0601092896175,0.0601092896175,24.2568306011,25,0,0,1,1,0,0,0,0,0,0,1,0,343,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,3003,0,382,357,23,0,23,0.0602094240838,0.0602094240838,24.1335078534,25,0,0,1,1,0,0,0,0,0,0,2,0,357,0,0
+zero_queue_control,itch_calibrated,naive symmetric,trending,4003,1,383,362,20,0,20,0.0522193211488,0.0522193211488,24.2950391645,25,0,0,1,1,0,0,0,0,0,0,1,0,362,0,0

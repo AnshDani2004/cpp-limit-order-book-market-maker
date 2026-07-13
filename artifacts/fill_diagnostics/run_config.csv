@@ -1,0 +1,20 @@
+field,value
+events,5000
+seeds,2
+regimes,low-volatility high-volatility trending
+strategies,naive avellaneda-stoikov
+zero_queue_control,derived subset of quotes with zero initial displayed queue ahead
+opportunity_trace,C++ simulator rows emitted before each synthetic market event
+scenario:hand_chosen_flow,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:itch_calibrated_flow,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:increased_execution_intensity_2x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=2.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:increased_execution_intensity_5x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=5.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:increased_execution_intensity_10x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=10.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:quote_size_1,flow=itch-calibrated;quote_size=1;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:quote_size_10,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:quote_size_100,flow=itch-calibrated;quote_size=100;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:requote_frequency_fast_5,flow=itch-calibrated;quote_size=10;refresh=5;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:requote_frequency_slow_25,flow=itch-calibrated;quote_size=10;refresh=25;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
+scenario:as_risk_aversion_low,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.001;risk_controls=False;inventory_cap=20000
+scenario:as_risk_aversion_high,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.005;risk_controls=False;inventory_cap=20000
+scenario:inventory_cap_5000,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=True;inventory_cap=5000

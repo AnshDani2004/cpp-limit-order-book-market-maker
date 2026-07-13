@@ -261,16 +261,22 @@ void sync_after_external_result(MatchingEngine& engine,
 class ExternalFlowGenerator {
 public:
     ExternalFlowGenerator(const RegimeConfig& regime, const std::vector<double>& reference_path)
-        : ExternalFlowGenerator(regime, reference_path, ExternalFlowProfile::HandChosen) {}
+        : ExternalFlowGenerator(regime, reference_path, ExternalFlowProfile::HandChosen, 1.0) {}
 
     ExternalFlowGenerator(const RegimeConfig& regime,
                           const std::vector<double>& reference_path,
-                          ExternalFlowProfile profile)
+                          ExternalFlowProfile profile,
+                          double market_intensity_multiplier)
         : regime_(regime),
           reference_path_(reference_path),
           profile_kind_(profile),
           profile_(external_flow_profile_spec(profile)),
-          rng_(regime.seed ^ 0x9e3779b97f4a7c15ULL) {}
+          rng_(regime.seed ^ 0x9e3779b97f4a7c15ULL) {
+        profile_.market_weight = std::max(1,
+                                          static_cast<int>(
+                                              std::llround(static_cast<double>(profile_.market_weight) *
+                                                           market_intensity_multiplier)));
+    }
 
     GeneratedExternalFlow generate() {
         GeneratedExternalFlow flow;
@@ -448,7 +454,7 @@ private:
     const RegimeConfig& regime_;
     const std::vector<double>& reference_path_;
     ExternalFlowProfile profile_kind_{ExternalFlowProfile::HandChosen};
-    const ExternalFlowProfileSpec& profile_;
+    ExternalFlowProfileSpec profile_;
     std::mt19937_64 rng_;
     MatchingEngine generation_engine_{};
     ActiveExternalIndex active_{};
@@ -790,6 +796,86 @@ QueueSnapshot queue_snapshot_before_quote(const MatchingEngine& engine, Side sid
     return QueueSnapshot{level->second.size(), level_depth(level->second)};
 }
 
+MarketMakerExecutionOpportunity make_execution_opportunity(const MatchingEngine& engine,
+                                                           const MarketMakerSimulationConfig& config,
+                                                           StrategyKind kind,
+                                                           const ExternalEvent& event,
+                                                           std::size_t event_index) {
+    MarketMakerExecutionOpportunity opportunity;
+    opportunity.event_index = event_index;
+    opportunity.strategy_name = strategy_name(kind);
+    opportunity.regime_name = config.regime.name;
+    opportunity.risk_mode = risk_mode_name(config);
+    opportunity.external_flow_profile = external_flow_profile_name(config.external_flow_profile);
+    opportunity.seed = config.regime.seed;
+    opportunity.aggressive_side = event.order.side;
+    opportunity.execution_size = event.order.quantity;
+    opportunity.best_bid_before = engine.book().best_bid();
+    opportunity.best_ask_before = engine.book().best_ask();
+
+    const auto resting_side = opposite(event.order.side);
+    const PriceLevel* touched_level = nullptr;
+    if (resting_side == Side::Buy) {
+        touched_level = engine.book().best_bid_level();
+        if (opportunity.best_bid_before.has_value()) {
+            opportunity.execution_price = *opportunity.best_bid_before;
+        }
+    } else {
+        touched_level = engine.book().best_ask_level();
+        if (opportunity.best_ask_before.has_value()) {
+            opportunity.execution_price = *opportunity.best_ask_before;
+        }
+    }
+
+    if (touched_level == nullptr) {
+        opportunity.no_fill_reason = "no_opposite_liquidity";
+        return opportunity;
+    }
+
+    bool seen_market_maker = false;
+    for (const auto& resting_order : *touched_level) {
+        opportunity.displayed_depth_at_touched_level += resting_order.remaining_quantity;
+        if (resting_order.owner_id == kMarketMakerOwner) {
+            seen_market_maker = true;
+            opportunity.market_maker_quote_present_at_touched_level = true;
+            opportunity.market_maker_size_at_touched_level += resting_order.remaining_quantity;
+        } else if (!seen_market_maker) {
+            opportunity.market_maker_queue_quantity_ahead += resting_order.remaining_quantity;
+        }
+    }
+    if (!opportunity.market_maker_quote_present_at_touched_level) {
+        opportunity.no_fill_reason = "quote_not_at_touched_price";
+    }
+    return opportunity;
+}
+
+void complete_execution_opportunity(MarketMakerExecutionOpportunity& opportunity,
+                                    const ExecutionResult& result) {
+    bool reached_market_maker = false;
+    Quantity executed_before_market_maker = 0;
+    for (const auto& trade : result.trades) {
+        if (is_market_maker_order(trade.maker_order_id)) {
+            reached_market_maker = true;
+            opportunity.maker_fill_size_from_event += trade.quantity;
+        } else if (!reached_market_maker) {
+            executed_before_market_maker += trade.quantity;
+        }
+    }
+
+    opportunity.size_executed_before_reaching_market_maker = executed_before_market_maker;
+    if (opportunity.maker_fill_size_from_event > 0) {
+        opportunity.no_fill_reason = "filled";
+    } else if (!opportunity.market_maker_quote_present_at_touched_level) {
+        if (opportunity.no_fill_reason.empty()) {
+            opportunity.no_fill_reason = "quote_not_at_touched_price";
+        }
+    } else if (opportunity.market_maker_queue_quantity_ahead > 0) {
+        opportunity.no_fill_reason = "behind_queue";
+    } else {
+        opportunity.no_fill_reason = "insufficient_opposite_execution_volume";
+    }
+}
+
 std::vector<TerminalLiquidationLevel> make_terminal_liquidation_ladder(const MatchingEngine& engine,
                                                                        const MarketMakerSimulationConfig& config,
                                                                        StrategyKind kind,
@@ -836,6 +922,9 @@ void validate_common_config(const MarketMakerSimulationConfig& config) {
     }
     if (config.curve_sample_stride == 0) {
         throw std::invalid_argument("curve sample stride must be positive");
+    }
+    if (config.external_market_intensity_multiplier <= 0.0) {
+        throw std::invalid_argument("external market intensity multiplier must be positive");
     }
     const auto& risk = config.risk_controls;
     if (risk.inventory_cap <= 0) {
@@ -1170,8 +1259,11 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
     }
 
     const auto reference_path = generate_reference_path(config.regime);
-    auto external_flow =
-        ExternalFlowGenerator(config.regime, reference_path, config.external_flow_profile).generate();
+    auto external_flow = ExternalFlowGenerator(config.regime,
+                                               reference_path,
+                                               config.external_flow_profile,
+                                               config.external_market_intensity_multiplier)
+                             .generate();
     const auto& external_events = external_flow.events;
 
     MatchingEngine engine;
@@ -1242,9 +1334,18 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
                            next_market_maker_timestamp);
         }
 
+        std::optional<MarketMakerExecutionOpportunity> opportunity;
+        if (external_events[event_index].action == ExternalAction::Market) {
+            opportunity = make_execution_opportunity(engine, config, kind, external_events[event_index], event_index);
+        }
+
         const auto external_result = apply_external_event(engine, external_events[event_index]);
         if (!external_result.accepted) {
             ++result.summary.external_rejects;
+        }
+        if (opportunity.has_value()) {
+            complete_execution_opportunity(*opportunity, external_result);
+            result.execution_opportunities.push_back(*opportunity);
         }
         record_market_maker_trades(accounting,
                                    result.summary,

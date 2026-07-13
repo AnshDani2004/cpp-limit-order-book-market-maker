@@ -56,6 +56,13 @@ Stage 5C paired statistics and Stage 5D queue diagnostics are checked in as repr
 - [Performance](docs/performance.md): Stage 2 benchmark methodology and latency analysis.
 - [Stage 5C seed statistics](docs/stage5c_seed_statistics.md): 30-seed intervals and paired same-seed delta addendum.
 - [Stage 5D queue position](docs/stage5d_queue_position.md): queue-depth and sparse-execution diagnostic.
+- [Fill-rate and queue diagnostics](docs/fill_rate_queue_diagnostics.md): quote lifecycle tracking, execution-opportunity audit, fill decomposition, and controlled sparse-execution versus queue-position checks.
+
+## Fill-Rate And Queue Diagnostics
+
+The fill-rate diagnostic extension records market-maker quote lifecycles and per-market-event execution opportunities, then decomposes fills by flow profile, queue position, quote lifetime, quote size, and strategy. It compares hand-chosen and ITCH-calibrated flow with paired naive versus Avellaneda Stoikov runs plus bounded controls for zero displayed queue ahead, increased execution intensity, quote size, requote frequency, and inventory/risk settings.
+
+The current result is technical and limited: under the checked diagnostic, sparse execution flow dominates the ITCH-calibrated fill-rate collapse, while queue position remains a secondary filter. The default diagnostic uses two seeds, so it is not a replacement for the Stage 5C confidence-interval pass.
 
 ## Limitations
 

@@ -41,6 +41,7 @@ struct RiskControlConfig {
 struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
     ExternalFlowProfile external_flow_profile{ExternalFlowProfile::HandChosen};
+    double external_market_intensity_multiplier{1.0};
     NaiveSymmetricConfig naive{};
     AvellanedaStoikovConfig avellaneda_stoikov{};
     AvellanedaStoikovConfig calibrated_avellaneda_stoikov{0.002, 0.63274456291, 10, 10};
@@ -187,6 +188,27 @@ struct MarketMakerQuoteQueueEvent {
     bool canceled_unfilled{};
 };
 
+struct MarketMakerExecutionOpportunity {
+    std::size_t event_index{};
+    std::string strategy_name{};
+    std::string regime_name{};
+    std::string risk_mode{};
+    std::string external_flow_profile{};
+    std::uint64_t seed{};
+    Side aggressive_side{Side::Buy};
+    Price execution_price{};
+    Quantity execution_size{};
+    std::optional<Price> best_bid_before{};
+    std::optional<Price> best_ask_before{};
+    Quantity displayed_depth_at_touched_level{};
+    bool market_maker_quote_present_at_touched_level{};
+    Quantity market_maker_queue_quantity_ahead{};
+    Quantity market_maker_size_at_touched_level{};
+    Quantity size_executed_before_reaching_market_maker{};
+    Quantity maker_fill_size_from_event{};
+    std::string no_fill_reason{};
+};
+
 struct MarketMakerRunResult {
     MarketMakerSummary summary{};
     std::vector<MarketMakerCurvePoint> curve{};
@@ -194,6 +216,7 @@ struct MarketMakerRunResult {
     std::vector<TerminalLiquidationLevel> terminal_liquidation_levels{};
     std::vector<TerminalLiquidationTrade> terminal_liquidation_trades{};
     std::vector<MarketMakerQuoteQueueEvent> quote_queue_events{};
+    std::vector<MarketMakerExecutionOpportunity> execution_opportunities{};
 };
 
 std::string external_flow_profile_name(ExternalFlowProfile profile);
