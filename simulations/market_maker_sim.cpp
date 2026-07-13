@@ -28,6 +28,7 @@ struct Args {
     std::size_t refresh_cadence{10};
     double risk_aversion{0.002};
     double external_market_intensity_multiplier{1.0};
+    bool force_zero_queue_quotes{false};
     bool risk_controls{false};
     lob::Quantity inventory_cap{20000};
     double soft_start_fraction{0.50};
@@ -107,6 +108,8 @@ Args parse_args(int argc, char** argv) {
             args.risk_aversion = parse_double(require_value());
         } else if (argument == "--external-market-intensity-multiplier") {
             args.external_market_intensity_multiplier = parse_double(require_value());
+        } else if (argument == "--force-zero-queue-quotes") {
+            args.force_zero_queue_quotes = true;
         } else if (argument == "--risk-controls") {
             args.risk_controls = true;
         } else if (argument == "--inventory-cap") {
@@ -227,6 +230,7 @@ void write_run_config(const std::filesystem::path& path, const Args& args) {
     output << "quote_size," << args.quote_size << '\n';
     output << "refresh_cadence," << args.refresh_cadence << '\n';
     output << "external_market_intensity_multiplier," << args.external_market_intensity_multiplier << '\n';
+    output << "force_zero_queue_quotes," << (args.force_zero_queue_quotes ? "true" : "false") << '\n';
     output << "risk_controls_enabled," << (args.risk_controls ? "true" : "false") << '\n';
     output << "inventory_cap," << args.inventory_cap << '\n';
     output << "soft_start_fraction," << args.soft_start_fraction << '\n';
@@ -277,7 +281,8 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
            << "inventory_pnl_from_marks,inventory_pnl_mark_error,gross_identity_error,"
            << "net_identity_error,adverse_selection_cost,fee_pnl,net_pnl_after_fees,maximum_drawdown,"
            << "terminal_liquidation_cost,terminal_inventory_penalty,risk_adjusted_pnl,"
-           << "inventory_variance,pre_liquidation_inventory,final_inventory,"
+           << "inventory_mean,inventory_variance,max_abs_inventory,"
+           << "pre_liquidation_inventory,final_inventory,"
            << "terminal_liquidation_quantity,terminal_liquidation_residual_inventory,"
            << "maker_fills,taker_fills,passive_taker_fills,terminal_liquidation_trades,"
            << "market_maker_buy_fills,market_maker_sell_fills,market_maker_filled_quantity,"
@@ -317,7 +322,9 @@ void write_summary(const std::filesystem::path& path, const std::vector<lob::Mar
                << summary.terminal_liquidation_cost << ','
                << summary.terminal_inventory_penalty << ','
                << summary.risk_adjusted_pnl << ','
+               << summary.inventory_mean << ','
                << summary.inventory_variance << ','
+               << summary.max_abs_inventory << ','
                << summary.pre_liquidation_inventory << ','
                << summary.final_inventory << ','
                << summary.terminal_liquidation_quantity << ','
@@ -591,6 +598,7 @@ int main(int argc, char** argv) {
             config.regime = regime;
             config.external_flow_profile = args.flow_profile;
             config.external_market_intensity_multiplier = args.external_market_intensity_multiplier;
+            config.force_zero_queue_quotes = args.force_zero_queue_quotes;
             config.markout_horizon = args.markout_horizon;
             config.curve_sample_stride = args.curve_sample_stride;
             config.naive.quote_size = args.quote_size;

@@ -1,0 +1,37 @@
+regime,strategy,mechanism,mean_absolute_fill_rate_effect,relative_share_of_observed_effects,interpretation
+high volatility,naive symmetric,sparse_execution_flow,0.581,0.951678951679,largest observed effect in this diagnostic
+high volatility,naive symmetric,queue_position,0.0008,0.0013104013104,secondary or not identified as a primary blocker
+high volatility,naive symmetric,quote_lifetime,0.0281,0.0460278460278,secondary or not identified as a primary blocker
+high volatility,naive symmetric,strategy_choice,0.0006,0.000982800982801,secondary or not identified as a primary blocker
+high volatility,naive symmetric,quote_size,0,0,secondary or not identified as a primary blocker
+high volatility,naive symmetric,residual_unexplained,0,0,not estimated by this controlled-difference attribution
+low volatility,naive symmetric,sparse_execution_flow,0.7206,0.962468278349,largest observed effect in this diagnostic
+low volatility,naive symmetric,queue_position,0.0002,0.000267129691465,secondary or not identified as a primary blocker
+low volatility,naive symmetric,quote_lifetime,0.0279,0.0372645919594,secondary or not identified as a primary blocker
+low volatility,naive symmetric,strategy_choice,0,0,secondary or not identified as a primary blocker
+low volatility,naive symmetric,quote_size,0,0,secondary or not identified as a primary blocker
+low volatility,naive symmetric,residual_unexplained,0,0,not estimated by this controlled-difference attribution
+trending,naive symmetric,sparse_execution_flow,0.6884,0.961855526058,largest observed effect in this diagnostic
+trending,naive symmetric,queue_position,0,0,secondary or not identified as a primary blocker
+trending,naive symmetric,quote_lifetime,0.0273,0.0381444739416,secondary or not identified as a primary blocker
+trending,naive symmetric,strategy_choice,0,0,secondary or not identified as a primary blocker
+trending,naive symmetric,quote_size,0,0,secondary or not identified as a primary blocker
+trending,naive symmetric,residual_unexplained,0,0,not estimated by this controlled-difference attribution
+high volatility,avellaneda stoikov,sparse_execution_flow,0.587,0.951377633712,largest observed effect in this diagnostic
+high volatility,avellaneda stoikov,queue_position,0.0004,0.00064829821718,secondary or not identified as a primary blocker
+high volatility,avellaneda stoikov,quote_lifetime,0.029,0.0470016207455,secondary or not identified as a primary blocker
+high volatility,avellaneda stoikov,strategy_choice,0.0006,0.00097244732577,secondary or not identified as a primary blocker
+high volatility,avellaneda stoikov,quote_size,0,0,secondary or not identified as a primary blocker
+high volatility,avellaneda stoikov,residual_unexplained,0,0,not estimated by this controlled-difference attribution
+low volatility,avellaneda stoikov,sparse_execution_flow,0.7206,0.961569255404,largest observed effect in this diagnostic
+low volatility,avellaneda stoikov,queue_position,0.0004,0.000533760341607,secondary or not identified as a primary blocker
+low volatility,avellaneda stoikov,quote_lifetime,0.0284,0.0378969842541,secondary or not identified as a primary blocker
+low volatility,avellaneda stoikov,strategy_choice,0,0,secondary or not identified as a primary blocker
+low volatility,avellaneda stoikov,quote_size,0,0,secondary or not identified as a primary blocker
+low volatility,avellaneda stoikov,residual_unexplained,0,0,not estimated by this controlled-difference attribution
+trending,avellaneda stoikov,sparse_execution_flow,0.6924,0.962067528137,largest observed effect in this diagnostic
+trending,avellaneda stoikov,queue_position,0,0,secondary or not identified as a primary blocker
+trending,avellaneda stoikov,quote_lifetime,0.0273,0.0379324718633,secondary or not identified as a primary blocker
+trending,avellaneda stoikov,strategy_choice,0,0,secondary or not identified as a primary blocker
+trending,avellaneda stoikov,quote_size,0,0,secondary or not identified as a primary blocker
+trending,avellaneda stoikov,residual_unexplained,0,0,not estimated by this controlled-difference attribution

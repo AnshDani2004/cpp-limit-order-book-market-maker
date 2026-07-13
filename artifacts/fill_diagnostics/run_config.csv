@@ -1,20 +1,20 @@
 field,value
-events,5000
-seeds,2
+mode,full
+events,2500
+seeds,10
 regimes,low-volatility high-volatility trending
 strategies,naive avellaneda-stoikov
-zero_queue_control,derived subset of quotes with zero initial displayed queue ahead
+zero_initial_queue_subset,derived subset of quotes with zero initial displayed queue ahead
+physical_zero_queue_implementation,market maker quote is shifted to a nearby non-crossing empty same-side price level when needed
 opportunity_trace,C++ simulator rows emitted before each synthetic market event
-scenario:hand_chosen_flow,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:itch_calibrated_flow,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:increased_execution_intensity_2x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=2.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:increased_execution_intensity_5x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=5.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:increased_execution_intensity_10x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=10.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:quote_size_1,flow=itch-calibrated;quote_size=1;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:quote_size_10,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:quote_size_100,flow=itch-calibrated;quote_size=100;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:requote_frequency_fast_5,flow=itch-calibrated;quote_size=10;refresh=5;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:requote_frequency_slow_25,flow=itch-calibrated;quote_size=10;refresh=25;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000
-scenario:as_risk_aversion_low,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.001;risk_controls=False;inventory_cap=20000
-scenario:as_risk_aversion_high,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.005;risk_controls=False;inventory_cap=20000
-scenario:inventory_cap_5000,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=True;inventory_cap=5000
+seeds:low-volatility,3001 4001 5001 6001 7001 8001 9001 10001 11001 12001
+seeds:high-volatility,3002 4002 5002 6002 7002 8002 9002 10002 11002 12002
+seeds:trending,3003 4003 5003 6003 7003 8003 9003 10003 11003 12003
+scenario:hand_chosen_flow,flow=hand-chosen;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:itch_calibrated_flow,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:physical_zero_queue_itch_calibrated_flow,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=True
+scenario:increased_execution_intensity_2x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=2.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:increased_execution_intensity_5x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=5.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:increased_execution_intensity_10x,flow=itch-calibrated;quote_size=10;refresh=10;market_multiplier=10.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:requote_frequency_fast_5,flow=itch-calibrated;quote_size=10;refresh=5;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False
+scenario:requote_frequency_slow_25,flow=itch-calibrated;quote_size=10;refresh=25;market_multiplier=1.0;risk_aversion=0.002;risk_controls=False;inventory_cap=20000;force_zero_queue_quotes=False

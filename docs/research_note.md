@@ -391,6 +391,23 @@ The calibrated flow does not bury most market maker quotes at placement; zero-qu
 
 This is a one-seed diagnostic, not a 30-seed statistical pass. It is enough to answer the Stage 5B mechanism question at the checked seed, but it should not be read as a confidence interval result. See [stage5d_queue_position.md](stage5d_queue_position.md).
 
+## Fill-Rate Diagnostic Extension
+
+After Stage 5D, the fill-rate diagnostic was extended from a two-seed broad mechanism check to a focused ten-seed paired pass. The new `--full` mode runs `2500` events per run across `8` scenarios, `3` regimes, `2` strategies, and `10` deterministic seeds. The checked artifact set contains `252000` quote lifecycle rows, `50304` execution opportunity rows, `4500` paired-difference rows, and `60` zero-queue comparison rows. See [fill_rate_queue_diagnostics.md](fill_rate_queue_diagnostics.md).
+
+The extension separates two zero-queue concepts that were previously easy to blur:
+
+```text
+zero_initial_queue_subset: derived subset from normal itch_calibrated_flow rows
+physical_zero_queue_itch_calibrated_flow: separate run that shifts market maker quotes to a nearby non-crossing empty same-side level
+```
+
+In the checked full artifact, all `30000` physical zero-queue quote rows have `initial_queue_ahead == 0`. The result is sharper than the earlier subset-only diagnostic: physical first-in-queue placement does not materially rescue fill rates. Normal ITCH-calibrated naive fill rates are `0.0186`, `0.0154`, and `0.0182` in low volatility, high volatility, and trending; physical zero-queue fill rates are `0.0188`, `0.0162`, and `0.0182`.
+
+The execution-intensity sweep remains monotone: naive low-volatility fill rate moves from `0.0186` under normal ITCH-calibrated flow to `0.0394`, `0.0974`, and `0.1946` under `2x`, `5x`, and `10x` execution intensity. Slower requoting also helps in sparse flow: low-volatility naive fill rate rises from `0.0186` at cadence `10` to `0.0465` at cadence `25`.
+
+The strategy result remains limited. In the full fill-rate diagnostic, Avellaneda Stoikov does not show broad PnL or fill-rate dominance; under the normal ITCH-calibrated baseline, AS minus naive has mean net PnL delta `-13.93`, mean risk-adjusted PnL delta `-0.06`, and mean fill-rate delta `0.00020`. The main finding is mechanism attribution: sparse execution flow is still the dominant observed fill-rate constraint, while queue position and strategy choice are secondary in this diagnostic.
+
 ## Build And Test
 
 ```bash

@@ -1,0 +1,61 @@
+regime,strategy,seed,baseline_fill_rate,zero_initial_queue_subset_fill_rate,physical_zero_queue_fill_rate,baseline_external_execution_count,physical_zero_queue_external_execution_count,interpretation
+high volatility,naive symmetric,3002,0.018,0.0144628099174,0.018,10,10,zero_queue_does_not_increase_fill_rate
+high volatility,naive symmetric,4002,0.016,0.0186046511628,0.016,12,12,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,naive symmetric,5002,0.014,0.0148305084746,0.014,8,8,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,naive symmetric,6002,0.014,0.0150537634409,0.016,9,9,both_zero_queue_views_increase_fill_rate
+high volatility,naive symmetric,7002,0.024,0.025,0.026,14,14,both_zero_queue_views_increase_fill_rate
+high volatility,naive symmetric,8002,0.014,0.0131868131868,0.014,9,9,zero_queue_does_not_increase_fill_rate
+high volatility,naive symmetric,9002,0.01,0.0112107623318,0.01,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,naive symmetric,10002,0.01,0.010183299389,0.012,6,6,both_zero_queue_views_increase_fill_rate
+high volatility,naive symmetric,11002,0.018,0.0175438596491,0.02,11,11,physical_zero_queue_increases_fill_rate_but_subset_does_not
+high volatility,naive symmetric,12002,0.016,0.0165289256198,0.016,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,3001,0.02,0.020325203252,0.02,10,10,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,4001,0.02,0.0205761316872,0.02,10,10,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,5001,0.018,0.0167364016736,0.018,9,9,zero_queue_does_not_increase_fill_rate
+low volatility,naive symmetric,6001,0.012,0.0124481327801,0.012,7,7,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,7001,0.03,0.030549898167,0.03,15,15,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,8001,0.022,0.0222672064777,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,9001,0.018,0.0185567010309,0.018,12,12,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,10001,0.012,0.0120481927711,0.012,6,6,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,naive symmetric,11001,0.016,0.017094017094,0.018,10,10,both_zero_queue_views_increase_fill_rate
+low volatility,naive symmetric,12001,0.018,0.0184049079755,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,3003,0.026,0.0246913580247,0.026,14,14,zero_queue_does_not_increase_fill_rate
+trending,naive symmetric,4003,0.018,0.0184049079755,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,5003,0.022,0.0222672064777,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,6003,0.014,0.0136054421769,0.014,10,10,zero_queue_does_not_increase_fill_rate
+trending,naive symmetric,7003,0.022,0.0222222222222,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,8003,0.01,0.0102669404517,0.01,7,7,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,9003,0.016,0.0177777777778,0.016,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,10003,0.024,0.025,0.024,13,13,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,11003,0.012,0.0120724346076,0.012,6,6,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,naive symmetric,12003,0.018,0.0184804928131,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,3002,0.018,0.0164271047228,0.018,10,10,zero_queue_does_not_increase_fill_rate
+high volatility,avellaneda stoikov,4002,0.016,0.0184757505774,0.016,12,12,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,5002,0.014,0.014799154334,0.014,8,8,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,6002,0.016,0.017094017094,0.016,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,7002,0.026,0.027139874739,0.026,14,14,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,8002,0.014,0.0151515151515,0.016,9,9,both_zero_queue_views_increase_fill_rate
+high volatility,avellaneda stoikov,9002,0.01,0.0110864745011,0.01,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+high volatility,avellaneda stoikov,10002,0.01,0.0102880658436,0.012,6,6,both_zero_queue_views_increase_fill_rate
+high volatility,avellaneda stoikov,11002,0.02,0.0197368421053,0.02,11,11,zero_queue_does_not_increase_fill_rate
+high volatility,avellaneda stoikov,12002,0.016,0.0163599182004,0.016,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,3001,0.02,0.0201612903226,0.02,10,10,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,4001,0.02,0.0204498977505,0.02,10,10,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,5001,0.018,0.01875,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,6001,0.012,0.0123203285421,0.012,7,7,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,7001,0.03,0.0304259634888,0.03,15,15,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,8001,0.022,0.0222222222222,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+low volatility,avellaneda stoikov,9001,0.018,0.0163599182004,0.02,12,12,physical_zero_queue_increases_fill_rate_but_subset_does_not
+low volatility,avellaneda stoikov,10001,0.012,0.012,0.012,6,6,zero_queue_does_not_increase_fill_rate
+low volatility,avellaneda stoikov,11001,0.016,0.0172043010753,0.018,10,10,both_zero_queue_views_increase_fill_rate
+low volatility,avellaneda stoikov,12001,0.018,0.0182555780933,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,3003,0.026,0.0245398773006,0.026,14,14,zero_queue_does_not_increase_fill_rate
+trending,avellaneda stoikov,4003,0.018,0.0183673469388,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,5003,0.022,0.0224489795918,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,6003,0.014,0.0138248847926,0.014,10,10,zero_queue_does_not_increase_fill_rate
+trending,avellaneda stoikov,7003,0.022,0.0222672064777,0.022,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,8003,0.01,0.0102249488753,0.01,7,7,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,9003,0.016,0.0177383592018,0.016,11,11,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,10003,0.024,0.0245398773006,0.024,13,13,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,11003,0.012,0.0121703853955,0.012,6,6,derived_subset_increases_fill_rate_but_physical_control_does_not
+trending,avellaneda stoikov,12003,0.018,0.0182926829268,0.018,9,9,derived_subset_increases_fill_rate_but_physical_control_does_not

@@ -15,7 +15,7 @@ The project is built around reproducible claims. Each stage adds measured behavi
 - Nasdaq ITCH replay: `12,423` bounded QQQ messages translated and replayed, including direct named resting order execution.
 - Market-making simulations: naive versus Avellaneda Stoikov with attribution, risk controls, terminal liquidation, and paired same-seed statistics.
 - Main strategy finding: robust claim is selected inventory-risk and risk-adjusted improvement under hand-chosen flow, not broad PnL dominance.
-- Queue diagnostic: ITCH calibrated fill-rate collapse is dominated by sparse executions; even zero-queue calibrated quotes filled around `1.8` to `2.0` percent versus roughly `72` to `74` percent for hand-chosen zero-queue quotes.
+- Queue diagnostics: ITCH calibrated fill-rate collapse is dominated by sparse executions; in the focused ten-seed pass, physical first-in-queue ITCH-calibrated quotes still filled only around `1.6` to `1.9` percent.
 
 ## How To Build And Test
 
@@ -46,7 +46,7 @@ Stage 4A ITCH replay:
 python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage4a_itch_replay
 ```
 
-Stage 5C paired statistics and Stage 5D queue diagnostics are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
+Stage 5C paired statistics, Stage 5D queue diagnostics, and the fill-rate diagnostic extension are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
 
 ## Documentation
 
@@ -60,9 +60,9 @@ Stage 5C paired statistics and Stage 5D queue diagnostics are checked in as repr
 
 ## Fill-Rate And Queue Diagnostics
 
-The fill-rate diagnostic extension records market-maker quote lifecycles and per-market-event execution opportunities, then decomposes fills by flow profile, queue position, quote lifetime, quote size, and strategy. It compares hand-chosen and ITCH-calibrated flow with paired naive versus Avellaneda Stoikov runs plus bounded controls for zero displayed queue ahead, increased execution intensity, quote size, requote frequency, and inventory/risk settings.
+The fill-rate diagnostic extension records market-maker quote lifecycles and per-market-event execution opportunities, then decomposes fills by flow profile, queue position, quote lifetime, and strategy. It compares hand-chosen and ITCH-calibrated flow with paired naive versus Avellaneda Stoikov runs plus controls for a derived zero-initial-queue subset, a physical first-in-queue scenario, increased execution intensity, and requote frequency.
 
-The current result is technical and limited: under the checked diagnostic, sparse execution flow dominates the ITCH-calibrated fill-rate collapse, while queue position remains a secondary filter. The default diagnostic uses two seeds, so it is not a replacement for the Stage 5C confidence-interval pass.
+The current result is technical and limited: under the checked ten-seed diagnostic, sparse execution flow dominates the ITCH-calibrated fill-rate collapse. Physical first-in-queue placement does not materially rescue fills, while increasing execution intensity and slowing requotes move fill rates in the expected direction. Stage 5C remains the stronger strategy-comparison pass.
 
 ## Limitations
 

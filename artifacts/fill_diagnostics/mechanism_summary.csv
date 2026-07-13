@@ -1,0 +1,22 @@
+comparison,scenario,regime,metric,sample_count,mean_delta,stddev_delta,median_delta,p05_delta,p95_delta,ci95_low,ci95_high
+execution_intensity_10x_minus_itch,increased_execution_intensity_10x,high volatility,fill_rate_by_quote_count,20,0.1659,0.0192979409864,0.163,0.144,0.21,0.157442304457,0.174357695543
+execution_intensity_10x_minus_itch,increased_execution_intensity_10x,low volatility,fill_rate_by_quote_count,20,0.1762,0.0132331322624,0.179,0.152,0.192,0.170400324074,0.181999675926
+execution_intensity_10x_minus_itch,increased_execution_intensity_10x,trending,fill_rate_by_quote_count,20,0.1689,0.0194175720744,0.169,0.136,0.194,0.160389873821,0.177410126179
+execution_intensity_2x_minus_itch,increased_execution_intensity_2x,high volatility,fill_rate_by_quote_count,20,0.0195,0.00933302004487,0.021,0.008,0.034,0.0154096236179,0.0235903763821
+execution_intensity_2x_minus_itch,increased_execution_intensity_2x,low volatility,fill_rate_by_quote_count,20,0.0209,0.00500420875495,0.02,0.014,0.03,0.0187068088139,0.0230931911861
+execution_intensity_2x_minus_itch,increased_execution_intensity_2x,trending,fill_rate_by_quote_count,20,0.0219,0.00790669270136,0.021,0.01,0.038,0.0184347391379,0.0253652608621
+execution_intensity_5x_minus_itch,increased_execution_intensity_5x,high volatility,fill_rate_by_quote_count,20,0.0731,0.0118139079501,0.074,0.054,0.09,0.0679223265538,0.0782776734462
+execution_intensity_5x_minus_itch,increased_execution_intensity_5x,low volatility,fill_rate_by_quote_count,20,0.079,0.0122517453107,0.08,0.054,0.1,0.0736304358699,0.0843695641301
+execution_intensity_5x_minus_itch,increased_execution_intensity_5x,trending,fill_rate_by_quote_count,20,0.0783,0.0147580486515,0.078,0.05,0.102,0.071832,0.084768
+itch_calibrated_minus_hand_chosen,itch_calibrated_flow,high volatility,fill_rate_by_quote_count,20,-0.584,0.0422224684511,-0.579,-0.648,-0.522,-0.602504812688,-0.565495187312
+itch_calibrated_minus_hand_chosen,itch_calibrated_flow,low volatility,fill_rate_by_quote_count,20,-0.7206,0.0238071196781,-0.726,-0.754,-0.682,-0.731033930238,-0.710166069762
+itch_calibrated_minus_hand_chosen,itch_calibrated_flow,trending,fill_rate_by_quote_count,20,-0.6904,0.032003947125,-0.698,-0.728,-0.642,-0.704426348259,-0.676373651741
+physical_zero_queue_minus_normal_itch,physical_zero_queue_itch_calibrated_flow,high volatility,fill_rate_by_quote_count,20,0.0006,0.000940324691963,0,0,0.002,0.000187884533298,0.0010121154667
+physical_zero_queue_minus_normal_itch,physical_zero_queue_itch_calibrated_flow,low volatility,fill_rate_by_quote_count,20,0.0003,0.000732695097065,0,0,0.002,-2.11177845884e-05,0.000621117784588
+physical_zero_queue_minus_normal_itch,physical_zero_queue_itch_calibrated_flow,trending,fill_rate_by_quote_count,20,0,0,0,0,0,0,0
+requote_frequency_slow_25_minus_itch,requote_frequency_slow_25,high volatility,fill_rate_by_quote_count,20,0.02855,0.00964351431902,0.031,0.014,0.041,0.0243235435024,0.0327764564976
+requote_frequency_slow_25_minus_itch,requote_frequency_slow_25,low volatility,fill_rate_by_quote_count,20,0.02815,0.00759691765749,0.027,0.018,0.045,0.0248205040369,0.0314794959631
+requote_frequency_slow_25_minus_itch,requote_frequency_slow_25,trending,fill_rate_by_quote_count,20,0.0273,0.00771942184909,0.027,0.015,0.039,0.0239168142077,0.0306831857923
+zero_initial_queue_subset_minus_normal_itch,zero_initial_queue_subset,high volatility,fill_rate_by_quote_count,20,0.000458205522065,0.00135863796604,0.0008148314043,-0.0015728952772,0.0024757505774,-0.000137243820314,0.00105365486444
+zero_initial_queue_subset_minus_normal_itch,zero_initial_queue_subset,low volatility,fill_rate_by_quote_count,20,0.000257814630215,0.000660245598698,0.00036505561375,-0.0012635983264,0.001094017094,-3.15507617298e-05,0.00054718002216
+zero_initial_queue_subset_minus_normal_itch,zero_initial_queue_subset,trending,fill_rate_by_quote_count,20,0.000260166566435,0.000771747727911,0.0002672064777,-0.0013086419753,0.0017383592018,-7.80667882588e-05,0.000598399921129

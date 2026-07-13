@@ -42,6 +42,7 @@ struct MarketMakerSimulationConfig {
     RegimeConfig regime{};
     ExternalFlowProfile external_flow_profile{ExternalFlowProfile::HandChosen};
     double external_market_intensity_multiplier{1.0};
+    bool force_zero_queue_quotes{false};
     NaiveSymmetricConfig naive{};
     AvellanedaStoikovConfig avellaneda_stoikov{};
     AvellanedaStoikovConfig calibrated_avellaneda_stoikov{0.002, 0.63274456291, 10, 10};
@@ -72,7 +73,9 @@ struct MarketMakerSummary {
     double terminal_inventory_penalty{};
     double risk_adjusted_pnl{};
     double maximum_drawdown{};
+    double inventory_mean{};
     double inventory_variance{};
+    Quantity max_abs_inventory{};
     Quantity pre_liquidation_inventory{};
     Quantity final_inventory{};
     Quantity terminal_liquidation_quantity{};

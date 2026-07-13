@@ -81,7 +81,9 @@ SUMMARY_METRICS = [
     "terminal_inventory_penalty",
     "risk_adjusted_pnl",
     "maximum_drawdown",
+    "inventory_mean",
     "inventory_variance",
+    "max_abs_inventory",
     "pre_liquidation_inventory",
     "final_inventory",
     "maker_fills",
@@ -99,12 +101,14 @@ class Scenario:
     risk_aversion: float = 0.002
     risk_controls: bool = False
     inventory_cap: int = 20_000
+    force_zero_queue_quotes: bool = False
 
 
-def default_scenarios():
+def quick_scenarios():
     return [
         Scenario("hand_chosen_flow", "hand-chosen"),
         Scenario("itch_calibrated_flow", "itch-calibrated"),
+        Scenario("physical_zero_queue_itch_calibrated_flow", "itch-calibrated", force_zero_queue_quotes=True),
         Scenario("increased_execution_intensity_2x", "itch-calibrated", market_multiplier=2.0),
         Scenario("increased_execution_intensity_5x", "itch-calibrated", market_multiplier=5.0),
         Scenario("increased_execution_intensity_10x", "itch-calibrated", market_multiplier=10.0),
@@ -119,17 +123,46 @@ def default_scenarios():
     ]
 
 
+def full_scenarios():
+    return [
+        Scenario("hand_chosen_flow", "hand-chosen"),
+        Scenario("itch_calibrated_flow", "itch-calibrated"),
+        Scenario("physical_zero_queue_itch_calibrated_flow", "itch-calibrated", force_zero_queue_quotes=True),
+        Scenario("increased_execution_intensity_2x", "itch-calibrated", market_multiplier=2.0),
+        Scenario("increased_execution_intensity_5x", "itch-calibrated", market_multiplier=5.0),
+        Scenario("increased_execution_intensity_10x", "itch-calibrated", market_multiplier=10.0),
+        Scenario("requote_frequency_fast_5", "itch-calibrated", refresh_cadence=5),
+        Scenario("requote_frequency_slow_25", "itch-calibrated", refresh_cadence=25),
+    ]
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--events", type=int, default=5_000)
-    parser.add_argument("--seeds", type=int, default=2)
-    parser.add_argument("--output-dir", default="artifacts/fill_diagnostics")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--quick", action="store_true", help="run the 2-seed broad diagnostic")
+    mode.add_argument("--full", action="store_true", help="run the focused 10-seed diagnostic")
+    parser.add_argument(
+        "--events",
+        type=int,
+        help="events per run; defaults to 5000 in quick mode and 2500 in full mode",
+    )
+    parser.add_argument("--seeds", type=int)
+    parser.add_argument("--output-dir")
     parser.add_argument("--build-dir", default="build/fill_rate_diagnostics")
     parser.add_argument("--markout-horizon", type=int, default=50)
     parser.add_argument("--curve-sample-stride", type=int, default=100_000_000)
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument("--skip-runs", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not args.quick and not args.full:
+        args.quick = True
+    if args.seeds is None:
+        args.seeds = 10 if args.full else 2
+    if args.events is None:
+        args.events = 2_500 if args.full else 5_000
+    if args.output_dir is None:
+        args.output_dir = "artifacts/fill_diagnostics" if args.full else "artifacts/fill_diagnostics_quick"
+    return args
 
 
 def run(command, cwd):
@@ -193,6 +226,8 @@ def run_one(root, executable, args, scenario, strategy, regime, seed_index, outp
         "--output-dir",
         str(run_dir),
     ]
+    if scenario.force_zero_queue_quotes:
+        command.append("--force-zero-queue-quotes")
     if scenario.risk_controls:
         command.extend(["--risk-controls", "--terminal-liquidation", "--inventory-cap", str(scenario.inventory_cap)])
     run(command, root)
@@ -490,11 +525,15 @@ def build_decomposition(lifecycle_rows, opportunity_rows, strategy_rows):
             )
         )
 
-    zero_queue_rows = [row for row in lifecycle_rows if to_int(row["initial_queue_ahead"]) == 0]
+    zero_queue_rows = [
+        row
+        for row in lifecycle_rows
+        if row["scenario"] == "itch_calibrated_flow" and to_int(row["initial_queue_ahead"]) == 0
+    ]
     zero_groups = group_rows(zero_queue_rows, fields)
     for key in sorted(zero_groups):
         key_fields = {field: value for field, value in zip(fields, key)}
-        key_fields["scenario"] = "zero_queue_control"
+        key_fields["scenario"] = "zero_initial_queue_subset"
         rows.append(decompose_group(key_fields, zero_groups[key], [], {}))
     return rows
 
@@ -547,9 +586,11 @@ def build_paired_differences(strategy_rows, decomposition_rows):
     strategy_by_key = {
         (row["scenario"], row["regime"], row["seed_index"], row["strategy"]): row for row in strategy_rows
     }
+    strategy_regimes = sorted({row["regime"] for row in strategy_rows})
+    strategy_seed_indexes = sorted({row["seed_index"] for row in strategy_rows})
     for scenario in sorted({row["scenario"] for row in strategy_rows}):
-        for regime in REGIMES:
-            for seed_index in sorted({row["seed_index"] for row in strategy_rows}):
+        for regime in strategy_regimes:
+            for seed_index in strategy_seed_indexes:
                 naive = strategy_by_key.get((scenario, regime, seed_index, "naive symmetric"))
                 avellaneda = strategy_by_key.get((scenario, regime, seed_index, "avellaneda stoikov"))
                 if not naive or not avellaneda:
@@ -572,23 +613,55 @@ def build_paired_differences(strategy_rows, decomposition_rows):
         (row["scenario"], row["strategy_name"], row["regime"], row["seed_index"]): row
         for row in decomposition_rows
     }
+    decomp_regimes = sorted({row["regime"] for row in decomposition_rows})
+    decomp_seed_indexes = sorted({row["seed_index"] for row in decomposition_rows})
     for strategy in ["naive symmetric", "avellaneda stoikov"]:
-        for regime in REGIMES:
-            for seed_index in sorted({row["seed_index"] for row in decomposition_rows}):
+        for regime in decomp_regimes:
+            for seed_index in decomp_seed_indexes:
                 base = decomp_by_key.get(("itch_calibrated_flow", strategy, regime, seed_index))
-                zero = decomp_by_key.get(("zero_queue_control", strategy, regime, seed_index))
+                zero = decomp_by_key.get(("zero_initial_queue_subset", strategy, regime, seed_index))
+                physical_zero = decomp_by_key.get(
+                    ("physical_zero_queue_itch_calibrated_flow", strategy, regime, seed_index)
+                )
                 hand = decomp_by_key.get(("hand_chosen_flow", strategy, regime, seed_index))
                 if base and zero:
                     output.append(
                         {
-                            "comparison": "zero_queue_minus_normal_itch",
-                            "scenario": "zero_queue_control",
+                            "comparison": "zero_initial_queue_subset_minus_normal_itch",
+                            "scenario": "zero_initial_queue_subset",
                             "regime": regime,
                             "seed_index": seed_index,
                             "metric": "fill_rate_by_quote_count",
                             "left_value": zero["fill_rate_by_quote_count"],
                             "right_value": base["fill_rate_by_quote_count"],
                             "delta": f"{to_float(zero['fill_rate_by_quote_count']) - to_float(base['fill_rate_by_quote_count']):.12g}",
+                        }
+                    )
+                if base and physical_zero:
+                    output.append(
+                        {
+                            "comparison": "physical_zero_queue_minus_normal_itch",
+                            "scenario": "physical_zero_queue_itch_calibrated_flow",
+                            "regime": regime,
+                            "seed_index": seed_index,
+                            "metric": "fill_rate_by_quote_count",
+                            "left_value": physical_zero["fill_rate_by_quote_count"],
+                            "right_value": base["fill_rate_by_quote_count"],
+                            "delta": f"{to_float(physical_zero['fill_rate_by_quote_count']) - to_float(base['fill_rate_by_quote_count']):.12g}",
+                        }
+                    )
+                slow = decomp_by_key.get(("requote_frequency_slow_25", strategy, regime, seed_index))
+                if base and slow:
+                    output.append(
+                        {
+                            "comparison": "requote_frequency_slow_25_minus_itch",
+                            "scenario": "requote_frequency_slow_25",
+                            "regime": regime,
+                            "seed_index": seed_index,
+                            "metric": "fill_rate_by_quote_count",
+                            "left_value": slow["fill_rate_by_quote_count"],
+                            "right_value": base["fill_rate_by_quote_count"],
+                            "delta": f"{to_float(slow['fill_rate_by_quote_count']) - to_float(base['fill_rate_by_quote_count']):.12g}",
                         }
                     )
                 if base and hand:
@@ -622,15 +695,177 @@ def build_paired_differences(strategy_rows, decomposition_rows):
     return output
 
 
+def keyed_decomposition(decomposition_rows):
+    return {
+        (row["scenario"], row["strategy_name"], row["regime"], row["seed_index"]): row
+        for row in decomposition_rows
+    }
+
+
+def build_zero_queue_comparison(decomposition_rows):
+    rows = []
+    by_key = keyed_decomposition(decomposition_rows)
+    seed_indexes = sorted({row["seed_index"] for row in decomposition_rows})
+    regimes = sorted({row["regime"] for row in decomposition_rows})
+    for strategy in ["naive symmetric", "avellaneda stoikov"]:
+        for regime in regimes:
+            for seed_index in seed_indexes:
+                baseline = by_key.get(("itch_calibrated_flow", strategy, regime, seed_index))
+                derived = by_key.get(("zero_initial_queue_subset", strategy, regime, seed_index))
+                physical = by_key.get(("physical_zero_queue_itch_calibrated_flow", strategy, regime, seed_index))
+                if not baseline or not derived or not physical:
+                    continue
+                baseline_fill = to_float(baseline["fill_rate_by_quote_count"])
+                derived_fill = to_float(derived["fill_rate_by_quote_count"])
+                physical_fill = to_float(physical["fill_rate_by_quote_count"])
+                if physical_fill > baseline_fill and derived_fill > baseline_fill:
+                    interpretation = "both_zero_queue_views_increase_fill_rate"
+                elif physical_fill > baseline_fill:
+                    interpretation = "physical_zero_queue_increases_fill_rate_but_subset_does_not"
+                elif derived_fill > baseline_fill:
+                    interpretation = "derived_subset_increases_fill_rate_but_physical_control_does_not"
+                else:
+                    interpretation = "zero_queue_does_not_increase_fill_rate"
+                rows.append(
+                    {
+                        "regime": regime,
+                        "strategy": strategy,
+                        "seed": baseline["seed"],
+                        "baseline_fill_rate": baseline["fill_rate_by_quote_count"],
+                        "zero_initial_queue_subset_fill_rate": derived["fill_rate_by_quote_count"],
+                        "physical_zero_queue_fill_rate": physical["fill_rate_by_quote_count"],
+                        "baseline_external_execution_count": baseline["external_execution_events_count"],
+                        "physical_zero_queue_external_execution_count": physical["external_execution_events_count"],
+                        "interpretation": interpretation,
+                    }
+                )
+    return rows
+
+
+def build_mechanism_summary(decomposition_rows):
+    paired = build_paired_differences([], decomposition_rows)
+    grouped = group_rows(paired, ["comparison", "scenario", "regime", "metric"])
+    rows = []
+    for key in sorted(grouped):
+        comparison, scenario, regime, metric = key
+        values = [to_float(row["delta"]) for row in grouped[key]]
+        low, high = ci95(values)
+        rows.append(
+            {
+                "comparison": comparison,
+                "scenario": scenario,
+                "regime": regime,
+                "metric": metric,
+                "sample_count": len(values),
+                "mean_delta": f"{mean(values):.12g}",
+                "stddev_delta": f"{stddev(values):.12g}",
+                "median_delta": f"{(statistics.median(values) if values else 0.0):.12g}",
+                "p05_delta": f"{percentile(values, 0.05):.12g}",
+                "p95_delta": f"{percentile(values, 0.95):.12g}",
+                "ci95_low": f"{low:.12g}",
+                "ci95_high": f"{high:.12g}",
+            }
+        )
+    return rows
+
+
+def build_mechanism_attribution_summary(decomposition_rows):
+    rows = []
+    by_key = keyed_decomposition(decomposition_rows)
+    seed_indexes = sorted({row["seed_index"] for row in decomposition_rows})
+    regimes = sorted({row["regime"] for row in decomposition_rows})
+    for strategy in ["naive symmetric", "avellaneda stoikov"]:
+        for regime in regimes:
+            sparse_effects = []
+            queue_effects = []
+            lifetime_effects = []
+            strategy_effects = []
+            for seed_index in seed_indexes:
+                hand = by_key.get(("hand_chosen_flow", strategy, regime, seed_index))
+                baseline = by_key.get(("itch_calibrated_flow", strategy, regime, seed_index))
+                physical = by_key.get(("physical_zero_queue_itch_calibrated_flow", strategy, regime, seed_index))
+                slow = by_key.get(("requote_frequency_slow_25", strategy, regime, seed_index))
+                if hand and baseline:
+                    sparse_effects.append(
+                        abs(to_float(hand["fill_rate_by_quote_count"]) - to_float(baseline["fill_rate_by_quote_count"]))
+                    )
+                if physical and baseline:
+                    queue_effects.append(
+                        abs(to_float(physical["fill_rate_by_quote_count"]) - to_float(baseline["fill_rate_by_quote_count"]))
+                    )
+                if slow and baseline:
+                    lifetime_effects.append(
+                        abs(to_float(slow["fill_rate_by_quote_count"]) - to_float(baseline["fill_rate_by_quote_count"]))
+                    )
+
+                other_strategy = "avellaneda stoikov" if strategy == "naive symmetric" else "naive symmetric"
+                same_scenario = by_key.get(("itch_calibrated_flow", other_strategy, regime, seed_index))
+                if same_scenario and baseline:
+                    strategy_effects.append(
+                        abs(to_float(same_scenario["fill_rate_by_quote_count"]) - to_float(baseline["fill_rate_by_quote_count"]))
+                    )
+
+            effects = {
+                "sparse_execution_flow": mean(sparse_effects),
+                "queue_position": mean(queue_effects),
+                "quote_lifetime": mean(lifetime_effects),
+                "strategy_choice": mean(strategy_effects),
+                "quote_size": 0.0,
+            }
+            total = sum(effects.values())
+            largest = max(effects, key=effects.get)
+            for mechanism, effect in effects.items():
+                rows.append(
+                    {
+                        "regime": regime,
+                        "strategy": strategy,
+                        "mechanism": mechanism,
+                        "mean_absolute_fill_rate_effect": f"{effect:.12g}",
+                        "relative_share_of_observed_effects": f"{(effect / total if total else 0.0):.12g}",
+                        "interpretation": (
+                            "largest observed effect in this diagnostic"
+                            if mechanism == largest and effect > 0
+                            else "secondary or not identified as a primary blocker"
+                        ),
+                    }
+                )
+            rows.append(
+                {
+                    "regime": regime,
+                    "strategy": strategy,
+                    "mechanism": "residual_unexplained",
+                    "mean_absolute_fill_rate_effect": "0",
+                    "relative_share_of_observed_effects": "0",
+                    "interpretation": "not estimated by this controlled-difference attribution",
+                }
+            )
+    return rows
+
+
 def write_run_config(output_dir, args, scenarios):
     rows = [
+        {"field": "mode", "value": "full" if args.full else "quick"},
         {"field": "events", "value": args.events},
         {"field": "seeds", "value": args.seeds},
         {"field": "regimes", "value": " ".join(REGIMES)},
         {"field": "strategies", "value": " ".join(STRATEGIES)},
-        {"field": "zero_queue_control", "value": "derived subset of quotes with zero initial displayed queue ahead"},
+        {
+            "field": "zero_initial_queue_subset",
+            "value": "derived subset of quotes with zero initial displayed queue ahead",
+        },
+        {
+            "field": "physical_zero_queue_implementation",
+            "value": "market maker quote is shifted to a nearby non-crossing empty same-side price level when needed",
+        },
         {"field": "opportunity_trace", "value": "C++ simulator rows emitted before each synthetic market event"},
     ]
+    for regime in REGIMES:
+        rows.append(
+            {
+                "field": f"seeds:{regime}",
+                "value": " ".join(str(seed_for(regime, seed_index)) for seed_index in range(args.seeds)),
+            }
+        )
     for scenario in scenarios:
         rows.append(
             {
@@ -639,7 +874,8 @@ def write_run_config(output_dir, args, scenarios):
                     f"flow={scenario.flow_profile};quote_size={scenario.quote_size};"
                     f"refresh={scenario.refresh_cadence};market_multiplier={scenario.market_multiplier};"
                     f"risk_aversion={scenario.risk_aversion};risk_controls={scenario.risk_controls};"
-                    f"inventory_cap={scenario.inventory_cap}"
+                    f"inventory_cap={scenario.inventory_cap};"
+                    f"force_zero_queue_quotes={scenario.force_zero_queue_quotes}"
                 ),
             }
         )
@@ -656,7 +892,7 @@ def main():
     root = Path(__file__).resolve().parents[1]
     output_dir = root / args.output_dir
     build_dir = Path(args.build_dir)
-    scenarios = default_scenarios()
+    scenarios = full_scenarios() if args.full else quick_scenarios()
 
     output_dir.mkdir(parents=True, exist_ok=True)
     if not args.skip_runs:
@@ -694,6 +930,9 @@ def main():
         ],
     )
     paired = build_paired_differences(strategy_rows, decomposition_rows)
+    mechanism_summary = build_mechanism_summary(decomposition_rows)
+    zero_queue_comparison = build_zero_queue_comparison(decomposition_rows)
+    mechanism_attribution = build_mechanism_attribution_summary(decomposition_rows)
     statistical_summary = strategy_summary + decomposition_summary
 
     write_run_config(output_dir, args, scenarios)
@@ -705,6 +944,9 @@ def main():
     write_rows(output_dir / "strategy_comparison_summary.csv", strategy_summary)
     write_rows(output_dir / "statistical_summary.csv", statistical_summary)
     write_rows(output_dir / "paired_differences.csv", paired)
+    write_rows(output_dir / "mechanism_summary.csv", mechanism_summary)
+    write_rows(output_dir / "zero_queue_comparison.csv", zero_queue_comparison)
+    write_rows(output_dir / "mechanism_attribution_summary.csv", mechanism_attribution)
 
     print(output_dir)
     print(f"scenarios={len(scenarios)} seeds={args.seeds} lifecycle_rows={len(lifecycle_rows)} opportunities={len(opportunity_rows)}")

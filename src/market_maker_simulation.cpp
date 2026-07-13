@@ -201,6 +201,10 @@ public:
         return sum_squares_ / static_cast<double>(count_) - mean * mean;
     }
 
+    double mean() const {
+        return count_ == 0 ? 0.0 : sum_ / static_cast<double>(count_);
+    }
+
 private:
     std::size_t count_{};
     double sum_{};
@@ -796,6 +800,66 @@ QueueSnapshot queue_snapshot_before_quote(const MatchingEngine& engine, Side sid
     return QueueSnapshot{level->second.size(), level_depth(level->second)};
 }
 
+std::optional<Price> tighter_upper(std::optional<Price> left, std::optional<Price> right) {
+    if (!left.has_value()) {
+        return right;
+    }
+    if (!right.has_value()) {
+        return left;
+    }
+    return std::min(*left, *right);
+}
+
+std::optional<Price> tighter_lower(std::optional<Price> left, std::optional<Price> right) {
+    if (!left.has_value()) {
+        return right;
+    }
+    if (!right.has_value()) {
+        return left;
+    }
+    return std::max(*left, *right);
+}
+
+bool valid_zero_queue_candidate(Price candidate,
+                                std::optional<Price> lower_exclusive,
+                                std::optional<Price> upper_exclusive) {
+    if (candidate <= 0) {
+        return false;
+    }
+    if (lower_exclusive.has_value() && candidate <= *lower_exclusive) {
+        return false;
+    }
+    if (upper_exclusive.has_value() && candidate >= *upper_exclusive) {
+        return false;
+    }
+    return true;
+}
+
+Price zero_queue_quote_price(const MatchingEngine& engine,
+                             Side side,
+                             Price price,
+                             std::optional<Price> lower_exclusive,
+                             std::optional<Price> upper_exclusive) {
+    constexpr Price kMaxSearchTicks = 100'000;
+    for (Price offset = 0; offset <= kMaxSearchTicks; ++offset) {
+        std::array<Price, 2> candidates{};
+        if (side == Side::Buy) {
+            candidates = {price + offset, price - offset};
+        } else {
+            candidates = {price - offset, price + offset};
+        }
+        for (const auto candidate : candidates) {
+            if (!valid_zero_queue_candidate(candidate, lower_exclusive, upper_exclusive)) {
+                continue;
+            }
+            if (queue_snapshot_before_quote(engine, side, candidate).quantity_ahead == 0) {
+                return candidate;
+            }
+        }
+    }
+    throw std::runtime_error("unable to find non-crossing zero-queue market maker quote price");
+}
+
 MarketMakerExecutionOpportunity make_execution_opportunity(const MatchingEngine& engine,
                                                            const MarketMakerSimulationConfig& config,
                                                            StrategyKind kind,
@@ -1097,12 +1161,6 @@ void refresh_quotes(MatchingEngine& engine,
     if (prices.bid <= 0 || prices.ask <= 0) {
         throw std::runtime_error("market maker quote price must be positive");
     }
-    record_quote_diagnostics(summary,
-                             prices.reference,
-                             prices.proposed_bid,
-                             prices.proposed_ask,
-                             prices.bid,
-                             prices.ask);
     const auto size = quote_size(config, kind);
     const auto allow_bid = risk_control_allows_bid(config.risk_controls, inventory, size);
     const auto allow_ask = risk_control_allows_ask(config.risk_controls, inventory, size);
@@ -1112,6 +1170,24 @@ void refresh_quotes(MatchingEngine& engine,
     if (!allow_ask) {
         ++summary.hard_cap_ask_blocks;
     }
+
+    auto bid_price = prices.bid;
+    auto ask_price = prices.ask;
+    if (config.force_zero_queue_quotes) {
+        const auto bid_upper = tighter_upper(engine.book().best_ask(), prices.ask);
+        bid_price = zero_queue_quote_price(engine, Side::Buy, bid_price, std::nullopt, bid_upper);
+        const auto ask_lower = tighter_lower(engine.book().best_bid(), bid_price);
+        ask_price = zero_queue_quote_price(engine, Side::Sell, ask_price, ask_lower, std::nullopt);
+        if (bid_price >= ask_price) {
+            throw std::runtime_error("zero-queue market maker quote prices crossed");
+        }
+    }
+    record_quote_diagnostics(summary,
+                             prices.reference,
+                             prices.proposed_bid,
+                             prices.proposed_ask,
+                             bid_price,
+                             ask_price);
 
     if (allow_bid) {
         submit_quote(engine,
@@ -1127,7 +1203,7 @@ void refresh_quotes(MatchingEngine& engine,
                      config.markout_horizon,
                      next_market_maker_order_id++,
                      Side::Buy,
-                     prices.bid,
+                     bid_price,
                      size,
                      next_market_maker_timestamp++);
     }
@@ -1145,7 +1221,7 @@ void refresh_quotes(MatchingEngine& engine,
                      config.markout_horizon,
                      next_market_maker_order_id++,
                      Side::Sell,
-                     prices.ask,
+                     ask_price,
                      size,
                      next_market_maker_timestamp++);
     }
@@ -1364,6 +1440,8 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
         result.summary.maximum_drawdown =
             drawdown_after_equity(state.net_pnl_after_fees, peak_equity, result.summary.maximum_drawdown);
         inventory_moments.add(static_cast<double>(state.inventory));
+        result.summary.max_abs_inventory =
+            std::max(result.summary.max_abs_inventory, static_cast<Quantity>(std::abs(state.inventory)));
 
         if (should_store_curve_point(event_index, config.regime.run_length, config.curve_sample_stride)) {
             const auto time_remaining = time_remaining_after_event(config.regime, event_index);
@@ -1403,6 +1481,8 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
                                   peak_equity,
                                   result.summary.maximum_drawdown);
         inventory_moments.add(static_cast<double>(liquidated_state.inventory));
+        result.summary.max_abs_inventory =
+            std::max(result.summary.max_abs_inventory, static_cast<Quantity>(std::abs(liquidated_state.inventory)));
         result.curve.push_back(MarketMakerCurvePoint{strategy_name(kind),
                                                      config.regime.name,
                                                      config.regime.run_length,
@@ -1443,6 +1523,7 @@ MarketMakerRunResult run_strategy(const MarketMakerSimulationConfig& config, Str
                           result.summary.terminal_inventory_penalty,
                           result.summary.maximum_drawdown,
                           config.risk_controls.risk_denominator_floor);
+    result.summary.inventory_mean = inventory_moments.mean();
     result.summary.inventory_variance = inventory_moments.variance();
     result.summary.final_inventory = final_state.inventory;
     if (result.summary.quote_refreshes > 0) {

@@ -181,6 +181,8 @@ The strongest evidence is the front-of-queue comparison. Naive hand chosen zero-
 
 This is a one-seed diagnostic, not a 30-seed statistical pass. It is enough to answer the Stage 5B mechanism question at the checked seed, but it should not be read as a confidence interval result.
 
+The follow-up fill-rate diagnostic extension reruns the same mechanism question as a focused ten-seed paired pass and adds a physical first-in-queue scenario. It confirms the same direction: sparse execution flow remains dominant, and physical zero displayed same-price queue ahead does not materially rescue ITCH-calibrated fill rates. See [fill_rate_queue_diagnostics.md](fill_rate_queue_diagnostics.md).
+
 The diagnostic uses uncontrolled runs because Stage 5B's open question came from the uncontrolled flow comparison. Risk controlled queue diagnostics would be a separate extension.
 
 Queue depth is measured at quote placement. The fill outcome captures whether the quote eventually filled, but the artifact does not reconstruct every intermediate queue depletion event ahead of the quote.

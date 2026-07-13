@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 
 import importlib.util
+import csv
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "generate_fill_rate_diagnostics.py"
+ARTIFACTS = ROOT / "artifacts" / "fill_diagnostics"
 SPEC = importlib.util.spec_from_file_location("generate_fill_rate_diagnostics", SCRIPT)
 diag = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(diag)
+
+
+def read_csv(path):
+    with path.open(newline="") as handle:
+        return list(csv.DictReader(handle))
 
 
 class FillRateDiagnosticsTests(unittest.TestCase):
@@ -180,15 +187,16 @@ class FillRateDiagnosticsTests(unittest.TestCase):
             },
         ]
         decomposition = diag.build_decomposition(rows, [], [])
-        zero_rows = [row for row in decomposition if row["scenario"] == "zero_queue_control"]
+        zero_rows = [row for row in decomposition if row["scenario"] == "zero_initial_queue_subset"]
         self.assertEqual(len(zero_rows), 1)
         self.assertEqual(zero_rows[0]["quotes_submitted"], 1)
         self.assertEqual(decomposition[0]["quotes_submitted"], 2)
 
-    def test_default_scenarios_include_required_controls(self):
-        names = {scenario.name for scenario in diag.default_scenarios()}
+    def test_quick_scenarios_include_broad_controls(self):
+        names = {scenario.name for scenario in diag.quick_scenarios()}
         self.assertIn("hand_chosen_flow", names)
         self.assertIn("itch_calibrated_flow", names)
+        self.assertIn("physical_zero_queue_itch_calibrated_flow", names)
         self.assertIn("increased_execution_intensity_2x", names)
         self.assertIn("increased_execution_intensity_5x", names)
         self.assertIn("increased_execution_intensity_10x", names)
@@ -200,6 +208,26 @@ class FillRateDiagnosticsTests(unittest.TestCase):
         self.assertIn("as_risk_aversion_low", names)
         self.assertIn("as_risk_aversion_high", names)
         self.assertIn("inventory_cap_5000", names)
+
+    def test_full_scenarios_are_focused_and_include_physical_zero_queue(self):
+        scenarios = diag.full_scenarios()
+        names = {scenario.name for scenario in scenarios}
+        self.assertEqual(len(scenarios), 8)
+        self.assertIn("hand_chosen_flow", names)
+        self.assertIn("itch_calibrated_flow", names)
+        self.assertIn("physical_zero_queue_itch_calibrated_flow", names)
+        self.assertIn("increased_execution_intensity_2x", names)
+        self.assertIn("increased_execution_intensity_5x", names)
+        self.assertIn("increased_execution_intensity_10x", names)
+        self.assertIn("requote_frequency_fast_5", names)
+        self.assertIn("requote_frequency_slow_25", names)
+        physical = next(scenario for scenario in scenarios if scenario.name == "physical_zero_queue_itch_calibrated_flow")
+        baseline = next(scenario for scenario in scenarios if scenario.name == "itch_calibrated_flow")
+        self.assertTrue(physical.force_zero_queue_quotes)
+        self.assertEqual(physical.flow_profile, baseline.flow_profile)
+        self.assertEqual(physical.quote_size, baseline.quote_size)
+        self.assertEqual(physical.refresh_cadence, baseline.refresh_cadence)
+        self.assertEqual(physical.market_multiplier, baseline.market_multiplier)
 
     def test_paired_difference_schema_is_deterministic(self):
         strategy_rows = [
@@ -225,6 +253,112 @@ class FillRateDiagnosticsTests(unittest.TestCase):
         self.assertEqual(paired[0]["comparison"], "avellaneda_stoikov_minus_naive")
         self.assertEqual(paired[0]["scenario"], "fixture")
         self.assertEqual(paired[0]["delta"], "2")
+
+    def test_zero_queue_comparison_schema_is_deterministic(self):
+        rows = [
+            {
+                "scenario": "itch_calibrated_flow",
+                "flow_type": "itch-calibrated",
+                "strategy_name": "naive symmetric",
+                "regime": "low-volatility",
+                "seed": "3001",
+                "seed_index": "0",
+                "fill_rate_by_quote_count": "0.02",
+                "external_execution_events_count": "20",
+            },
+            {
+                "scenario": "zero_initial_queue_subset",
+                "flow_type": "itch-calibrated",
+                "strategy_name": "naive symmetric",
+                "regime": "low-volatility",
+                "seed": "3001",
+                "seed_index": "0",
+                "fill_rate_by_quote_count": "0.05",
+                "external_execution_events_count": "0",
+            },
+            {
+                "scenario": "physical_zero_queue_itch_calibrated_flow",
+                "flow_type": "itch-calibrated",
+                "strategy_name": "naive symmetric",
+                "regime": "low-volatility",
+                "seed": "3001",
+                "seed_index": "0",
+                "fill_rate_by_quote_count": "0.04",
+                "external_execution_events_count": "20",
+            },
+        ]
+        comparison = diag.build_zero_queue_comparison(rows)
+        self.assertEqual(len(comparison), 1)
+        self.assertEqual(comparison[0]["baseline_fill_rate"], "0.02")
+        self.assertEqual(comparison[0]["zero_initial_queue_subset_fill_rate"], "0.05")
+        self.assertEqual(comparison[0]["physical_zero_queue_fill_rate"], "0.04")
+
+    def test_mechanism_attribution_schema_is_deterministic(self):
+        rows = []
+        for scenario, fill_rate in [
+            ("hand_chosen_flow", "0.7"),
+            ("itch_calibrated_flow", "0.02"),
+            ("physical_zero_queue_itch_calibrated_flow", "0.04"),
+            ("requote_frequency_slow_25", "0.06"),
+        ]:
+            rows.append(
+                {
+                    "scenario": scenario,
+                    "flow_type": "itch-calibrated",
+                    "strategy_name": "naive symmetric",
+                    "regime": "low-volatility",
+                    "seed": "3001",
+                    "seed_index": "0",
+                    "fill_rate_by_quote_count": fill_rate,
+                }
+            )
+        attribution = diag.build_mechanism_attribution_summary(rows)
+        self.assertTrue(attribution)
+        self.assertIn("mechanism", attribution[0])
+        self.assertIn("mean_absolute_fill_rate_effect", attribution[0])
+
+    def test_checked_full_run_config_records_ten_seed_focused_mode(self):
+        rows = {row["field"]: row["value"] for row in read_csv(ARTIFACTS / "run_config.csv")}
+        self.assertEqual(rows["mode"], "full")
+        self.assertEqual(rows["events"], "2500")
+        self.assertEqual(rows["seeds"], "10")
+        self.assertEqual(
+            rows["seeds:low-volatility"],
+            "3001 4001 5001 6001 7001 8001 9001 10001 11001 12001",
+        )
+        self.assertIn("force_zero_queue_quotes=True", rows["scenario:physical_zero_queue_itch_calibrated_flow"])
+        self.assertIn("force_zero_queue_quotes=False", rows["scenario:itch_calibrated_flow"])
+
+    def test_checked_full_physical_zero_queue_artifact_has_zero_initial_queue(self):
+        rows = [
+            row
+            for row in read_csv(ARTIFACTS / "quote_lifecycle.csv")
+            if row["scenario"] == "physical_zero_queue_itch_calibrated_flow"
+        ]
+        self.assertEqual(len(rows), 30_000)
+        self.assertTrue(rows)
+        self.assertTrue(all(int(float(row["initial_queue_ahead"])) == 0 for row in rows))
+
+    def test_checked_full_statistical_summary_uses_ten_seed_samples(self):
+        rows = read_csv(ARTIFACTS / "statistical_summary.csv")
+        self.assertTrue(rows)
+        self.assertTrue(all(row["sample_count"] == "10" for row in rows))
+
+    def test_checked_full_zero_queue_comparison_has_all_paired_rows(self):
+        rows = read_csv(ARTIFACTS / "zero_queue_comparison.csv")
+        self.assertEqual(len(rows), 60)
+        self.assertTrue(
+            all(
+                row["interpretation"]
+                in {
+                    "both_zero_queue_views_increase_fill_rate",
+                    "physical_zero_queue_increases_fill_rate_but_subset_does_not",
+                    "derived_subset_increases_fill_rate_but_physical_control_does_not",
+                    "zero_queue_does_not_increase_fill_rate",
+                }
+                for row in rows
+            )
+        )
 
 
 if __name__ == "__main__":
