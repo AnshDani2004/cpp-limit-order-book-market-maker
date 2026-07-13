@@ -48,6 +48,12 @@ python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir be
 
 Stage 5C paired statistics, Stage 5D queue diagnostics, and the fill-rate diagnostic extension are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
 
+Fill-rate artifact validation:
+
+```bash
+python3 scripts/validate_fill_rate_artifacts.py
+```
+
 ## Documentation
 
 - [Research note](docs/research_note.md): full stage narrative, numbers, caveats, and interpretation changes.

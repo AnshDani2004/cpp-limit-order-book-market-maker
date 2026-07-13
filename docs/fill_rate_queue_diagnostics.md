@@ -51,6 +51,14 @@ mechanism_attribution_summary.csv        36 rows
 run_config.csv                          19 rows
 ```
 
+The artifact set is independently validated by:
+
+```bash
+python3 scripts/validate_fill_rate_artifacts.py
+```
+
+The validator checks schemas, full-mode coverage, same-seed pairing, the physical zero-queue invariant, fill decomposition reconciliation, execution opportunity reconciliation, no-fill reason coverage, PnL identities, headline mechanism monotonicity, and stale/overclaim wording in the README and this note. It exits nonzero on failure and is also run by the CTest suite.
+
 `quote_lifecycle.csv` records every market maker quote submitted by the diagnostic runs. It includes quote ID, strategy, seed, regime, flow type, scenario, side, price, size, submitted event index, first fill event if any, lifetime in events, initial displayed queue ahead, displayed depth at price, filled size, remaining size, final status, and no-fill reason.
 
 `execution_opportunities.csv` records the book state immediately before each synthetic external market event. It captures the aggressive side, touched price, best bid/ask before the event, displayed depth at the touched level, whether a market maker quote was at that level, queue quantity ahead of the market maker, size executed before reaching the market maker, market maker fill size from the event, and the no-fill reason.
