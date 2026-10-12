@@ -1,0 +1,217 @@
+# Audit benchmark rerun, 2026-10-12 (Apple M3 MacBook Air)
+
+Purpose: independent rerun of the Stage 2 one million event benchmark for the resume audit.
+Raw stdout of every run is below; per-run metrics (from each run's summary.csv) are in runs.csv.
+Report what was measured: the machine was NOT idle. Other audit jobs were running in parallel
+(1-minute load average 5.8 to 11.2 on 8 cores, recorded per run), so these numbers are a
+loaded-machine lower bound, not a replacement for the idle-machine Stage 2 artifact.
+
+## Machine
+cpu (sysctl machdep.cpu.brand_string): Apple M3
+hw.ncpu: 8 (performance cores 4, efficiency cores 4)
+memory: 16 GB
+os: macOS 26.5.1 (25F80), Darwin 25.5.0, arm64
+power: AC power
+compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+cmake: cmake version 4.4.4 (pip-installed in a scratch venv)
+repo commit: 1c1451f652909a80ee9f97b6935ac85d835d56c1 (code unchanged by the audit)
+
+## Build and test
+cmake -S . -B build/audit_release -DCMAKE_BUILD_TYPE=Release
+cmake --build build/audit_release --config Release -j 8
+ctest --test-dir build/audit_release --output-on-failure
+Build: no compiler warnings. Tests: 100% tests passed out of 69
+Compile flags (compile_commands.json, benchmark and lob_core): -O3 -DNDEBUG -std=c++20 -arch arm64 -Wall -Wextra -Wpedantic
+
+## What is timed
+benchmarks/orderbook_benchmark.cpp: the full event stream is generated before timing (main, line 913),
+20,000 warmup events are applied untimed, then each of the 1,000,000 measured events is wrapped in a
+steady_clock::now() pair (replay_flow, lines 675-694). Throughput = measured events / wall time of
+the whole measured loop (includes the two clock reads per event). Single thread, single process, no I/O.
+
+## Timer granularity probe (timer_probe.cpp in this directory, clang++ -O3 -std=c++20)
+back_to_back_now_ns: min=0 smallest_nonzero=41 p50=0 p99=42
+mean_cost_per_now_call_ns=17.44
+steady_clock_period_num_den=1/1000000000
+
+## Commands
+map book (default, the Stage 2 configuration), runs 1-15:
+  ./build/audit_release/orderbook_benchmark --events 1000000 --warmup 20000 --seed 42 --output-dir <scratch>/map_runN
+flat book, runs 1-3:
+  ./build/audit_release/orderbook_benchmark --events 1000000 --warmup 20000 --seed 42 --book flat --min-price 99000 --max-price 101000 --output-dir <scratch>/flat_runN
+Every run: 350,663 trades, 0 rejects (same deterministic stream as stage2_local).
+
+## Summary (computed from runs.csv)
+map, all 15 runs: events/s min 1,443,839, median 3,142,531, max 3,614,695; p50 167-292 ns (median 167); p99 1,084-2,583 ns (median 1,292)
+map, runs 6-15 (load average 5.8 to 6.9): events/s min 2,701,680, median 3,469,206, max 3,614,695; p50 167-208 ns; p99 1,084-1,583 ns (median 1,188)
+flat, 3 runs (load average 6.7): events/s 3,656,586 to 4,050,813; p50 125-166 ns; p99 1,042-1,167 ns
+Checked Stage 2 artifact for comparison (stage2_local/summary.csv): 3,723,012 events/s, p50 125 ns, p99 1,208 ns.
+
+## Raw stdout
+### run 1 map 2026-10-12T10:38:39Z load: { 11.16 6.36 4.19 }
+events_per_second=1443839.34277
+p50_latency_ns=292
+p95_latency_ns=1334
+p99_latency_ns=2583
+max_latency_ns=22031000
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 2 map 2026-10-12T10:38:42Z load: { 11.16 6.36 4.19 }
+events_per_second=2244599.00379
+p50_latency_ns=208
+p95_latency_ns=1042
+p99_latency_ns=1958
+max_latency_ns=3477750
+max_event_index=893532
+max_event_action=cancel
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 3 map 2026-10-12T10:38:44Z load: { 11.15 6.43 4.23 }
+events_per_second=3095165.50624
+p50_latency_ns=208
+p95_latency_ns=750
+p99_latency_ns=1292
+max_latency_ns=1960916
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 4 map 2026-10-12T10:38:46Z load: { 11.15 6.43 4.23 }
+events_per_second=2125347.6936
+p50_latency_ns=209
+p95_latency_ns=1167
+p99_latency_ns=2042
+max_latency_ns=10129333
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 5 map 2026-10-12T10:38:47Z load: { 11.15 6.43 4.23 }
+events_per_second=2928683.97957
+p50_latency_ns=208
+p95_latency_ns=792
+p99_latency_ns=1375
+max_latency_ns=5402292
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+(runs 6-10 and flat runs: stdout filtered to these keys at run time; full metrics in runs.csv)
+### run 6 map 2026-10-12T10:40:27Z loadavg: { 6.85 6.27 4.41 }
+events_per_second=3614695.18179
+p50_latency_ns=167
+p95_latency_ns=667
+p99_latency_ns=1125
+max_latency_ns=2215667
+rejects=0
+### run 7 map 2026-10-12T10:40:28Z loadavg: { 6.71 6.25 4.42 }
+events_per_second=3556155.63232
+p50_latency_ns=167
+p95_latency_ns=667
+p99_latency_ns=1166
+max_latency_ns=1777833
+rejects=0
+### run 8 map 2026-10-12T10:40:29Z loadavg: { 6.71 6.25 4.42 }
+events_per_second=3520771.37341
+p50_latency_ns=167
+p95_latency_ns=666
+p99_latency_ns=1167
+max_latency_ns=1417708
+rejects=0
+### run 9 map 2026-10-12T10:40:31Z loadavg: { 6.71 6.25 4.42 }
+events_per_second=2701679.83211
+p50_latency_ns=208
+p95_latency_ns=917
+p99_latency_ns=1583
+max_latency_ns=5690333
+rejects=0
+### run 10 map 2026-10-12T10:40:32Z loadavg: { 6.71 6.25 4.42 }
+events_per_second=3484298.30412
+p50_latency_ns=167
+p95_latency_ns=667
+p99_latency_ns=1166
+max_latency_ns=1580791
+rejects=0
+### run 11 map 2026-10-12T10:45:45Z loadavg: { 5.91 5.86 4.78 }
+events_per_second=3095700.88409
+p50_latency_ns=167
+p95_latency_ns=792
+p99_latency_ns=1375
+max_latency_ns=2130833
+max_event_index=559699
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 12 map 2026-10-12T10:45:47Z loadavg: { 5.91 5.86 4.78 }
+events_per_second=3572765.1684
+p50_latency_ns=167
+p95_latency_ns=666
+p99_latency_ns=1084
+max_latency_ns=1781667
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 13 map 2026-10-12T10:45:48Z loadavg: { 5.91 5.86 4.78 }
+events_per_second=3142531.06126
+p50_latency_ns=167
+p95_latency_ns=792
+p99_latency_ns=1333
+max_latency_ns=2488833
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 14 map 2026-10-12T10:45:49Z loadavg: { 5.83 5.84 4.78 }
+events_per_second=3401684.9886
+p50_latency_ns=167
+p95_latency_ns=708
+p99_latency_ns=1208
+max_latency_ns=1969875
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 15 map 2026-10-12T10:45:51Z loadavg: { 5.83 5.84 4.78 }
+events_per_second=3454113.11074
+p50_latency_ns=167
+p95_latency_ns=708
+p99_latency_ns=1208
+max_latency_ns=2229250
+max_event_index=512822
+max_event_action=limit
+max_event_price_level_created=false
+max_event_out_of_order_insert=false
+rejects=0
+### run 1 flat 2026-10-12T10:40:33Z loadavg: { 6.65 6.25 4.43 }
+events_per_second=3656586.22025
+p50_latency_ns=166
+p95_latency_ns=666
+p99_latency_ns=1167
+max_latency_ns=2057208
+rejects=0
+### run 2 flat 2026-10-12T10:40:35Z loadavg: { 6.65 6.25 4.43 }
+events_per_second=4050812.71415
+p50_latency_ns=125
+p95_latency_ns=584
+p99_latency_ns=1042
+max_latency_ns=1855458
+rejects=0
+### run 3 flat 2026-10-12T10:40:36Z loadavg: { 6.65 6.25 4.43 }
+events_per_second=3931387.46035
+p50_latency_ns=125
+p95_latency_ns=625
+p99_latency_ns=1042
+max_latency_ns=1991375
+rejects=0
