@@ -1,0 +1,98 @@
+# ext3a timed runs
+start_utc: 2026-10-12T20:14:37Z
+repo_commit: 878949df9813499d91316f876d7b4f14cc97a3b8
+liquibook_commit: 2427613b32f1667abae68a01df6af9ba8270f8e7
+stream_sha256: e1e9535a678b5c581ebb461b5d78a5307674203258e8ea24e98f93f30a8c3394
+cpu: Apple M3 ncpu=8 perf=4 eff=4 mem_bytes=17179869184
+os: 26.5.1 (25F80), Darwin 25.5.0
+compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+power: Now drawing from 'AC Power'
+gate_poll 20:14:38Z load: { 72.59 112.02 109.63 }
+gate_poll 20:15:38Z load: { 60.55 102.34 106.23 }
+gate_poll 20:16:38Z load: { 36.42 87.51 100.40 }
+gate_poll 20:17:38Z load: { 42.53 79.63 96.55 }
+gate_poll 20:18:38Z load: { 62.38 78.30 94.88 }
+gate_poll 20:19:38Z load: { 64.30 75.44 92.65 }
+gate_poll 20:20:38Z load: { 134.54 91.70 97.44 }
+gate_poll 20:21:38Z load: { 185.03 114.62 105.66 }
+gate_poll 20:22:38Z load: { 182.64 127.17 110.99 }
+gate_poll 20:23:38Z load: { 179.27 136.47 115.57 }
+gate_poll 20:24:38Z load: { 175.25 142.85 119.37 }
+gate_poll 20:25:38Z load: { 186.60 152.00 124.38 }
+gate_poll 20:26:38Z load: { 204.83 163.70 130.64 }
+gate_poll 20:27:38Z load: { 212.75 174.40 136.95 }
+gate_poll 20:28:38Z load: { 279.53 202.63 150.18 }
+gate_poll 20:29:38Z load: { 285.61 218.02 159.48 }
+gate_poll 20:30:38Z load: { 303.40 233.98 169.35 }
+gate_poll 20:31:38Z load: { 346.36 259.44 183.29 }
+gate_poll 20:32:38Z load: { 368.09 281.63 196.78 }
+gate_poll 20:33:39Z load: { 323.12 285.91 204.25 }
+gate_poll 20:34:39Z load: { 282.59 279.79 207.45 }
+gate_poll 20:35:39Z load: { 266.74 276.91 211.37 }
+gate_poll 20:36:47Z load: { 217.22 259.18 209.12 }
+gate_poll 20:53:37Z load: { 232.66 256.65 211.64 }
+gate_poll 20:56:54Z load: { 175.21 237.13 207.49 }
+gate_poll 20:58:52Z load: { 107.10 207.02 198.31 }
+gate_poll 21:01:27Z load: { 68.45 179.88 188.89 }
+gate: failed after 2810 s; load: { 68.45 179.88 188.89 }
+### map run 1 | load: { 68.45 179.88 188.89 } | LOADED
+engine=map events_per_second=2366067.04754 p50_ns=250 p99_ns=1625 trades=372120 volume=9486560 rejects=0
+### lb_new run 1 | load: { 68.45 179.88 188.89 } | LOADED
+engine=lb_new events_per_second=105144.642816 p50_ns=1208 p99_ns=43084 trades=372120 volume=9486560 rejects=0
+### flat run 1 | load: { 77.12 178.01 188.12 } | LOADED
+engine=flat events_per_second=917252.475693 p50_ns=416 p99_ns=3167 trades=372120 volume=9486560 rejects=0
+### lb_pool run 1 | load: { 84.71 177.91 188.02 } | LOADED
+engine=lb_pool events_per_second=170015.777979 p50_ns=1125 p99_ns=38917 trades=372120 volume=9486560 rejects=0
+### map_unity run 1 | load: { 90.66 177.60 187.85 } | LOADED
+engine=map events_per_second=2185924.34133 p50_ns=250 p99_ns=1709 trades=372120 volume=9486560 rejects=0
+### lb_shared run 1 | load: { 90.66 177.60 187.85 } | LOADED
+engine=lb_shared events_per_second=150015.165603 p50_ns=500 p99_ns=20042 trades=372120 volume=9486560 rejects=0
+### map run 2 | load: { 85.80 175.14 186.93 } | LOADED
+engine=map events_per_second=2132157.51953 p50_ns=250 p99_ns=1666 trades=372120 volume=9486560 rejects=0
+### lb_new run 2 | load: { 85.80 175.14 186.93 } | LOADED
+engine=lb_new events_per_second=934479.513699 p50_ns=333 p99_ns=11125 trades=372120 volume=9486560 rejects=0
+### flat run 2 | load: { 85.80 175.14 186.93 } | LOADED
+engine=flat events_per_second=2978144.14761 p50_ns=208 p99_ns=1250 trades=372120 volume=9486560 rejects=0
+### lb_pool run 2 | load: { 85.80 175.14 186.93 } | LOADED
+engine=lb_pool events_per_second=161524.366829 p50_ns=1041 p99_ns=36083 trades=372120 volume=9486560 rejects=0
+### map_unity run 2 | load: { 79.37 170.79 185.24 } | LOADED
+engine=map events_per_second=2312806.72573 p50_ns=209 p99_ns=1667 trades=372120 volume=9486560 rejects=0
+### lb_shared run 2 | load: { 79.37 170.79 185.24 } | LOADED
+engine=lb_shared events_per_second=8141.97756303 p50_ns=417 p99_ns=15583 trades=372120 volume=9486560 rejects=0
+### map run 3 | load: { 79.37 170.79 185.24 } | LOADED
+engine=map events_per_second=2355426.61155 p50_ns=209 p99_ns=1667 trades=372120 volume=9486560 rejects=0
+### lb_new run 3 | load: { 86.79 170.81 185.16 } | LOADED
+engine=lb_new events_per_second=851380.077997 p50_ns=375 p99_ns=11667 trades=372120 volume=9486560 rejects=0
+### flat run 3 | load: { 86.79 170.81 185.16 } | LOADED
+engine=flat events_per_second=2420745.30701 p50_ns=209 p99_ns=1709 trades=372120 volume=9486560 rejects=0
+### lb_pool run 3 | load: { 94.33 170.98 185.14 } | LOADED
+engine=lb_pool events_per_second=216422.453197 p50_ns=833 p99_ns=31833 trades=372120 volume=9486560 rejects=0
+### map_unity run 3 | load: { 98.39 170.54 184.90 } | LOADED
+engine=map events_per_second=899815.481858 p50_ns=500 p99_ns=3417 trades=372120 volume=9486560 rejects=0
+### lb_shared run 3 | load: { 98.39 170.54 184.90 } | LOADED
+engine=lb_shared events_per_second=413901.252877 p50_ns=709 p99_ns=16417 trades=372120 volume=9486560 rejects=0
+### map run 4 | load: { 95.07 168.66 184.15 } | LOADED
+engine=map events_per_second=3703113.38628 p50_ns=167 p99_ns=1125 trades=372120 volume=9486560 rejects=0
+### lb_new run 4 | load: { 95.07 168.66 184.15 } | LOADED
+engine=lb_new events_per_second=1062981.56978 p50_ns=333 p99_ns=9000 trades=372120 volume=9486560 rejects=0
+### flat run 4 | load: { 95.07 168.66 184.15 } | LOADED
+engine=flat events_per_second=3690988.01759 p50_ns=125 p99_ns=1125 trades=372120 volume=9486560 rejects=0
+### lb_pool run 4 | load: { 88.10 165.99 183.12 } | LOADED
+engine=lb_pool events_per_second=1175279.40799 p50_ns=292 p99_ns=7958 trades=372120 volume=9486560 rejects=0
+### map_unity run 4 | load: { 88.10 165.99 183.12 } | LOADED
+engine=map events_per_second=3343331.28694 p50_ns=167 p99_ns=1208 trades=372120 volume=9486560 rejects=0
+### lb_shared run 4 | load: { 88.10 165.99 183.12 } | LOADED
+engine=lb_shared events_per_second=751409.503339 p50_ns=417 p99_ns=12542 trades=372120 volume=9486560 rejects=0
+### map run 5 | load: { 88.10 165.99 183.12 } | LOADED
+engine=map events_per_second=3732455.1374 p50_ns=167 p99_ns=1125 trades=372120 volume=9486560 rejects=0
+### lb_new run 5 | load: { 88.10 165.99 183.12 } | LOADED
+engine=lb_new events_per_second=23275.6910331 p50_ns=334 p99_ns=12292 trades=372120 volume=9486560 rejects=0
+### flat run 5 | load: { 82.01 163.43 182.12 } | LOADED
+engine=flat events_per_second=2715650.35846 p50_ns=208 p99_ns=1500 trades=372120 volume=9486560 rejects=0
+### lb_pool run 5 | load: { 82.01 163.43 182.12 } | LOADED
+engine=lb_pool events_per_second=1057348.83839 p50_ns=292 p99_ns=8334 trades=372120 volume=9486560 rejects=0
+### map_unity run 5 | load: { 82.01 163.43 182.12 } | LOADED
+engine=map events_per_second=3094158.33859 p50_ns=167 p99_ns=1333 trades=372120 volume=9486560 rejects=0
+### lb_shared run 5 | load: { 82.01 163.43 182.12 } | LOADED
+engine=lb_shared events_per_second=192762.779281 p50_ns=583 p99_ns=38667 trades=372120 volume=9486560 rejects=0
+end_utc: 2026-10-12T21:05:27Z

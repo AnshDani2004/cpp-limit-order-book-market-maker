@@ -1,0 +1,14 @@
+metric,value
+engine,map
+binary,ext3_harness
+warmup_events,20000
+measured_events,1000000
+events_per_second,3703113.38628
+total_seconds,0.270043041
+p50_latency_ns,167
+p95_latency_ns,666
+p99_latency_ns,1125
+max_latency_ns,1533708
+measured_trades,372120
+measured_volume,9486560
+measured_rejects,0
