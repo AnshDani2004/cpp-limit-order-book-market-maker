@@ -1,0 +1,2 @@
+e1e9535a678b5c581ebb461b5d78a5307674203258e8ea24e98f93f30a8c3394  build/stream_seed42.csv
+rows=1020000 measured_limit=599678 measured_market=100557 measured_cancel=199517 measured_replace=100248

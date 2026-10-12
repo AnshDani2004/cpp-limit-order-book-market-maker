@@ -6,3 +6,5 @@ compile_commands.json
 .vscode/
 benchmarks/results/**/latencies.csv
 benchmarks/results/**/readme_snippet.txt
+benchmarks/ext3/third_party/
+benchmarks/ext3/build/
