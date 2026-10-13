@@ -1,5 +1,8 @@
 # Extension 3(a) results: this repo's order book vs Liquibook on one identical stream
 
+**Update (2026-10-13 00:31 UTC): clean-machine rerun done; see section 2b. NOT YET REPLICATED.** The
+sections below it record the first, LOADED MACHINE sequence unchanged.
+
 **LOADED MACHINE. NOT YET REPLICATED.** Every timed run in this file ran with a 1-minute load
 average of 68 to 98 on an 8-core Apple M3, because other agents' jobs were using the machine. The
 pre-registered gate (load below 3.0) never passed in 45 minutes, so, as PREREG.md section 7
@@ -43,6 +46,32 @@ interleaved in rounds `map, lb_new, flat, lb_pool, map_unity, lb_shared`; 2026-1
 | lb_pool (Liquibook, preallocated orders) | secondary | 216,422 | 161,524 to 1,175,279 | 833 (292 to 1,125) | 31,833 (7,958 to 38,917) | 82.01 to 94.33 |
 | map_unity (this repo, engine in harness TU) | secondary | 2,312,807 | 899,815 to 3,343,331 | 209 (167 to 500) | 1,667 (1,208 to 3,417) | 79.37 to 98.39 |
 | lb_shared (Liquibook, shared_ptr orders) | secondary | 192,763 | 8,142 to 751,410 | 500 (417 to 709) | 16,417 (12,542 to 38,667) | 79.37 to 98.39 |
+
+## 2b. Clean-machine rerun (PREREG section 7 gate passed)
+
+Same frozen protocol and binaries (built from 878949d; later commits on this branch change only results and
+documents), same stream (SHA-256 e1e9535a...), run with `run_timed.sh` on 2026-10-13 from 00:30 UTC. The
+gate passed after 60 s (1-minute load 2.89); every run's pre-run load was 2.54 to 2.89, so no run is
+LOADED. All 30 runs reproduced 372,120 trades, volume 9,486,560 and 0 rejects. Caveat recorded by the
+script: the laptop was on battery power (`power: Now drawing from 'Battery Power'`), which can lower clock
+speed for both engines alike. Output: results/timed_clean_2026-10-12/ (runs.csv, raw_stdout.txt,
+summary.md).
+
+| config | events/s median | events/s min to max | p50 ns median (range) | p99 ns median (range) |
+|---|---|---|---|---|
+| map (primary) | 5,317,339 | 4,639,633 to 5,913,875 | 125 (125 to 125) | 625 (542 to 875) |
+| lb_new (primary) | 2,092,047 | 1,937,422 to 2,204,642 | 250 (209 to 250) | 2,625 (2,500 to 2,833) |
+| flat | 6,582,118 | 6,329,221 to 6,942,092 | 84 (83 to 84) | 542 (500 to 583) |
+| map_unity | 5,714,845 | 5,566,147 to 5,999,804 | 125 (125 to 125) | 583 (542 to 625) |
+| lb_pool | 2,149,158 | 2,038,529 to 2,194,660 | 209 (208 to 209) | 2,583 (2,500 to 2,833) |
+| lb_shared | 1,891,840 | 1,786,789 to 1,907,978 | 250 (250 to 250) | 2,917 (2,875 to 3,125) |
+
+Decision (pre-registered rule, clean machine): PRIMARY map vs lb_new: **map faster** on events/s (ranges
+do not overlap; median ratio 2.54), and lower p50 and p99. Secondary (descriptive): flat, map_unity faster
+than lb_new (median ratios 3.15, 2.73); map faster than lb_pool and lb_shared (2.47, 2.81); flat faster
+than map (ratio 0.81 map/flat) with p99 no clear difference; map vs map_unity no clear difference. The
+fairness caveats in section 5 apply unchanged (in particular Liquibook's per-price order walk on long
+queues and the adapter's order-ID map), so the ratio is for this stream and these configurations.
 
 ## 3. Decision under the pre-registered rule (LOADED MACHINE)
 

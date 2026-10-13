@@ -1,0 +1,72 @@
+# ext3a timed runs
+start_utc: 2026-10-13T00:30:50Z
+repo_commit: 2dd5ba82c376e063b2c19e05f0d37015958ad55c
+liquibook_commit: 2427613b32f1667abae68a01df6af9ba8270f8e7
+stream_sha256: e1e9535a678b5c581ebb461b5d78a5307674203258e8ea24e98f93f30a8c3394
+cpu: Apple M3 ncpu=8 perf=4 eff=4 mem_bytes=17179869184
+os: 26.5.1 (25F80), Darwin 25.5.0
+compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+power: Now drawing from 'Battery Power'
+gate_poll 00:30:50Z load: { 4.44 3.68 3.24 }
+gate: passed after 60 s; load: { 2.89 3.36 3.15 }
+### map run 1 | load: { 2.89 3.36 3.15 } | ok
+engine=map events_per_second=5913874.76335 p50_ns=125 p99_ns=542 trades=372120 volume=9486560 rejects=0
+### lb_new run 1 | load: { 2.89 3.36 3.15 } | ok
+engine=lb_new events_per_second=2204642.03916 p50_ns=209 p99_ns=2500 trades=372120 volume=9486560 rejects=0
+### flat run 1 | load: { 2.89 3.36 3.15 } | ok
+engine=flat events_per_second=6942092.23219 p50_ns=83 p99_ns=500 trades=372120 volume=9486560 rejects=0
+### lb_pool run 1 | load: { 2.74 3.32 3.14 } | ok
+engine=lb_pool events_per_second=2038529.05117 p50_ns=209 p99_ns=2833 trades=372120 volume=9486560 rejects=0
+### map_unity run 1 | load: { 2.74 3.32 3.14 } | ok
+engine=map events_per_second=5999803.50644 p50_ns=125 p99_ns=542 trades=372120 volume=9486560 rejects=0
+### lb_shared run 1 | load: { 2.74 3.32 3.14 } | ok
+engine=lb_shared events_per_second=1907977.60295 p50_ns=250 p99_ns=2875 trades=372120 volume=9486560 rejects=0
+### map run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=map events_per_second=5686997.58255 p50_ns=125 p99_ns=542 trades=372120 volume=9486560 rejects=0
+### lb_new run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=lb_new events_per_second=2092046.56344 p50_ns=250 p99_ns=2792 trades=372120 volume=9486560 rejects=0
+### flat run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=flat events_per_second=6874700.8431 p50_ns=84 p99_ns=500 trades=372120 volume=9486560 rejects=0
+### lb_pool run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=lb_pool events_per_second=2173510.82585 p50_ns=209 p99_ns=2500 trades=372120 volume=9486560 rejects=0
+### map_unity run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=map events_per_second=5856586.85287 p50_ns=125 p99_ns=542 trades=372120 volume=9486560 rejects=0
+### lb_shared run 2 | load: { 2.74 3.32 3.14 } | ok
+engine=lb_shared events_per_second=1830816.11374 p50_ns=250 p99_ns=3125 trades=372120 volume=9486560 rejects=0
+### map run 3 | load: { 2.74 3.32 3.14 } | ok
+engine=map events_per_second=5280774.36346 p50_ns=125 p99_ns=625 trades=372120 volume=9486560 rejects=0
+### lb_new run 3 | load: { 2.68 3.30 3.13 } | ok
+engine=lb_new events_per_second=2154317.92495 p50_ns=209 p99_ns=2500 trades=372120 volume=9486560 rejects=0
+### flat run 3 | load: { 2.68 3.30 3.13 } | ok
+engine=flat events_per_second=6506369.62851 p50_ns=84 p99_ns=583 trades=372120 volume=9486560 rejects=0
+### lb_pool run 3 | load: { 2.68 3.30 3.13 } | ok
+engine=lb_pool events_per_second=2194659.53217 p50_ns=208 p99_ns=2500 trades=372120 volume=9486560 rejects=0
+### map_unity run 3 | load: { 2.68 3.30 3.13 } | ok
+engine=map events_per_second=5588853.22896 p50_ns=125 p99_ns=625 trades=372120 volume=9486560 rejects=0
+### lb_shared run 3 | load: { 2.68 3.30 3.13 } | ok
+engine=lb_shared events_per_second=1786789.01697 p50_ns=250 p99_ns=3083 trades=372120 volume=9486560 rejects=0
+### map run 4 | load: { 2.68 3.30 3.13 } | ok
+engine=map events_per_second=5317338.77829 p50_ns=125 p99_ns=625 trades=372120 volume=9486560 rejects=0
+### lb_new run 4 | load: { 2.68 3.30 3.13 } | ok
+engine=lb_new events_per_second=1937421.76146 p50_ns=250 p99_ns=2833 trades=372120 volume=9486560 rejects=0
+### flat run 4 | load: { 2.68 3.30 3.13 } | ok
+engine=flat events_per_second=6329220.75969 p50_ns=84 p99_ns=583 trades=372120 volume=9486560 rejects=0
+### lb_pool run 4 | load: { 2.68 3.30 3.13 } | ok
+engine=lb_pool events_per_second=2149157.82425 p50_ns=209 p99_ns=2583 trades=372120 volume=9486560 rejects=0
+### map_unity run 4 | load: { 2.54 3.26 3.12 } | ok
+engine=map events_per_second=5714844.95268 p50_ns=125 p99_ns=583 trades=372120 volume=9486560 rejects=0
+### lb_shared run 4 | load: { 2.54 3.26 3.12 } | ok
+engine=lb_shared events_per_second=1896472.21519 p50_ns=250 p99_ns=2917 trades=372120 volume=9486560 rejects=0
+### map run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=map events_per_second=4639632.936 p50_ns=125 p99_ns=875 trades=372120 volume=9486560 rejects=0
+### lb_new run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=lb_new events_per_second=2076033.87712 p50_ns=250 p99_ns=2625 trades=372120 volume=9486560 rejects=0
+### flat run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=flat events_per_second=6582117.52408 p50_ns=84 p99_ns=542 trades=372120 volume=9486560 rejects=0
+### lb_pool run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=lb_pool events_per_second=2079035.93573 p50_ns=209 p99_ns=2833 trades=372120 volume=9486560 rejects=0
+### map_unity run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=map events_per_second=5566146.6958 p50_ns=125 p99_ns=625 trades=372120 volume=9486560 rejects=0
+### lb_shared run 5 | load: { 2.54 3.26 3.12 } | ok
+engine=lb_shared events_per_second=1891840.33617 p50_ns=250 p99_ns=2916 trades=372120 volume=9486560 rejects=0
+end_utc: 2026-10-13T00:32:06Z
