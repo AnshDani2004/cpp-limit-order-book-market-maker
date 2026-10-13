@@ -1,0 +1,37 @@
+machine: Apple M3 26.5.1
+compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+repo HEAD: 50135a3e8a46bcb6b4abfcb9bf6d077901d3d47a liquibook: 2427613b32f1667abae68a01df6af9ba8270f8e7
+stream sha256: 9993edaeb2c2a2e7a74c49994133f158a1e0682ddeb4537bd75c0eaa621b59b9
+gate poll 0: load=2.19 lock=acquired
+gate: PASS
+round=1 config=map load1=2.19 flag=ok power=AC Power :: RESULT config=map events=1000000 total_ns=182175166 events_per_s=5489222.4 p50_ns=125 p99_ns=625 max_ns=1026708 trades=372120 volume=9486560 rejects=0 valid=1
+round=1 config=lb_new load1=2.19 flag=ok power=AC Power :: RESULT config=lb_new events=1000000 total_ns=481791250 events_per_s=2075587.7 p50_ns=209 p99_ns=2791 max_ns=786667 trades=372120 volume=9486560 rejects=0 valid=1
+round=1 config=flat load1=2.19 flag=ok power=AC Power :: RESULT config=flat events=1000000 total_ns=163780000 events_per_s=6105751.6 p50_ns=84 p99_ns=708 max_ns=1088667 trades=372120 volume=9486560 rejects=0 valid=1
+round=1 config=lb_pool load1=2.19 flag=ok power=AC Power :: RESULT config=lb_pool events=1000000 total_ns=504977709 events_per_s=1980285.4 p50_ns=209 p99_ns=2875 max_ns=975458 trades=372120 volume=9486560 rejects=0 valid=1
+round=1 config=map_unity load1=2.19 flag=ok power=AC Power :: RESULT config=map_unity events=1000000 total_ns=176071250 events_per_s=5679518.9 p50_ns=125 p99_ns=625 max_ns=1085709 trades=372120 volume=9486560 rejects=0 valid=1
+round=1 config=lb_shared load1=2.19 flag=ok power=AC Power :: RESULT config=lb_shared events=1000000 total_ns=571801250 events_per_s=1748859.4 p50_ns=250 p99_ns=3208 max_ns=1740958 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=map load1=2.10 flag=ok power=AC Power :: RESULT config=map events=1000000 total_ns=196229416 events_per_s=5096075.9 p50_ns=125 p99_ns=667 max_ns=945750 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=lb_new load1=2.10 flag=ok power=AC Power :: RESULT config=lb_new events=1000000 total_ns=490840625 events_per_s=2037321.2 p50_ns=250 p99_ns=2709 max_ns=1041083 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=flat load1=2.10 flag=ok power=AC Power :: RESULT config=flat events=1000000 total_ns=152821291 events_per_s=6543590.8 p50_ns=84 p99_ns=584 max_ns=902166 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=lb_pool load1=2.10 flag=ok power=AC Power :: RESULT config=lb_pool events=1000000 total_ns=482068167 events_per_s=2074395.4 p50_ns=209 p99_ns=2666 max_ns=801417 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=map_unity load1=2.10 flag=ok power=AC Power :: RESULT config=map_unity events=1000000 total_ns=177685958 events_per_s=5627906.7 p50_ns=125 p99_ns=584 max_ns=1275125 trades=372120 volume=9486560 rejects=0 valid=1
+round=2 config=lb_shared load1=2.10 flag=ok power=AC Power :: RESULT config=lb_shared events=1000000 total_ns=572895833 events_per_s=1745518.0 p50_ns=250 p99_ns=3208 max_ns=1257042 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=map load1=2.10 flag=ok power=AC Power :: RESULT config=map events=1000000 total_ns=185419625 events_per_s=5393172.4 p50_ns=125 p99_ns=625 max_ns=1159167 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=lb_new load1=2.09 flag=ok power=AC Power :: RESULT config=lb_new events=1000000 total_ns=511646709 events_per_s=1954473.6 p50_ns=250 p99_ns=2791 max_ns=914250 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=flat load1=2.09 flag=ok power=AC Power :: RESULT config=flat events=1000000 total_ns=157576667 events_per_s=6346117.2 p50_ns=84 p99_ns=584 max_ns=1306625 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=lb_pool load1=2.09 flag=ok power=AC Power :: RESULT config=lb_pool events=1000000 total_ns=506743458 events_per_s=1973385.1 p50_ns=209 p99_ns=2792 max_ns=918042 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=map_unity load1=2.09 flag=ok power=AC Power :: RESULT config=map_unity events=1000000 total_ns=175283833 events_per_s=5705032.7 p50_ns=125 p99_ns=584 max_ns=1088875 trades=372120 volume=9486560 rejects=0 valid=1
+round=3 config=lb_shared load1=2.09 flag=ok power=AC Power :: RESULT config=lb_shared events=1000000 total_ns=536312750 events_per_s=1864583.7 p50_ns=250 p99_ns=2958 max_ns=1366542 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=map load1=2.09 flag=ok power=AC Power :: RESULT config=map events=1000000 total_ns=183259583 events_per_s=5456740.6 p50_ns=125 p99_ns=625 max_ns=1146291 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=lb_new load1=2.09 flag=ok power=AC Power :: RESULT config=lb_new events=1000000 total_ns=542554541 events_per_s=1843132.7 p50_ns=250 p99_ns=3333 max_ns=840833 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=flat load1=2.08 flag=ok power=AC Power :: RESULT config=flat events=1000000 total_ns=150178209 events_per_s=6658755.7 p50_ns=84 p99_ns=542 max_ns=1228500 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=lb_pool load1=2.08 flag=ok power=AC Power :: RESULT config=lb_pool events=1000000 total_ns=474153875 events_per_s=2109020.0 p50_ns=209 p99_ns=2625 max_ns=911458 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=map_unity load1=2.08 flag=ok power=AC Power :: RESULT config=map_unity events=1000000 total_ns=174987958 events_per_s=5714678.9 p50_ns=125 p99_ns=583 max_ns=1166583 trades=372120 volume=9486560 rejects=0 valid=1
+round=4 config=lb_shared load1=2.08 flag=ok power=AC Power :: RESULT config=lb_shared events=1000000 total_ns=548759250 events_per_s=1822292.7 p50_ns=250 p99_ns=3083 max_ns=1280500 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=map load1=2.08 flag=ok power=AC Power :: RESULT config=map events=1000000 total_ns=178770959 events_per_s=5593749.7 p50_ns=125 p99_ns=583 max_ns=1097917 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=lb_new load1=2.08 flag=ok power=AC Power :: RESULT config=lb_new events=1000000 total_ns=535323000 events_per_s=1868031.1 p50_ns=250 p99_ns=3041 max_ns=1007042 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=flat load1=2.08 flag=ok power=AC Power :: RESULT config=flat events=1000000 total_ns=158370833 events_per_s=6314294.0 p50_ns=84 p99_ns=584 max_ns=1113583 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=lb_pool load1=2.08 flag=ok power=AC Power :: RESULT config=lb_pool events=1000000 total_ns=477182625 events_per_s=2095633.7 p50_ns=209 p99_ns=2666 max_ns=881708 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=map_unity load1=2.00 flag=ok power=AC Power :: RESULT config=map_unity events=1000000 total_ns=178131125 events_per_s=5613842.1 p50_ns=125 p99_ns=584 max_ns=1203375 trades=372120 volume=9486560 rejects=0 valid=1
+round=5 config=lb_shared load1=2.00 flag=ok power=AC Power :: RESULT config=lb_shared events=1000000 total_ns=551587167 events_per_s=1812950.1 p50_ns=250 p99_ns=3167 max_ns=1228583 trades=372120 volume=9486560 rejects=0 valid=1
+done 2026-10-12 19:54:38

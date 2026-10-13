@@ -1,0 +1,267 @@
+{
+ "what": "Independent replication of Extension 3(a) (repo order book vs Liquibook) from PREREG.md frozen at 878949d",
+ "agent": "independent replication agent",
+ "date": "2026-10-12",
+ "machine": "Apple M3, macOS 26.5.1, Apple clang 21.0.0 (clang-2100.1.1.101)",
+ "flags": "-O3 -DNDEBUG -std=c++20 -arch arm64 -Wall -Wextra (every TU; Liquibook via -isystem; no LTO/PGO/-mcpu)",
+ "repo_head": "50135a3e8a46bcb6b4abfcb9bf6d077901d3d47a (include/, src/ unchanged vs 219b03e: git diff empty)",
+ "liquibook_commit": "2427613b32f1667abae68a01df6af9ba8270f8e7",
+ "stream": {
+  "generator": "src/rep_gen.cpp (own code)",
+  "sha256": "9993edaeb2c2a2e7a74c49994133f158a1e0682ddeb4537bd75c0eaa621b59b9",
+  "prereg_sha256": "e1e9535a678b5c581ebb461b5d78a5307674203258e8ea24e98f93f30a8c3394",
+  "sha_match": false,
+  "sha_note": "CSV byte layout (value encodings) is not specified in the PREREG; 48 plausible encodings probed, none matched. Not meant to be byte-identical.",
+  "rows": 1020000,
+  "measured_mix": {
+   "limit": 599678,
+   "market": 100557,
+   "cancel": 199517,
+   "replace": 100248
+  },
+  "measured_mix_matches_prereg": true,
+  "variant_with_original_mode_draw_mix": {
+   "limit": 599738,
+   "market": 100434,
+   "cancel": 199867,
+   "replace": 99961
+  }
+ },
+ "equivalence": {
+  "result": "PASS (rep_harness: map, flat, lb_new, lb_pool, lb_shared; rep_harness_unity: map_unity)",
+  "measured_trades": 372120,
+  "measured_volume": 9486560,
+  "rejects": 0,
+  "best_bid": [
+   100142,
+   57
+  ],
+  "best_ask": [
+   100153,
+   16148
+  ],
+  "levels_bid_ask": [
+   575,
+   298
+  ],
+  "orders_bid_ask": [
+   72627,
+   72110
+  ],
+  "size_bid_ask": [
+   3667041,
+   3645589
+  ],
+  "matches_prereg_values": true,
+  "trade_hash_replica": "3fc627fc83a6c66b",
+  "book_hash_replica": "bf1408ef136bd721",
+  "hash_note": "FNV-1a byte layout not specified in the PREREG; replica hashes equal across all six configs but are not comparable to faae67780bb4e8f2 / 634497979a84c9d0.",
+  "negative_control": {
+   "result": "FAIL (as intended)",
+   "stream_sha256": "ec24165f314090e183d7618e461d38569fdfc5e9deb9c1e5052e624f398a711f",
+   "map_flat": {
+    "trades": 350663,
+    "volume": 8858835,
+    "rejects": 0
+   },
+   "liquibook_all": {
+    "trades": 350671,
+    "volume": 8858958,
+    "rejects": 5
+   },
+   "note": "differs from PREREG's 365,276 / 365,229 / 20 rejects: negative-control generator details are unspecified; qualitative outcome (map=flat, Liquibook differs, check FAILs) reproduced."
+  }
+ },
+ "timed": {
+  "run_dir": "results/run1",
+  "schedule": "5 rounds x [map, lb_new, flat, lb_pool, map_unity, lb_shared], fresh process each, 20,000 warm-up + 1,000,000 measured",
+  "gate": "PASS at first poll (load 2.19, lock absent, lock acquired and released)",
+  "load1_range": [
+   2.0,
+   2.19
+  ],
+  "loaded_runs": 0,
+  "power": "AC Power (all 30 runs)",
+  "invalid_runs": 0,
+  "wall_clock": "2026-10-12 19:54:18 to 19:54:38 (about 20 s for 30 runs)",
+  "configs": {
+   "map": {
+    "events_per_s": {
+     "median": 5456740.6,
+     "min": 5096075.9,
+     "max": 5593749.7
+    },
+    "p50_ns": {
+     "median": 125.0,
+     "min": 125.0,
+     "max": 125.0
+    },
+    "p99_ns": {
+     "median": 625.0,
+     "min": 583.0,
+     "max": 667.0
+    }
+   },
+   "lb_new": {
+    "events_per_s": {
+     "median": 1954473.6,
+     "min": 1843132.7,
+     "max": 2075587.7
+    },
+    "p50_ns": {
+     "median": 250.0,
+     "min": 209.0,
+     "max": 250.0
+    },
+    "p99_ns": {
+     "median": 2791.0,
+     "min": 2709.0,
+     "max": 3333.0
+    }
+   },
+   "flat": {
+    "events_per_s": {
+     "median": 6346117.2,
+     "min": 6105751.6,
+     "max": 6658755.7
+    },
+    "p50_ns": {
+     "median": 84.0,
+     "min": 84.0,
+     "max": 84.0
+    },
+    "p99_ns": {
+     "median": 584.0,
+     "min": 542.0,
+     "max": 708.0
+    }
+   },
+   "lb_pool": {
+    "events_per_s": {
+     "median": 2074395.4,
+     "min": 1973385.1,
+     "max": 2109020.0
+    },
+    "p50_ns": {
+     "median": 209.0,
+     "min": 209.0,
+     "max": 209.0
+    },
+    "p99_ns": {
+     "median": 2666.0,
+     "min": 2625.0,
+     "max": 2875.0
+    }
+   },
+   "map_unity": {
+    "events_per_s": {
+     "median": 5679518.9,
+     "min": 5613842.1,
+     "max": 5714678.9
+    },
+    "p50_ns": {
+     "median": 125.0,
+     "min": 125.0,
+     "max": 125.0
+    },
+    "p99_ns": {
+     "median": 584.0,
+     "min": 583.0,
+     "max": 625.0
+    }
+   },
+   "lb_shared": {
+    "events_per_s": {
+     "median": 1812950.1,
+     "min": 1745518.0,
+     "max": 1864583.7
+    },
+    "p50_ns": {
+     "median": 250.0,
+     "min": 250.0,
+     "max": 250.0
+    },
+    "p99_ns": {
+     "median": 3167.0,
+     "min": 2958.0,
+     "max": 3208.0
+    }
+   }
+  },
+  "decisions": [
+   {
+    "pair": "map vs lb_new",
+    "role": "PRIMARY",
+    "events_per_s": "map faster",
+    "ratio_of_medians": 2.791923410989025,
+    "p50": "map lower",
+    "p99": "map lower"
+   },
+   {
+    "pair": "flat vs lb_new",
+    "role": "secondary",
+    "events_per_s": "flat faster",
+    "ratio_of_medians": 3.2469700281446627,
+    "p50": "flat lower",
+    "p99": "flat lower"
+   },
+   {
+    "pair": "map vs lb_pool",
+    "role": "secondary",
+    "events_per_s": "map faster",
+    "ratio_of_medians": 2.630520970110134,
+    "p50": "map lower",
+    "p99": "map lower"
+   },
+   {
+    "pair": "map_unity vs lb_new",
+    "role": "secondary",
+    "events_per_s": "map_unity faster",
+    "ratio_of_medians": 2.9059071966999195,
+    "p50": "map_unity lower",
+    "p99": "map_unity lower"
+   },
+   {
+    "pair": "map vs lb_shared",
+    "role": "secondary",
+    "events_per_s": "map faster",
+    "ratio_of_medians": 3.009868059799329,
+    "p50": "map lower",
+    "p99": "map lower"
+   },
+   {
+    "pair": "flat vs lb_pool",
+    "role": "secondary",
+    "events_per_s": "flat faster",
+    "ratio_of_medians": 3.059261122542019,
+    "p50": "flat lower",
+    "p99": "flat lower"
+   },
+   {
+    "pair": "map_unity vs lb_pool",
+    "role": "secondary",
+    "events_per_s": "map_unity faster",
+    "ratio_of_medians": 2.737915298115297,
+    "p50": "map_unity lower",
+    "p99": "map_unity lower"
+   },
+   {
+    "pair": "map vs flat",
+    "role": "secondary",
+    "events_per_s": "flat faster",
+    "ratio_of_medians": 0.8598549992111711,
+    "p50": "flat lower",
+    "p99": "no clear difference"
+   },
+   {
+    "pair": "map vs map_unity",
+    "role": "secondary",
+    "events_per_s": "map_unity faster",
+    "ratio_of_medians": 0.9607751459370968,
+    "p50": "no clear difference",
+    "p99": "no clear difference"
+   }
+  ],
+  "primary_decision": "map faster than lb_new on events/s (5-run ranges disjoint: map min 5,096,076 > lb_new max 2,075,588); ratio of medians 2.79"
+ }
+}

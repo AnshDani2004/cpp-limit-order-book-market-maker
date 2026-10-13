@@ -1,0 +1,6 @@
+map        trades=350663 volume=8858835 rejects=0 trade_hash=ea9f4d69dc63c24f best_bid=100097(55) best_ask=100098(18736) levels=519/352 orders=83959/82308 size=3995769/3977497 book_hash=5b1ff05572620b97
+flat       trades=350663 volume=8858835 rejects=0 trade_hash=ea9f4d69dc63c24f best_bid=100097(55) best_ask=100098(18736) levels=519/352 orders=83959/82308 size=3995769/3977497 book_hash=5b1ff05572620b97
+lb_new     trades=350671 volume=8858958 rejects=5 trade_hash=fff8a2ae41e9faff best_bid=100097(55) best_ask=100098(18736) levels=519/352 orders=83967/82314 size=3995857/3977546 book_hash=3d335b921fa02428
+lb_pool    trades=350671 volume=8858958 rejects=5 trade_hash=fff8a2ae41e9faff best_bid=100097(55) best_ask=100098(18736) levels=519/352 orders=83967/82314 size=3995857/3977546 book_hash=3d335b921fa02428
+lb_shared  trades=350671 volume=8858958 rejects=5 trade_hash=fff8a2ae41e9faff best_bid=100097(55) best_ask=100098(18736) levels=519/352 orders=83967/82314 size=3995857/3977546 book_hash=3d335b921fa02428
+EQUIVALENCE=FAIL

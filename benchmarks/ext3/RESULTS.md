@@ -4,7 +4,11 @@
 the primary decision holds on this stream (reproduced at 4.74M vs 1.95M events/s on AC power), but the gap
 is a property of the stream's very deep queues (Liquibook's linear search within a price level on
 cancel/replace: about 77 nodes per search here); on shallower books it shrinks and on a near-empty book
-Liquibook is faster (exploratory). Never quote "faster than Liquibook" without the stream qualifier.**
+Liquibook is faster (exploratory). Never quote "faster than Liquibook" without the stream qualifier. Independent replication
+(replication/REPLICATION.md, own generator, adapters and harness from PREREG.md only; AC power, load 2.00 to
+2.19): equivalence PASS with every PREREG field reproduced; map 5,456,741 vs lb_new 1,954,474 events/s
+median (ranges disjoint; p50 125 vs 250 ns, p99 625 vs 2,791 ns): same decision. Its stream has the
+PREREG's exact event mix but a different SHA-256 (the PREREG does not fix the CSV encoding).**
 The sections below the update record the first, LOADED MACHINE sequence unchanged.
 
 **LOADED MACHINE. NOT YET REPLICATED.** Every timed run in this file ran with a 1-minute load

@@ -1,0 +1,2 @@
+map_unity  trades=372120 volume=9486560 rejects=0 trade_hash=3fc627fc83a6c66b best_bid=100142(57) best_ask=100153(16148) levels=575/298 orders=72627/72110 size=3667041/3645589 book_hash=bf1408ef136bd721
+EQUIVALENCE=PASS
