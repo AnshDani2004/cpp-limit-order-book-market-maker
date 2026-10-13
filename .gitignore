@@ -8,3 +8,15 @@ benchmarks/results/**/latencies.csv
 benchmarks/results/**/readme_snippet.txt
 benchmarks/ext3/third_party/
 benchmarks/ext3/build/
+
+# Nasdaq ITCH sample and the order-level files rebuilt from it: not stored here.
+# Run tools/fetch_itch_sample.sh to download the sample (SHA-256 checked) and regenerate them.
+data/itch/
+benchmarks/results/stage4a_itch_replay/translated_orders.csv
+benchmarks/results/stage4a_itch_replay/translation_detail.csv
+benchmarks/results/stage4a_itch_replay/trades.csv
+benchmarks/results/stage4a_itch_replay/book_state.csv
+benchmarks/results/stage5a_itch_market_mode/translated_orders.csv
+benchmarks/results/stage5a_itch_market_mode/translation_detail.csv
+benchmarks/results/stage5a_itch_market_mode/trades.csv
+benchmarks/results/stage5a_itch_market_mode/book_state.csv
