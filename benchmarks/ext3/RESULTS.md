@@ -1,7 +1,11 @@
 # Extension 3(a) results: this repo's order book vs Liquibook on one identical stream
 
-**Update (2026-10-13 00:31 UTC): clean-machine rerun done; see section 2b. NOT YET REPLICATED.** The
-sections below it record the first, LOADED MACHINE sequence unchanged.
+**Update (2026-10-13): clean-machine rerun done (section 2b). Fairness review done (review/ADVERSARIAL_REPORT.md):
+the primary decision holds on this stream (reproduced at 4.74M vs 1.95M events/s on AC power), but the gap
+is a property of the stream's very deep queues (Liquibook's linear search within a price level on
+cancel/replace: about 77 nodes per search here); on shallower books it shrinks and on a near-empty book
+Liquibook is faster (exploratory). Never quote "faster than Liquibook" without the stream qualifier.**
+The sections below the update record the first, LOADED MACHINE sequence unchanged.
 
 **LOADED MACHINE. NOT YET REPLICATED.** Every timed run in this file ran with a 1-minute load
 average of 68 to 98 on an 8-core Apple M3, because other agents' jobs were using the machine. The
@@ -152,7 +156,8 @@ difference (medians 2,366,067 vs 2,312,807).
 * Timer: `steady_clock` advances in about 41.7 ns ticks on this machine, and each sample includes
   one clock read, so p50 values are a few ticks and coarse; events/s is the primary metric.
 * Single thread, single process, no I/O; one machine (Apple M3, macOS 26.5.1, Apple clang 21.0.0,
-  on AC power; the battery was at 16% and charging at the start of the session).
+  on AC power with the battery at 16% and charging at the start of the FIRST, loaded session; the
+  clean-machine rerun in section 2b ran on battery power).
 * Liquibook is pinned at 2427613 and used through its public API. Its `PERFORMANCE.md` figure (2.0M
   to 2.5M inserts/s, adds only, its own test on a 2.4 GHz i7) measures something else and is not
   comparable.

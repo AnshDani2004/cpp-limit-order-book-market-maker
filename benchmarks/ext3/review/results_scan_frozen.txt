@@ -1,0 +1,7 @@
+after_measured=200000 live_orders=46752
+after_measured=400000 live_orders=78151
+after_measured=600000 live_orders=90036
+after_measured=800000 live_orders=131784
+after_measured=1000000 live_orders=144737
+scan_steps_per_cancel_or_replace n=299765 mean=76.753 p50=58 p90=173 p99=287 max=385 total=2.30079e+07
+orders_at_that_price_level n=299765 mean=152.526 p50=140 p90=279 p99=354 max=396 total=4.57219e+07
