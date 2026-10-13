@@ -47,6 +47,14 @@ Stage 4A ITCH replay:
 python3 tools/itch_replay.py --symbol QQQ --range-bytes 33554432 --output-dir benchmarks/results/stage4a_itch_replay --build-dir build/stage4a_itch_replay
 ```
 
+The Nasdaq ITCH sample is not stored in this repository, and neither are the order-level files rebuilt
+from it (`translated_orders.csv`, `translation_detail.csv`, `trades.csv`, `book_state.csv` in
+`stage4a_itch_replay/` and `stage5a_itch_market_mode/`). `tools/fetch_itch_sample.sh` downloads the first
+33,554,432 bytes of Nasdaq's public sample file `03272019.NASDAQ_ITCH50.gz`, checks its SHA-256, regenerates
+those files in both execution modes and checks them against `benchmarks/results/itch_order_level_files.sha256`.
+The derived results (summary, event-mix, size, lifetime and message-support tables, and everything in
+Stage 5B onward) stay in the repository.
+
 Stage 5C paired statistics and Stage 5D queue diagnostics are checked in as reproducible artifacts; see the linked docs for exact commands, tables, and caveats.
 
 Fill-rate diagnostic extension and artifact validation:
